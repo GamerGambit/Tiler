@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objecttypes>
+ <objecttype name="Floor" color="#4fa400">
+  <property name="Color" type="color" default=""/>
+ </objecttype>
+</objecttypes>
