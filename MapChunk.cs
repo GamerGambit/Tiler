@@ -7,7 +7,8 @@ namespace Tiler
 {
     public class MapChunk : Drawable
     {
-        public List<MapLayer> Layers { get; private set; } = new List<MapLayer>();
+        private MapLayer[] Layers;
+
         public void Load(string mapFile)
         {
             var map = new TmxMap(mapFile);
@@ -18,6 +19,7 @@ namespace Tiler
                 new TileSet(tileset);
             }
 
+            var layers = new List<MapLayer>();
             foreach (var tmxLayer in map.Layers)
             {
                 /*
@@ -35,8 +37,10 @@ namespace Tiler
                     layer.AddTile(tile);
                 }
 
-                Layers.Add(layer);
+                layers.Add(layer);
             }
+
+            Layers = layers.ToArray();
         }
 
         public void Draw(RenderTarget target, RenderStates states)

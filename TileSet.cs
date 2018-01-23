@@ -7,11 +7,11 @@ namespace Tiler
 {
     public class TileSet
     {
-        public static List<TileSet> Sets = new List<TileSet>();
+        private static List<TileSet> sets = new List<TileSet>();
 
         public static TileSet GetTileSetForTile(TmxLayerTile tile)
         {
-            foreach(var set in Sets)
+            foreach(var set in sets)
             {
                 if (tile.Gid >= set.FirstGID && tile.Gid < set.FirstGID + set.TileCount)
                     return set;
@@ -27,8 +27,6 @@ namespace Tiler
         public int TileCount { get; private set; }
         public int Columns { get; private set; }
         public Texture Texture { get; private set; }
-        
-        private List<uint> spriteIndexes = new List<uint>();
 
         public TileSet(TmxTileset tileSet)
         {
@@ -44,7 +42,7 @@ namespace Tiler
 
             Texture = new Texture(tileSet.Image.Source);
 
-            Sets.Add(this);
+            sets.Add(this);
         }
     }
 }
