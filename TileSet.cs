@@ -5,44 +5,44 @@ using TiledSharp;
 
 namespace Tiler
 {
-    public class TileSet
-    {
-        private static List<TileSet> sets = new List<TileSet>();
+	public class TileSet
+	{
+		private static List<TileSet> sets = new List<TileSet>();
 
-        public static TileSet GetTileSetForTile(TmxLayerTile tile)
-        {
-            foreach(var set in sets)
-            {
-                if (tile.Gid >= set.FirstGID && tile.Gid < set.FirstGID + set.TileCount)
-                    return set;
-            }
+		public static TileSet GetTileSetForTile(TmxLayerTile tile)
+		{
+			foreach (var set in sets)
+			{
+				if (tile.Gid >= set.FirstGID && tile.Gid < set.FirstGID + set.TileCount)
+					return set;
+			}
 
-            return null;
-        }
+			return null;
+		}
 
-        public string Name { get; private set; }
-        public int FirstGID { get; private set; }
-        public int TileWidth { get; private set; }
-        public int TileHeight { get; private set; }
-        public int TileCount { get; private set; }
-        public int Columns { get; private set; }
-        public Texture Texture { get; private set; }
+		public string Name { get; private set; }
+		public int FirstGID { get; private set; }
+		public int TileWidth { get; private set; }
+		public int TileHeight { get; private set; }
+		public int TileCount { get; private set; }
+		public int Columns { get; private set; }
+		public Texture Texture { get; private set; }
 
-        public TileSet(TmxTileset tileSet)
-        {
-            Name = tileSet.Name;
-            FirstGID = tileSet.FirstGid;
-            TileWidth = tileSet.TileWidth;
-            TileHeight = tileSet.TileHeight;
-            TileCount = tileSet.TileCount ?? 0;
-            Columns = tileSet.Columns ?? 0;
+		public TileSet(TmxTileset tileSet)
+		{
+			Name = tileSet.Name;
+			FirstGID = tileSet.FirstGid;
+			TileWidth = tileSet.TileWidth;
+			TileHeight = tileSet.TileHeight;
+			TileCount = tileSet.TileCount ?? 0;
+			Columns = tileSet.Columns ?? 0;
 
-            if (TileCount <= 0)
-                return;
+			if (TileCount <= 0)
+				return;
 
-            Texture = new Texture(tileSet.Image.Source);
+			Texture = new Texture(tileSet.Image.Source);
 
-            sets.Add(this);
-        }
-    }
+			sets.Add(this);
+		}
+	}
 }

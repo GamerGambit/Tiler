@@ -5,50 +5,50 @@ using TiledSharp;
 
 namespace Tiler
 {
-    public class MapChunk : Drawable
-    {
-        private MapLayer[] Layers;
+	public class MapChunk : Drawable
+	{
+		private MapLayer[] Layers;
 
-        public void Load(string mapFile)
-        {
-            var map = new TmxMap(mapFile);
+		public void Load(string mapFile)
+		{
+			var map = new TmxMap(mapFile);
 
-            foreach(var tileset in map.Tilesets)
-            {
-                // constructor automatically adds it to static list of TileSets
-                new TileSet(tileset);
-            }
+			foreach (var tileset in map.Tilesets)
+			{
+				// constructor automatically adds it to static list of TileSets
+				new TileSet(tileset);
+			}
 
-            var layers = new List<MapLayer>();
-            foreach (var tmxLayer in map.Layers)
-            {
-                /*
+			var layers = new List<MapLayer>();
+			foreach (var tmxLayer in map.Layers)
+			{
+				/*
                 if (layer.Visible == false)
                     continue;
                 */
 
-                var layer = new MapLayer();
+				var layer = new MapLayer();
 
-                foreach (var tile in tmxLayer.Tiles)
-                {
-                    if (tile.Gid == 0)
-                        continue;
+				foreach (var tile in tmxLayer.Tiles)
+				{
+					if (tile.Gid == 0)
+						continue;
 
-                    layer.AddTile(tile);
-                }
+					layer.AddTile(tile);
+				}
 
-                layers.Add(layer);
-            }
+				layers.Add(layer);
+			}
 
-            Layers = layers.ToArray();
-        }
+			Layers = layers.ToArray();
+		}
 
-        public void Draw(RenderTarget target, RenderStates states)
-        {
-            foreach (var layer in Layers)
-            {
-                target.Draw(layer, states);
-            }
-        }
-    }
+		public void Draw(RenderTarget target, RenderStates states)
+		{
+			foreach (var layer in Layers)
+			{
+				target.Draw(layer, states);
+			}
+		}
+	}
 }
