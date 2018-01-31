@@ -9,36 +9,57 @@ namespace Tiler
 {
 	public class MapLayer : Drawable
 	{
+		public enum Type : int
+		{
+			Space,
+			Floors,
+			Walls
+		}
+
+		public static bool TryParseLayerType(string layerName, out Type output)
+		{
+			return Enum.TryParse(layerName, true, out output);
+		}
+
 		private bool dirty = true;
+		private MapChunk chunk;
 		private List<Tuple<VertexArray, RenderStates>> Meshes = new List<Tuple<VertexArray, RenderStates>>();
-		private List<TmxLayerTile> Tiles = new List<TmxLayerTile>();
+		private List<int> TileIDs = new List<int>();
 
 		private void Rebuild()
 		{
 			Meshes.Clear();
 
-			foreach (var tile in Tiles)
+			for (var index = 0; index < TileIDs.Count; ++index)
 			{
-				var tileset = TileSet.GetTileSetForTile(tile);
-				var entry = Meshes.Find(t => t.Item2.Texture == tileset.Texture);
+				var tileID = TileIDs[index];
+				var tile = World.Tiles.Find(t => t.GID == tileID);
 
-				if (entry == null)
+				if (tile is null || tile.GID == 0)
+					continue;
+
+				var tileset = tile.TileSet;
+				var mesh = Meshes.Find(t => t.Item2.Texture == tile.TileSet.Texture);
+
+				if (mesh is null)
 				{
-					entry = new Tuple<VertexArray, RenderStates>(new VertexArray(PrimitiveType.Quads), new RenderStates(BlendMode.Alpha, Transform.Identity, tileset.Texture, null));
-					Meshes.Add(entry);
+					mesh = new Tuple<VertexArray, RenderStates>(new VertexArray(PrimitiveType.Quads), tile.TileSet.RenderStates);
+					Meshes.Add(mesh);
 				}
-
-				var spriteIndex = tile.Gid - tileset.FirstGID;
-				var mapPos = new Vector2f(tile.X * tileset.TileWidth, tile.Y * tileset.TileHeight);
+				
+				var tilePosition = new Vector2i(index % chunk.Rectangle.Width, index / chunk.Rectangle.Height);
+				var spriteIndex = tile.GID - tile.TileSet.FirstGID;
+				var worldPos = new Vector2f(tilePosition.X * tileset.TileWidth, tilePosition.Y * tileset.TileHeight); // For some stupid reason, SFML doesnt provide vector multiplication even between vectors of the same types
+				worldPos += new Vector2f(chunk.Rectangle.Left, chunk.Rectangle.Top); // Offset the Tile's world position by the Chunk's position
 				var texCoords = new Vector2f((spriteIndex % tileset.Columns) * tileset.TileWidth, (spriteIndex / tileset.Columns) * tileset.TileHeight);
 
-				var vertexArray = entry.Item1;
+				var vertexArray = mesh.Item1;
 
 				// Top Left
 				vertexArray.Append(new Vertex()
 				{
 					Color = Color.White,
-					Position = mapPos,
+					Position = worldPos,
 					TexCoords = texCoords
 				});
 
@@ -46,7 +67,7 @@ namespace Tiler
 				vertexArray.Append(new Vertex()
 				{
 					Color = Color.White,
-					Position = mapPos + new Vector2f(tileset.TileWidth, 0),
+					Position = worldPos + new Vector2f(tileset.TileWidth, 0),
 					TexCoords = texCoords + new Vector2f(tileset.TileWidth, 0)
 				});
 
@@ -54,7 +75,7 @@ namespace Tiler
 				vertexArray.Append(new Vertex()
 				{
 					Color = Color.White,
-					Position = mapPos + new Vector2f(tileset.TileWidth, tileset.TileHeight),
+					Position = worldPos + new Vector2f(tileset.TileWidth, tileset.TileHeight),
 					TexCoords = texCoords + new Vector2f(tileset.TileWidth, tileset.TileHeight)
 				});
 
@@ -62,32 +83,20 @@ namespace Tiler
 				vertexArray.Append(new Vertex()
 				{
 					Color = Color.White,
-					Position = mapPos + new Vector2f(0, tileset.TileHeight),
+					Position = worldPos + new Vector2f(0, tileset.TileHeight),
 					TexCoords = texCoords + new Vector2f(0, tileset.TileHeight)
 				});
 			}
 		}
 
-		public void AddTile(TmxLayerTile tile)
+		public MapLayer(MapChunk chunk)
 		{
-			Tiles.Add(tile);
-			dirty = true;
+			this.chunk = chunk;
 		}
 
-		public void RemoveTile(TmxLayerTile tile)
+		public void AddTileID(int tileID)
 		{
-			Tiles.Remove(tile);
-			dirty = true;
-		}
-
-		public void RemoveTileByPosition(Vector2f pos)
-		{
-			var tile = Tiles.Find(t => t.X == pos.X && t.Y == pos.Y);
-
-			if (tile == null)
-				return;
-
-			Tiles.Remove(tile);
+			TileIDs.Add(tileID);
 			dirty = true;
 		}
 

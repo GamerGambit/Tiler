@@ -1,4 +1,5 @@
 ﻿using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
 
 namespace Tiler
@@ -10,15 +11,14 @@ namespace Tiler
 			var renderWindow = new RenderWindow(new VideoMode(1024, 768), "Map renderer");
 			renderWindow.Closed += (s, e) => ((RenderWindow)s).Close();
 
-			var map = new MapChunk();
-			map.Load("untitled.tmx");
+			World.LoadChunk("untitled.tmx", new Vector2i(0, 0));
 
 			while (renderWindow.IsOpen)
 			{
 				renderWindow.DispatchEvents();
 
 				renderWindow.Clear();
-				renderWindow.Draw(map);
+					World.Draw(renderWindow);
 				renderWindow.Display();
 			}
 		}
