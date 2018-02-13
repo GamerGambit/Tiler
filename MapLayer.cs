@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using SFML.Graphics;
 using SFML.System;
-using TiledSharp;
 
 namespace Tiler
 {
@@ -14,11 +13,6 @@ namespace Tiler
 			Space,
 			Floors,
 			Walls
-		}
-
-		public static bool TryParseLayerType(string layerName, out Type output)
-		{
-			return Enum.TryParse(layerName, true, out output);
 		}
 
 		private bool dirty = true;
@@ -33,10 +27,11 @@ namespace Tiler
 			for (var index = 0; index < TileIDs.Count; ++index)
 			{
 				var tileID = TileIDs[index];
-				var tile = World.Tiles.Find(t => t.GID == tileID);
 
-				if (tile is null || tile.GID == 0)
+				if (tileID == -1)
 					continue;
+
+				var tile = World.Tiles[tileID];
 
 				var tileset = tile.TileSet;
 				var mesh = Meshes.Find(t => t.Item2.Texture == tile.TileSet.Texture);
@@ -48,10 +43,9 @@ namespace Tiler
 				}
 				
 				var tilePosition = new Vector2i(index % chunk.Rectangle.Width, index / chunk.Rectangle.Height);
-				var spriteIndex = tile.GID - tile.TileSet.FirstGID;
 				var worldPos = new Vector2f(tilePosition.X * tileset.TileWidth, tilePosition.Y * tileset.TileHeight); // For some stupid reason, SFML doesnt provide vector multiplication even between vectors of the same types
 				worldPos += new Vector2f(chunk.Rectangle.Left, chunk.Rectangle.Top); // Offset the Tile's world position by the Chunk's position
-				var texCoords = new Vector2f((spriteIndex % tileset.Columns) * tileset.TileWidth, (spriteIndex / tileset.Columns) * tileset.TileHeight);
+				var texCoords = new Vector2f((tile.Index % tileset.Columns) * tileset.TileWidth, (tile.Index / tileset.Columns) * tileset.TileHeight);
 
 				var vertexArray = mesh.Item1;
 

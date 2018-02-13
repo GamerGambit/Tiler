@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using SFML.Graphics;
 using TiledSharp;
@@ -7,21 +8,20 @@ namespace Tiler
 {
 	public class TileSet
 	{
-		private static List<TileSet> sets = new List<TileSet>();
+		public static readonly List<TileSet> Sets = new List<TileSet>();
 
-		public static TileSet GetTileSetForTile(int tileGID)
+		public static void AddTileSet(TmxTileset tileset)
 		{
-			foreach (var set in sets)
-			{
-				if (tileGID >= set.FirstGID && tileGID < set.FirstGID + set.TileCount)
-					return set;
-			}
+			if (tileset.TileCount <= 0)
+				return;
 
-			return null;
+			if (Sets.Find(s => s.Name == tileset.Name) is null == false)
+				return;
+
+			Sets.Add(new TileSet(tileset));
 		}
 
 		public readonly string Name;
-		public readonly int FirstGID;
 		public readonly int TileWidth;
 		public readonly int TileHeight;
 		public readonly int TileCount;
@@ -29,27 +29,31 @@ namespace Tiler
 		public readonly Texture Texture;
 		public readonly RenderStates RenderStates;
 
-		public TileSet(TmxTileset tileSet)
+		private TileSet(TmxTileset tileSet)
 		{
 			Name = tileSet.Name;
-			FirstGID = tileSet.FirstGid;
 			TileWidth = tileSet.TileWidth;
 			TileHeight = tileSet.TileHeight;
 			TileCount = tileSet.TileCount ?? 0;
 			Columns = tileSet.Columns ?? 0;
 
-			// Dont add the tileset if it has no tiles
-			if (TileCount <= 0)
-				return;
-
-			// Dont add the tileset if a set with the same name exists
-			if (sets.Find(s => s.Name == Name) != null)
-				return;
-
 			Texture = new Texture(tileSet.Image.Source);
 			RenderStates = new RenderStates(BlendMode.Alpha, Transform.Identity, Texture, null);
+		}
 
-			sets.Add(this);
+		public override bool Equals(object obj)
+		{
+			var other = obj as TileSet;
+
+			if (other is null)
+				return false;
+
+			return other.Name == Name;
+		}
+
+		public override int GetHashCode()
+		{
+			return ValueTuple.Create(Name, TileWidth, TileHeight, TileCount, Columns).GetHashCode();
 		}
 	}
 }
