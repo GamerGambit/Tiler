@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using SFML.Graphics;
 using TiledSharp;
@@ -39,21 +38,6 @@ namespace Tiler
 
 			Texture = new Texture(tileSet.Image.Source);
 			RenderStates = new RenderStates(BlendMode.Alpha, Transform.Identity, Texture, null);
-		}
-
-		public override bool Equals(object obj)
-		{
-			var other = obj as TileSet;
-
-			if (other is null)
-				return false;
-
-			return other.Name == Name;
-		}
-
-		public override int GetHashCode()
-		{
-			return ValueTuple.Create(Name, TileWidth, TileHeight, TileCount, Columns).GetHashCode();
 		}
 	}
 }

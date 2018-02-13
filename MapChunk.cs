@@ -54,7 +54,6 @@ namespace Tiler
 
 					var (tilesetGID, tileset) = Tilesets.Find(s => tmxTile.Gid >= s.Item1 && tmxTile.Gid < s.Item2.TileCount + s.Item1);
 
-
 					if (tileset is null)
 						continue;
 					
