@@ -39,7 +39,7 @@ namespace Tiler
 			foreach (var tmxLayer in map.Layers)
 			{
 				// Ignore layers that dont have enums
-				if (Enum.TryParse(tmxLayer.Name, true, out MapLayer.Type layerType) == false)
+				if (!Enum.TryParse(tmxLayer.Name, true, out MapLayer.Type layerType))
 					continue;
 
 				var layer = Layers[(int)layerType];

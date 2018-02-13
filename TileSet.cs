@@ -14,11 +14,11 @@ namespace Tiler
 		{
 			if (tileset.TileCount <= 0)
 				return;
-
-			if (Sets.Find(s => s.Name == tileset.Name) is null == false)
-				return;
-
-			Sets.Add(new TileSet(tileset));
+			
+			if (Sets.Find(s => s.Name == tileset.Name) is null)
+			{
+				Sets.Add(new TileSet(tileset));
+			}
 		}
 
 		public readonly string Name;
