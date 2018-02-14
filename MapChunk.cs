@@ -68,6 +68,14 @@ namespace Tiler
 					layer.AddTileID(World.Tiles.FindIndex(t => t == newTile));
 				}
 			}
+			
+			foreach (var group in map.ObjectGroups)
+			{
+				foreach (var obj in group.Objects)
+				{
+					World.SpawnEntity(obj, new Vector2i(Rectangle.Left, Rectangle.Top));
+				}
+			}
 		}
 
 		public void Draw(RenderTarget target, RenderStates states)
