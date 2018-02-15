@@ -4,7 +4,12 @@ namespace Tiler
 {
 	public class MapEditableAttribute : Attribute
 	{
-		public bool MapEditable { get; set; }
+		public readonly bool MapEditable = true;
+
+		public MapEditableAttribute()
+		{
+			// NOP
+		}
 
 		public MapEditableAttribute(bool mapEditable)
 		{

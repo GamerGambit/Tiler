@@ -3,10 +3,10 @@ using SFML.Graphics;
 
 namespace Tiler
 {
-	[Spawnable(true)]
+	[Spawnable]
 	public class PlayerSpawnEntity : Entity
 	{
-		[MapEditable(true)]
+		[MapEditable]
 		private string MapTest;
 
 		private RectangleShape shape = new RectangleShape(new SFML.System.Vector2f(32, 32));

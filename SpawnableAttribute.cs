@@ -4,7 +4,12 @@ namespace Tiler
 {
 	public class SpawnableAttribute : Attribute
 	{
-		public bool Spawnable { get; set; }
+		public readonly bool Spawnable = true;
+
+		public SpawnableAttribute()
+		{
+			// NOP
+		}
 
 		public SpawnableAttribute(bool spawnable)
 		{
