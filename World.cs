@@ -292,7 +292,14 @@ namespace Tiler
 					if ((Attribute.GetCustomAttribute(type, typeof(SpawnableAttribute)) as SpawnableAttribute).Spawnable == false)
 						continue;
 
-					ValidSpawnableEntityTypes.Add(type.FullName, type);
+					if (type.Assembly == Assembly.GetExecutingAssembly())
+					{
+						ValidSpawnableEntityTypes.Add(type.Name, type);
+					}
+					else
+					{
+						ValidSpawnableEntityTypes.Add(type.FullName, type);
+					}
 				}
 			}
 		}
