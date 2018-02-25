@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2024
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tiler", "Tiler.csproj", "{EB4F5A32-6E72-4AD6-9416-D32557BFBA3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Test\Client\Client.csproj", "{A26D8483-65DB-46E1-89D3-4AAED9C6B052}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Test\Server\Server.csproj", "{21D3AC39-2F72-4032-83B0-782E56EF4B25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{EB4F5A32-6E72-4AD6-9416-D32557BFBA3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB4F5A32-6E72-4AD6-9416-D32557BFBA3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB4F5A32-6E72-4AD6-9416-D32557BFBA3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A26D8483-65DB-46E1-89D3-4AAED9C6B052}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A26D8483-65DB-46E1-89D3-4AAED9C6B052}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A26D8483-65DB-46E1-89D3-4AAED9C6B052}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A26D8483-65DB-46E1-89D3-4AAED9C6B052}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21D3AC39-2F72-4032-83B0-782E56EF4B25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21D3AC39-2F72-4032-83B0-782E56EF4B25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21D3AC39-2F72-4032-83B0-782E56EF4B25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21D3AC39-2F72-4032-83B0-782E56EF4B25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
