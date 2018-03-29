@@ -16,7 +16,7 @@ namespace Tiler
 		internal static readonly List<Entity> Entities = new List<Entity>();
 
 		private static int numChunks = 0;
-		private static MapChunk[] Chunks = new MapChunk[MaxChunks];
+		private static Map.Chunk[] Chunks = new Map.Chunk[MaxChunks];
 
 		private static void SetInstancePropertyFromString(object instance, PropertyInfo propertyInfo, string value)
 		{
@@ -278,7 +278,7 @@ namespace Tiler
 			}
 		}
 
-		public static List<MapTile> Tiles { get; internal set; } = new List<MapTile>();
+		public static List<Map.Tile> Tiles { get; internal set; } = new List<Map.Tile>();
 
 		static World()
 		{
@@ -306,10 +306,10 @@ namespace Tiler
 
 		public static void LoadChunk(string filename, Vector2i position)
 		{
-			Chunks[numChunks++] = new MapChunk(filename, position);
+			Chunks[numChunks++] = new Map.Chunk(filename, position);
 		}
 
-		public static void SpawnEntity(TmxObject obj, Vector2i positionOffset)
+		internal static void SpawnEntity(TmxObject obj, Vector2i positionOffset)
 		{
 			if (ValidSpawnableEntityTypes.ContainsKey(obj.Type) == false)
 				return;
@@ -369,8 +369,6 @@ namespace Tiler
 				SetInstanceFieldFromString(instance, instanceField, obj.Properties[instanceField.Name]);
 			}
 
-			// Invoke `Entity::Initialize`
-			InstanceType.GetMethod("Initialize", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(instance, null);
 			Entities.Add(instance);
 		}
 

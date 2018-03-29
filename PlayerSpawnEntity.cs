@@ -16,13 +16,6 @@ namespace Tiler
 			shape.FillColor = new Color(255, 160, 0, 128);
 		}
 
-		protected override void Initialize()
-		{
-			base.Initialize();
-
-			Console.WriteLine($"PlayerSpawnEntity Initialized. MapTest = {MapTest}.");
-		}
-
 		public override void Draw(RenderTarget target, RenderStates states)
 		{
 			states.Transform *= Transform;

@@ -5,21 +5,21 @@ using SFML.Graphics;
 using SFML.System;
 using TiledSharp;
 
-namespace Tiler
+namespace Tiler.Map
 {
-	public class MapChunk : Drawable
+	internal class Chunk : Drawable
 	{
-		private MapLayer[] Layers = new MapLayer[Enum.GetNames(typeof(MapLayer.Type)).Length];
+		private Layer[] Layers = new Layer[Enum.GetNames(typeof(Layer.Type)).Length];
 		private List<Tuple<int, TileSet>> Tilesets = new List<Tuple<int, TileSet>>();
 
 		public readonly IntRect Rectangle; // Position and size
 
-		public MapChunk(string mapFile, Vector2i position)
+		public Chunk(string mapFile, Vector2i position)
 		{
 			// Initialize all layers
 			for (var index = 0; index < Layers.Length; ++index)
 			{
-				Layers[index] = new MapLayer(this);
+				Layers[index] = new Layer(this);
 			}
 
 			// Load map file
@@ -39,7 +39,7 @@ namespace Tiler
 			foreach (var tmxLayer in map.Layers)
 			{
 				// Ignore layers that dont have enums
-				if (!Enum.TryParse(tmxLayer.Name, true, out MapLayer.Type layerType))
+				if (!Enum.TryParse(tmxLayer.Name, true, out Layer.Type layerType))
 					continue;
 
 				var layer = Layers[(int)layerType];
@@ -57,7 +57,7 @@ namespace Tiler
 					if (tileset is null)
 						continue;
 					
-					var newTile = new MapTile(tileset, tmxTile.Gid - tilesetGID, tmxTile);
+					var newTile = new Tile(tileset, tmxTile.Gid - tilesetGID, tmxTile);
 
 					// If the tile doesnt exist, add it to `World`
 					if (World.Tiles.Find(t => t == newTile) is null)

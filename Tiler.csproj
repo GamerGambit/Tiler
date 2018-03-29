@@ -69,10 +69,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity.cs" />
-    <Compile Include="MapChunk.cs" />
+    <Compile Include="Map\Chunk.cs" />
     <Compile Include="MapEditableAttribute.cs" />
-    <Compile Include="MapLayer.cs" />
-    <Compile Include="MapTile.cs" />
+    <Compile Include="Map\Layer.cs" />
+    <Compile Include="Map\Tile.cs" />
     <Compile Include="Networking.cs" />
     <Compile Include="PlayerSpawnEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

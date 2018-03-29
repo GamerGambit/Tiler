@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using SFML.Graphics;
 using SFML.System;
 
-namespace Tiler
+namespace Tiler.Map
 {
-	public class MapLayer : Drawable
+	internal class Layer : Drawable
 	{
 		public enum Type : int
 		{
@@ -16,7 +16,7 @@ namespace Tiler
 		}
 
 		private bool dirty = true;
-		private MapChunk chunk;
+		private Chunk chunk;
 		private List<Tuple<VertexArray, RenderStates>> Meshes = new List<Tuple<VertexArray, RenderStates>>();
 		private List<int> TileIDs = new List<int>();
 
@@ -83,7 +83,7 @@ namespace Tiler
 			}
 		}
 
-		public MapLayer(MapChunk chunk)
+		public Layer(Chunk chunk)
 		{
 			this.chunk = chunk;
 		}

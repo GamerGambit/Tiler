@@ -2,11 +2,11 @@
 
 using TiledSharp;
 
-namespace Tiler
+namespace Tiler.Map
 {
-	public class MapTile
+	public class Tile
 	{
-		public static bool operator==(MapTile left, MapTile right)
+		public static bool operator==(Tile left, Tile right)
 		{
 			//if (ReferenceEquals(left, right))
 				//return true;
@@ -21,7 +21,7 @@ namespace Tiler
 				left.DiagonalFlip == right.DiagonalFlip;
 		}
 
-		public static bool operator!=(MapTile left, MapTile right)
+		public static bool operator!=(Tile left, Tile right)
 		{
 			return !(left == right);
 		}
@@ -32,7 +32,7 @@ namespace Tiler
 		public readonly bool DiagonalFlip;
 		public readonly TileSet TileSet;
 
-		public MapTile(TileSet tileSet, int index, TmxLayerTile tile)
+		public Tile(TileSet tileSet, int index, TmxLayerTile tile)
 		{
 			Index = index;
 			HorizontalFlip = tile.HorizontalFlip;
@@ -46,7 +46,7 @@ namespace Tiler
 			if (obj is null)
 				return false;
 
-			var other = obj as MapTile;
+			var other = obj as Tile;
 
 			if (other is null)
 				return false;
