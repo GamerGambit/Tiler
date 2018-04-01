@@ -13,7 +13,6 @@ namespace Tiler
 		public const int MaxChunks = 100;
 
 		internal static readonly Dictionary<string, Type> ValidSpawnableEntityTypes = new Dictionary<string, Type>();
-		internal static readonly List<Entity> Entities = new List<Entity>();
 
 		private static int numChunks = 0;
 		private static Map.Chunk[] Chunks = new Map.Chunk[MaxChunks];
@@ -279,6 +278,7 @@ namespace Tiler
 		}
 
 		public static List<Map.Tile> Tiles { get; internal set; } = new List<Map.Tile>();
+		public static List<Entity> Entities = new List<Entity>();
 
 		static World()
 		{

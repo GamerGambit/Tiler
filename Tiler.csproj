@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity.cs" />
+    <Compile Include="Input.cs" />
     <Compile Include="Map\Chunk.cs" />
     <Compile Include="MapEditableAttribute.cs" />
     <Compile Include="Map\Layer.cs" />
