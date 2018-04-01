@@ -27,14 +27,18 @@ namespace Client
 			renderWindow.Closed += (s, e) => (s as RenderWindow).Close();
 			renderWindow.MouseWheelScrolled += (s, e) =>
 			{
+				var newMouseWheelDeltas = new Vector2f(0, 0);
+
 				if (e.Wheel == Mouse.Wheel.HorizontalWheel)
 				{
-					Input.MouseWheelDeltas.X = e.Delta;
+					newMouseWheelDeltas.X = e.Delta;
 				}
 				else
 				{
-					Input.MouseWheelDeltas.Y = e.Delta;
+					newMouseWheelDeltas.Y = e.Delta;
 				}
+
+				Input.MouseWheelDeltas = newMouseWheelDeltas;
 			};
 
 			Input.Window = renderWindow;

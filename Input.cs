@@ -121,6 +121,8 @@ namespace Tiler
 	public static class Input
 	{
 		private static List<InputState> InputStates = new List<InputState>();
+		private static bool MouseWheelDeltasDirty = false;
+		private static Vector2f _MouseWheelDeltas = new Vector2f(0, 0);
 		private static Vector2i _MousePosition = new Vector2i(0, 0);
 		private static bool InputSubscribed(Mouse.Button button)
 		{
@@ -145,7 +147,18 @@ namespace Tiler
 
 		public static Window Window = null;
 		public static Vector2i MouseOffset { get; private set; } = new Vector2i(0, 0);
-		public static Vector2f MouseWheelDeltas = new Vector2f(0, 0);
+		public static Vector2f MouseWheelDeltas
+		{
+			get
+			{
+				return _MouseWheelDeltas;
+			}
+			set
+			{
+				_MouseWheelDeltas = value;
+				MouseWheelDeltasDirty = true;
+			}
+		}
 		public static bool MouseMoved {
 			get
 			{
@@ -259,8 +272,15 @@ namespace Tiler
 				state.Update(deltaTime);
 			}
 
-			MouseWheelDeltas.X = 0;
-			MouseWheelDeltas.Y = 0;
+			if (MouseWheelDeltasDirty)
+			{
+				MouseWheelDeltasDirty = false;
+			}
+			else
+			{
+				_MouseWheelDeltas.X = 0;
+				_MouseWheelDeltas.Y = 0;
+			}
 		}
 	}
 }
