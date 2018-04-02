@@ -13,8 +13,15 @@ namespace Client
 	{
 		public static System.Random Rnd = new System.Random();
 
-		public static T PickRandom<T>(this IList<T> list)
+		public static T PickRandom<T>(this IList<T> list, bool ThrowIfEmpty = true)
 		{
+			if (list.Count == 0) {
+				if (ThrowIfEmpty)
+				throw new Exception("Can not pick random item from empty list");
+
+				return default(T);
+			}
+
 			var index = Rnd.Next(list.Count);
 			return list[index];
 		}
@@ -62,7 +69,7 @@ namespace Client
 
 			var shape = new RectangleShape(new Vector2f(32, 32))
 			{
-				Position = World.Entities.FindAll(e => (e as PlayerSpawnEntity) != null).PickRandom().Position
+				Position = (World.Entities.FindAll(e => (e as PlayerSpawnEntity) != null).PickRandom(false) ?? new PlayerSpawnEntity(100, 100)).Position
 			};
 
 			var swatch = Stopwatch.StartNew();
