@@ -6,6 +6,7 @@ using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using Tiler;
+using GUIGUI;
 
 namespace Client
 {
@@ -24,6 +25,14 @@ namespace Client
 
 			var index = Rnd.Next(list.Count);
 			return list[index];
+		}
+
+		public static byte RandomByte() {
+			return (byte)Rnd.Next(256);
+		}
+
+		public static Color RandomColor(byte Alpha = 255) {
+			return new Color(RandomByte(), RandomByte(), RandomByte(), Alpha);
 		}
 	}
 
@@ -49,6 +58,8 @@ namespace Client
 				Input.MouseWheelDeltas = newMouseWheelDeltas;
 			};
 
+			var GUI = new GUIState();
+
 			Input.Window = renderWindow;
 			Input.SubscribeInput(Keyboard.Key.W);
 			Input.SubscribeInput(Keyboard.Key.A);
@@ -73,38 +84,45 @@ namespace Client
 			};
 
 			var swatch = Stopwatch.StartNew();
+			var runtimeWatch = Stopwatch.StartNew();
+
 			float runTime = 0;
 			float delta = 0;
-
+			
 			while (renderWindow.IsOpen)
 			{
+				// INFO: 120 FPS cap because shit bugs out at huge framerates (delta approaches 0)
+				while (swatch.ElapsedMilliseconds / 1000.0f < (1.0f / 120.0f))
+					;
 				delta = swatch.ElapsedMilliseconds / 1000.0f;
-				runTime += delta;
 				swatch.Restart();
+
+				runTime = runtimeWatch.ElapsedMilliseconds / 1000.0f;
 
 				renderWindow.DispatchEvents();
 				Input.Update(delta);
 
-				var sin = Math.Abs(Math.Sin(runTime));
-				//shape.FillColor = new Color(0, 128, 255, (byte)(128 * sin));
-				shape.FillColor = Color.Blue;
+				var sin = Utils.Clamp(((float)Math.Sin(runTime * 5) / 2) + 0.5f, 0.2f, 1.0f);
+				shape.FillColor = new Color(0, 128, 255, (byte)(sin * 255));
+				//shape.FillColor = Color.Blue;
 
+				var movespeed = 100.0f * delta;
 				var newpos = shape.Position;
 				if (Input.GetInputState(Keyboard.Key.W).IsDown)
 				{
-					newpos.Y = shape.Position.Y - 0.1f;
+					newpos.Y = shape.Position.Y - movespeed;
 				}
 				if (Input.GetInputState(Keyboard.Key.S).IsDown)
 				{
-					newpos.Y = shape.Position.Y + 0.1f;
+					newpos.Y = shape.Position.Y + movespeed;
 				}
 				if (Input.GetInputState(Keyboard.Key.A).IsDown)
 				{
-					newpos.X = shape.Position.X - 0.1f;
+					newpos.X = shape.Position.X - movespeed;
 				}
 				if (Input.GetInputState(Keyboard.Key.D).IsDown)
 				{
-					newpos.X = shape.Position.X + 0.1f;
+					newpos.X = shape.Position.X + movespeed;
 				}
 
 				shape.Position = newpos;
