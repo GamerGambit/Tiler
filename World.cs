@@ -274,6 +274,9 @@ namespace Tiler
 
 					break;
 				}
+
+			default:
+				throw new NotImplementedException();
 			}
 		}
 
