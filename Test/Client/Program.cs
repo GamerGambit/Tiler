@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -47,12 +48,17 @@ namespace Client
 			Input.SubscribeInput(Keyboard.Key.S);
 			Input.SubscribeInput(Keyboard.Key.D);
 
-			World.LoadChunk("testmap1.tmx", new Vector2i(0, 0));
-			World.LoadChunk("testmap1.tmx", new Vector2i(320, 0));
-			World.LoadChunk("testmap1.tmx", new Vector2i(640, 0));
-			World.LoadChunk("testmap2.tmx", new Vector2i(0, 320));
-			World.LoadChunk("testmap2.tmx", new Vector2i(320, 320));
-			World.LoadChunk("testmap2.tmx", new Vector2i(640, 320));
+			if (File.Exists("testmap1.tmx")) {
+				World.LoadChunk("testmap1.tmx", new Vector2i(0, 0));
+				World.LoadChunk("testmap1.tmx", new Vector2i(320, 0));
+				World.LoadChunk("testmap1.tmx", new Vector2i(640, 0));
+			}
+
+			if (File.Exists("testmap2.tmx")) {
+				World.LoadChunk("testmap2.tmx", new Vector2i(0, 320));
+				World.LoadChunk("testmap2.tmx", new Vector2i(320, 320));
+				World.LoadChunk("testmap2.tmx", new Vector2i(640, 320));
+			}
 
 			var shape = new RectangleShape(new Vector2f(32, 32))
 			{
