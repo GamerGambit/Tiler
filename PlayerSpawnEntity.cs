@@ -1,5 +1,6 @@
 ﻿using System;
 using SFML.Graphics;
+using SFML.System;
 
 namespace Tiler
 {
@@ -14,6 +15,11 @@ namespace Tiler
 		public PlayerSpawnEntity()
 		{
 			shape.FillColor = new Color(255, 160, 0, 128);
+		}
+
+		public PlayerSpawnEntity(float X, float Y) : this()
+		{
+			Position = new Vector2f(X, Y);
 		}
 
 		public override void Draw(RenderTarget target, RenderStates states)

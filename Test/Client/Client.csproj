@@ -64,9 +64,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="data\saxmono.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\GUIGUI\GUIGUI.csproj">
+      <Project>{20aec481-ac92-4933-b36d-b7068aac2cb8}</Project>
+      <Name>GUIGUI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Tiler.csproj">
       <Project>{eb4f5a32-6e72-4ad6-9416-d32557bfba3c}</Project>
       <Name>Tiler</Name>
