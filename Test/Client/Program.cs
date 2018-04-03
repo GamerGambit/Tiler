@@ -27,20 +27,24 @@ namespace Client
 			return list[index];
 		}
 
-		public static byte RandomByte() {
+		public static byte RandomByte()
+		{
 			return (byte)Rnd.Next(256);
 		}
 
-		public static Color RandomColor(byte Alpha = 255) {
+		public static Color RandomColor(byte Alpha = 255)
+		{
 			return new Color(RandomByte(), RandomByte(), RandomByte(), Alpha);
 		}
 	}
 
 	class Program
 	{
+		static RenderWindow renderWindow;
+
 		static void Main(string[] args)
 		{
-			var renderWindow = new RenderWindow(new VideoMode(1024, 768), "Map renderer");
+			renderWindow = new RenderWindow(new VideoMode(1024, 768), "Map renderer");
 			renderWindow.Closed += (s, e) => (s as RenderWindow).Close();
 			renderWindow.MouseWheelScrolled += (s, e) =>
 			{
@@ -58,7 +62,13 @@ namespace Client
 				Input.MouseWheelDeltas = newMouseWheelDeltas;
 			};
 
-			var GUI = new GUIState();
+			var GUI = new GUIState(new Painter(renderWindow));
+			GUI.ParseYAML("data\\gui.yaml");
+
+			// TODO: This is only temp
+			GUIPanel Panel = new GUIPanel(200, 200, 300, 60);
+			Panel.Children.Add(new GUILabel(205, 205, 40, "Hello World!"));
+			GUI.AddControl(Panel);
 
 			Input.Window = renderWindow;
 			Input.SubscribeInput(Keyboard.Key.W);
@@ -126,12 +136,66 @@ namespace Client
 				}
 
 				shape.Position = newpos;
-
+				
 				renderWindow.Clear();
-				World.Draw(renderWindow);
-				renderWindow.Draw(shape);
+				{
+					World.Draw(renderWindow);
+					renderWindow.Draw(shape);
+
+					GUI.Draw();
+				}
 				renderWindow.Display();
 			}
+		}
+	}
+
+	// TODO: Move this to a nother file or somethin'
+	class Painter : GUIPainter
+	{
+		RenderWindow RWind;
+		Color Clr;
+		
+		public Painter(RenderWindow RWind)
+		{
+			this.RWind = RWind;
+		}
+
+		public override void EnableScissor(float X, float Y, float W, float H) {
+			UtilsDrawing.EnableScissor(true);
+			UtilsDrawing.SetScissor(RWind, (int)X, (int)Y, (int)W, (int)H);
+		}
+
+		public override void DisableScissor() {
+			UtilsDrawing.EnableScissor(false);
+		}
+
+		public override void SetColor(byte R, byte G, byte B, byte A) {
+			Clr = new Color(R, G, B, A);
+		}
+
+		Text SFMLTxt;
+		public override void DrawLabel(float X, float Y, float Size, string Txt)
+		{
+			if (SFMLTxt == null) 
+				SFMLTxt = new Text("", new Font("data\\saxmono.ttf"));
+
+			SFMLTxt.DisplayedString = Txt;
+			SFMLTxt.CharacterSize = (uint)Size;
+			SFMLTxt.Position = new Vector2f(X, Y);
+			SFMLTxt.FillColor = Clr;
+			RWind.Draw(SFMLTxt);
+		}
+
+		RectangleShape SFMLRect;
+		public override void DrawRectangle(float X, float Y, float W, float H)
+		{
+			if (SFMLRect == null) 
+				SFMLRect = new RectangleShape();
+
+			SFMLRect.Position = new Vector2f(X, Y);
+			SFMLRect.Size = new Vector2f(W, H);
+			SFMLRect.FillColor = Clr;
+			RWind.Draw(SFMLRect);
 		}
 	}
 }
