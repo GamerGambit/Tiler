@@ -69,6 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity.cs" />
+    <Compile Include="Gamemode.cs" />
+    <Compile Include="Gamemode.Server.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Map\Chunk.cs" />
     <Compile Include="MapEditableAttribute.cs" />
