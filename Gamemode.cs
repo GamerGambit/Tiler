@@ -1,7 +1,9 @@
 ﻿namespace Tiler
 {
-	abstract partial class Gamemode
+	public abstract partial class Gamemode
 	{
+		public virtual bool IsTeamBased { get; protected set; } = false;
+
 		public virtual void Initialize()
 		{
 			// NOP

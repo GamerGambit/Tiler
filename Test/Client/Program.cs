@@ -40,6 +40,9 @@ namespace Client
 
 	class Program
 	{
+		public static int TeamOne;
+		public static int TeamTwo;
+
 		static RenderWindow renderWindow;
 
 		static void Main(string[] args)
@@ -92,6 +95,9 @@ namespace Client
 			{
 				Position = (World.Entities.FindAll(e => (e as PlayerSpawnEntity) != null).PickRandom(false) ?? new PlayerSpawnEntity(100, 100)).Position
 			};
+
+			TeamOne = TeamManager.AddTeam("Team One", Color.Blue);
+			TeamTwo = TeamManager.AddTeam("Team Two", Color.Magenta);
 
 			var swatch = Stopwatch.StartNew();
 			var runtimeWatch = Stopwatch.StartNew();

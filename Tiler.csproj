@@ -79,6 +79,7 @@
     <Compile Include="PlayerSpawnEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpawnableAttribute.cs" />
+    <Compile Include="Team.cs" />
     <Compile Include="TileSet.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="World.cs" />

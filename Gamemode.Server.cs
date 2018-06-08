@@ -1,9 +1,7 @@
 ﻿namespace Tiler
 {
-	abstract partial class Gamemode
+	public abstract partial class Gamemode
 	{
-		public bool IsTeamBased = false;
-
 		public virtual void PlayerConnected(/*IPAddress ip, ushort port*/)
 		{
 			// NOP
@@ -92,7 +90,7 @@
 		}
 
 		// TODO: return an Entity to use as a spawn point
-		public virtual void PlayerSelectTeamSpawn(/*Player ply, Team team*/)
+		public virtual void PlayerSelectTeamSpawn(/*Player ply, */int teamID)
 		{
 			// NOP
 		}
@@ -127,22 +125,22 @@
 			// NOP
 		}
 
-		public virtual bool PlayerCanJoinTeam(/*Player ply, uint teamID*/)
+		public virtual bool PlayerCanJoinTeam(/*Player ply, */int teamID)
 		{
 			return true;
 		}
 
-		public virtual void PlayerRequestTeam(/*Player ply, uint teamID*/)
+		public virtual void PlayerRequestTeam(/*Player ply, */int teamID)
 		{
 			// NOP
 		}
 
-		public virtual void PlayerJoinTeam(/*Player ply, uint teamID*/)
+		public virtual void PlayerJoinTeam(/*Player ply, */int teamID)
 		{
 			// NOP
 		}
 
-		public virtual void OnPlayerJoinTeam(/*Player ply, uint oldTeamID, uint newTeamID*/)
+		public virtual void OnPlayerJoinTeam(/*Player ply, */int oldTeamID, int newTeamID)
 		{
 			// NOP
 		}
