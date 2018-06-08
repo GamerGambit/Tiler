@@ -4,6 +4,7 @@ using System.Reflection;
 
 using SFML.Graphics;
 using SFML.System;
+
 using TiledSharp;
 
 namespace Tiler

@@ -1,5 +1,4 @@
-﻿using System;
-using SFML.Graphics;
+﻿using SFML.Graphics;
 using SFML.System;
 
 namespace Tiler
@@ -10,7 +9,7 @@ namespace Tiler
 		[MapEditable]
 		private string MapTest;
 
-		private RectangleShape shape = new RectangleShape(new SFML.System.Vector2f(32, 32));
+		private RectangleShape shape = new RectangleShape(new Vector2f(32, 32));
 
 		public PlayerSpawnEntity()
 		{
