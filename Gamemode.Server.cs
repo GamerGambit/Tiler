@@ -127,17 +127,32 @@
 
 		public virtual bool PlayerCanJoinTeam(Player ply, int teamID)
 		{
-			return true;
+			// TODO: add a time delay between team switches
+			return ply.TeamID != teamID;
 		}
 
 		public virtual void PlayerRequestTeam(Player ply, int teamID)
 		{
-			// NOP
+			if (!IsTeamBased)
+				return;
+
+			if (!TeamManager.GetTeamByID(teamID).Joinable)
+				return;
+
+			if (!PlayerCanJoinTeam(ply, teamID))
+				return;
+
+			PlayerJoinTeam(ply, teamID);
 		}
 
 		public virtual void PlayerJoinTeam(Player ply, int teamID)
 		{
-			// NOP
+			var oldTeamID = ply.TeamID;
+
+			ply.TeamID = teamID;
+			// TODO: set last team switch time to now
+
+			OnPlayerJoinTeam(ply, oldTeamID, teamID);
 		}
 
 		public virtual void OnPlayerJoinTeam(Player ply, int oldTeamID, int newTeamID)
@@ -149,6 +164,9 @@
 		// TODO: revisit when networking is implemented
 		public virtual bool PlayerCanSeePlayersChat(string text, bool teamOnly, Player speaker, Player listener)
 		{
+			if (teamOnly)
+				return speaker.TeamID == listener.TeamID;
+
 			return true;
 		}
 
