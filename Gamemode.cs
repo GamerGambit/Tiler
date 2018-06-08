@@ -14,7 +14,7 @@
 			// NOP
 		}
 
-		public virtual bool PlayerShouldTakeDamage(/*Player ply, Entity attacker*/)
+		public virtual bool PlayerShouldTakeDamage(Player ply, Entity attacker)
 		{
 			return true;
 		}
@@ -29,12 +29,12 @@
 			// NOP
 		}
 
-		public virtual void OnEntityCreated(/*Entity ent*/)
+		public virtual void OnEntityCreated(Entity ent)
 		{
 			// NOP
 		}
 
-		public virtual bool ShouldCollide(/*Entity ent1, Entity ent2*/)
+		public virtual bool ShouldCollide(Entity ent1, Entity ent2)
 		{
 			return true;
 		}
