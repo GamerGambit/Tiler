@@ -34,6 +34,11 @@
 			// NOP
 		}
 
+		public virtual void CreateTeams()
+		{
+			// NOP
+		}
+
 		public virtual bool ShouldCollide(Entity ent1, Entity ent2)
 		{
 			return true;

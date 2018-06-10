@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+
+using GUIGUI;
+
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
+
 using Tiler;
-using GUIGUI;
 
 namespace Client
 {
@@ -40,8 +43,6 @@ namespace Client
 
 	class Program
 	{
-		public static int TestTeam;
-
 		static RenderWindow renderWindow;
 
 		static void Main(string[] args)
@@ -93,9 +94,7 @@ namespace Client
 			var gamemode = new TestGamemode();
 			var player = new Player();
 
-			// Setup teams before trying to use them on the player :p
-			TestTeam = TeamManager.AddTeam("Team Test", Color.Blue, new List<string>() { "PlayerSpawnEntity" });
-
+			gamemode.CreateTeams();
 			gamemode.PlayerInitialSpawn(player);
 			var spawnPoint = gamemode.PlayerSelectSpawn(player);
 			if (spawnPoint is null)
