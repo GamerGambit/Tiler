@@ -1,4 +1,6 @@
-﻿namespace Tiler
+﻿using System.Collections.Generic;
+
+namespace Tiler
 {
 	public abstract partial class Gamemode
 	{
@@ -83,16 +85,44 @@
 			return true;
 		}
 
-		// TODO: return an Entity to use as a spawn point
-		public virtual void PlayerSelectSpawn(Player ply)
+		public virtual Entity PlayerSelectSpawn(Player ply)
 		{
-			// NOP
+			if (IsTeamBased)
+			{
+				var ent = PlayerSelectTeamSpawn(ply);
+				if (!(ent is null))
+					return ent;
+			}
+
+			// TODO: i guess figure out a list of default spawn points and try to choose one
+
+			return null;
 		}
 
-		// TODO: return an Entity to use as a spawn point
-		public virtual void PlayerSelectTeamSpawn(Player ply, int teamID)
+		public virtual Entity PlayerSelectTeamSpawn(Player ply)
 		{
-			// NOP
+			var team = TeamManager.GetTeamByID(ply.TeamID);
+
+			if (team.SpawnPointNames.Count == 0)
+				return null;
+
+			var entList = new List<Entity>();
+
+			foreach (var spawnpointName in team.SpawnPointNames)
+			{
+				entList.AddRange(World.Entities.FindAll(e => e.GetType().Name == spawnpointName));
+			}
+
+			entList.Shuffle();
+
+			for (int index = 0; index < entList.Count; ++index)
+			{
+				var ent = entList[index];
+				if (IsSpawnPointSuitable(ply, ent, index == entList.Count))
+					return ent;
+			}
+
+			return null;
 		}
 
 		public virtual void PlayerWeaponEquipped(Player ply, Weapon weapon)

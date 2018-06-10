@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Tiler;
 
 namespace Client
 {
-	class TestGamemode : Tiler.Gamemode
+	class TestGamemode : Gamemode
 	{
 		public override bool IsTeamBased { get; protected set; } = true;
+
+		public override void PlayerInitialSpawn(Player ply)
+		{
+			ply.TeamID = Program.TestTeam;
+		}
 	}
 }

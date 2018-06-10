@@ -40,8 +40,7 @@ namespace Client
 
 	class Program
 	{
-		public static int TeamOne;
-		public static int TeamTwo;
+		public static int TestTeam;
 
 		static RenderWindow renderWindow;
 
@@ -91,13 +90,18 @@ namespace Client
 				World.LoadChunk("testmap2.tmx", new Vector2i(640, 320));
 			}
 
-			var shape = new RectangleShape(new Vector2f(32, 32))
-			{
-				Position = (World.Entities.FindAll(e => (e as PlayerSpawnEntity) != null).PickRandom(false) ?? new PlayerSpawnEntity(100, 100)).Position
-			};
+			var gamemode = new TestGamemode();
+			var player = new Player();
 
-			TeamOne = TeamManager.AddTeam("Team One", Color.Blue);
-			TeamTwo = TeamManager.AddTeam("Team Two", Color.Magenta);
+			// Setup teams before trying to use them on the player :p
+			TestTeam = TeamManager.AddTeam("Team Test", Color.Blue, new List<string>() { "PlayerSpawnEntity" });
+
+			gamemode.PlayerInitialSpawn(player);
+			var spawnPoint = gamemode.PlayerSelectSpawn(player);
+			if (spawnPoint is null)
+				throw new Exception("No spawnpoint");
+			player.Position = spawnPoint.Position;
+			gamemode.PlayerSpawn(player);
 
 			var swatch = Stopwatch.StartNew();
 			var runtimeWatch = Stopwatch.StartNew();
@@ -118,35 +122,31 @@ namespace Client
 				renderWindow.DispatchEvents();
 				Input.Update(delta);
 
-				var sin = Utils.Clamp(((float)Math.Sin(runTime * 5) / 2) + 0.5f, 0.2f, 1.0f);
-				shape.FillColor = new Color(0, 128, 255, (byte)(sin * 255));
-				//shape.FillColor = Color.Blue;
-
 				var movespeed = 100.0f * delta;
-				var newpos = shape.Position;
+				var newpos = player.Position;
 				if (Input.GetInputState(Keyboard.Key.W).IsDown)
 				{
-					newpos.Y = shape.Position.Y - movespeed;
+					newpos.Y = player.Position.Y - movespeed;
 				}
 				if (Input.GetInputState(Keyboard.Key.S).IsDown)
 				{
-					newpos.Y = shape.Position.Y + movespeed;
+					newpos.Y = player.Position.Y + movespeed;
 				}
 				if (Input.GetInputState(Keyboard.Key.A).IsDown)
 				{
-					newpos.X = shape.Position.X - movespeed;
+					newpos.X = player.Position.X - movespeed;
 				}
 				if (Input.GetInputState(Keyboard.Key.D).IsDown)
 				{
-					newpos.X = shape.Position.X + movespeed;
+					newpos.X = player.Position.X + movespeed;
 				}
 
-				shape.Position = newpos;
+				player.Position = newpos;
 				
 				renderWindow.Clear();
 				{
 					World.Draw(renderWindow);
-					renderWindow.Draw(shape);
+					renderWindow.Draw(player);
 
 					GUI.Draw();
 				}
