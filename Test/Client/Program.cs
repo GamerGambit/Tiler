@@ -62,7 +62,7 @@ namespace Client
 					newMouseWheelDeltas.Y = e.Delta;
 				}
 
-				Input.MouseWheelDeltas = newMouseWheelDeltas;
+				Tiler.Input.Manager.MouseWheelDeltas = newMouseWheelDeltas;
 			};
 
 			var GUI = new GUIState(new Painter(renderWindow));
@@ -73,11 +73,11 @@ namespace Client
 			Panel.Children.Add(new GUILabel(205, 205, 40, "Hello World!"));
 			GUI.AddControl(Panel);
 
-			Input.Window = renderWindow;
-			Input.SubscribeInput(Keyboard.Key.W);
-			Input.SubscribeInput(Keyboard.Key.A);
-			Input.SubscribeInput(Keyboard.Key.S);
-			Input.SubscribeInput(Keyboard.Key.D);
+			Tiler.Input.Manager.Window = renderWindow;
+			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.W);
+			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.A);
+			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.S);
+			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.D);
 
 			if (File.Exists("testmap1.tmx")) {
 				World.LoadChunk("testmap1.tmx", new Vector2i(0, 0));
@@ -119,23 +119,23 @@ namespace Client
 				runTime = runtimeWatch.ElapsedMilliseconds / 1000.0f;
 
 				renderWindow.DispatchEvents();
-				Input.Update(delta);
+				Tiler.Input.Manager.Update(delta);
 
 				var movespeed = 100.0f * delta;
 				var newpos = player.Position;
-				if (Input.GetInputState(Keyboard.Key.W).IsDown)
+				if (Tiler.Input.Manager.GetInputState(Keyboard.Key.W).IsDown)
 				{
 					newpos.Y = player.Position.Y - movespeed;
 				}
-				if (Input.GetInputState(Keyboard.Key.S).IsDown)
+				if (Tiler.Input.Manager.GetInputState(Keyboard.Key.S).IsDown)
 				{
 					newpos.Y = player.Position.Y + movespeed;
 				}
-				if (Input.GetInputState(Keyboard.Key.A).IsDown)
+				if (Tiler.Input.Manager.GetInputState(Keyboard.Key.A).IsDown)
 				{
 					newpos.X = player.Position.X - movespeed;
 				}
-				if (Input.GetInputState(Keyboard.Key.D).IsDown)
+				if (Tiler.Input.Manager.GetInputState(Keyboard.Key.D).IsDown)
 				{
 					newpos.X = player.Position.X + movespeed;
 				}

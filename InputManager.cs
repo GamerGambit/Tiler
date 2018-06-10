@@ -3,19 +3,19 @@
 using SFML.System;
 using SFML.Window;
 
-namespace Tiler
+namespace Tiler.Input
 {
-	public class InputState
+	public enum Type
 	{
-		public enum InputType
-		{
-			Invalid,
-			Keyboard,
-			Mouse,
-			Joystick
-		}
+		Invalid,
+		Keyboard,
+		Mouse,
+		Joystick
+	}
 
-		public InputType Type;
+	public struct State
+	{
+		public Type Type;
 		public Keyboard.Key Key;
 		public Mouse.Button Button;
 
@@ -24,25 +24,11 @@ namespace Tiler
 		public bool WasReleased;
 		public float HoldTime;
 
-		private bool WasPreviouslyDown;
+		internal bool WasPreviouslyDown;
 
-		internal InputState(int i)
+		internal State(Keyboard.Key key)
 		{
-			Type = InputType.Invalid;
-			Key = (Keyboard.Key)(-1);
-			Button = (Mouse.Button)(-1);
-
-			IsDown = false;
-			WasPressed = false;
-			WasReleased = false;
-			HoldTime = 0;
-
-			WasPreviouslyDown = false;
-		}
-
-		internal InputState(Keyboard.Key key)
-		{
-			Type = InputType.Keyboard;
+			Type = Type.Keyboard;
 			Key = key;
 			Button = (Mouse.Button)(-1);
 
@@ -54,11 +40,11 @@ namespace Tiler
 			WasPreviouslyDown = false;
 		}
 
-		internal InputState(Mouse.Button button)
+		internal State(Mouse.Button button)
 		{
-			Type = InputType.Mouse;
+			Type = Type.Mouse;
 			Button = button;
-			Key = (Keyboard.Key)(-1);
+			Key = Keyboard.Key.Unknown;
 
 			IsDown = false;
 			WasPressed = false;
@@ -67,60 +53,11 @@ namespace Tiler
 
 			WasPreviouslyDown = false;
 		}
-
-		public bool WasHeldFor(float seconds, bool resetOnTrue = true)
-		{
-			var result = HoldTime >= seconds;
-
-			if (result && resetOnTrue)
-			{
-				HoldTime = 0;
-			}
-
-			return result;
-		}
-
-		internal void Update(float deltaTime)
-		{
-			switch (Type)
-			{
-			case InputType.Keyboard:
-				IsDown = Keyboard.IsKeyPressed(Key);
-				break;
-
-			case InputType.Mouse:
-				IsDown = Mouse.IsButtonPressed(Button);
-				break;
-			}
-
-			if (IsDown)
-			{
-				HoldTime += deltaTime;
-			}
-
-			if (IsDown != WasPreviouslyDown)
-			{
-				WasPreviouslyDown = IsDown;
-
-				WasPressed = IsDown;
-				WasReleased = !IsDown;
-			}
-			else
-			{
-				WasPressed = false;
-				WasReleased = false;
-			}
-
-			if (WasReleased)
-			{
-				HoldTime = 0;
-			}
-		}
 	}
 
-	public static class Input
+	public static class Manager
 	{
-		private static List<InputState> InputStates = new List<InputState>();
+		private static List<State> InputStates = new List<State>();
 		private static bool MouseWheelDeltasDirty = false;
 		private static Vector2f _MouseWheelDeltas = new Vector2f(0, 0);
 		private static Vector2i _MousePosition = new Vector2i(0, 0);
@@ -128,7 +65,7 @@ namespace Tiler
 		{
 			foreach (var state in InputStates)
 			{
-				if (state.Type == InputState.InputType.Mouse && state.Button == button)
+				if (state.Type == Type.Mouse && state.Button == button)
 					return true;
 			}
 
@@ -138,7 +75,7 @@ namespace Tiler
 		{
 			foreach (var state in InputStates)
 			{
-				if (state.Type == InputState.InputType.Keyboard && state.Key == key)
+				if (state.Type == Type.Keyboard && state.Key == key)
 					return true;
 			}
 
@@ -189,20 +126,20 @@ namespace Tiler
 			if (InputSubscribed(button))
 				return;
 
-			InputStates.Add(new InputState(button));
+			InputStates.Add(new State(button));
 		}
 		public static void SubscribeInput(Keyboard.Key key)
 		{
 			if (InputSubscribed(key))
 				return;
 
-			InputStates.Add(new InputState(key));
+			InputStates.Add(new State(key));
 		}
 		public static void UnsubscribeInput(Mouse.Button button)
 		{
 			foreach (var state in InputStates)
 			{
-				if (state.Type == InputState.InputType.Mouse && state.Button == button)
+				if (state.Type == Type.Mouse && state.Button == button)
 				{
 					InputStates.Remove(state);
 					return;
@@ -213,7 +150,7 @@ namespace Tiler
 		{
 			foreach (var state in InputStates)
 			{
-				if (state.Type == InputState.InputType.Keyboard && state.Key == key)
+				if (state.Type == Type.Keyboard && state.Key == key)
 				{
 					InputStates.Remove(state);
 					return;
@@ -230,27 +167,112 @@ namespace Tiler
 			Window?.SetMouseCursorVisible(!hide);
 		}
 
-		public static InputState GetInputState(Mouse.Button button)
+		public static State GetInputState(Mouse.Button button)
 		{
 			foreach (var state in InputStates)
 			{
-				if (state.Type == InputState.InputType.Mouse && state.Button == button)
+				if (state.Type == Type.Mouse && state.Button == button)
 					return state;
 			}
 
-			return new InputState(0);
+			return new State();
 		}
-		public static InputState GetInputState(Keyboard.Key key)
+		public static State GetInputState(Keyboard.Key key)
 		{
 			foreach (var state in InputStates)
 			{
-				if (state.Type == InputState.InputType.Keyboard && state.Key == key)
+				if (state.Type == Type.Keyboard && state.Key == key)
 					return state;
 			}
 
-			return new InputState(0);
+			return new State();
 		}
 
+		public static bool WasHeldFor(Mouse.Button button, float seconds, bool resetOnTrue = true)
+		{
+			for (var index = 0; index < InputStates.Count; ++index)
+			{
+				var state = InputStates[index];
+
+				if (state.Type == Type.Mouse && state.Button == button)
+				{
+					var result = state.HoldTime >= seconds;
+
+					if (result && resetOnTrue)
+					{
+						state.HoldTime = 0;
+						InputStates[index] = state;
+					}
+
+					return result;
+				}
+			}
+
+			return false;
+		}
+		public static bool WasHeldFor(Keyboard.Key key, float seconds, bool resetOnTrue = true)
+		{
+			for (var index = 0; index < InputStates.Count; ++index)
+			{
+				var state = InputStates[index];
+
+				if (state.Type == Type.Keyboard && state.Key == key)
+				{
+					var result = state.HoldTime >= seconds;
+
+					if (result && resetOnTrue)
+					{
+						state.HoldTime = 0;
+						InputStates[index] = state;
+					}
+
+					return result;
+				}
+			}
+
+			return false;
+		}
+
+		public static void UpdateInputState(int index, float deltaTime)
+		{
+			var newState = InputStates[index];
+
+			switch (newState.Type)
+			{
+			case Type.Keyboard:
+				newState.IsDown = Keyboard.IsKeyPressed(newState.Key);
+				break;
+
+			case Type.Mouse:
+				newState.IsDown = Mouse.IsButtonPressed(newState.Button);
+				break;
+			}
+
+			if (newState.IsDown)
+			{
+				newState.HoldTime += deltaTime;
+			}
+
+			if (newState.IsDown != newState.WasPreviouslyDown)
+			{
+				newState.WasPreviouslyDown = newState.IsDown;
+
+				newState.WasPressed = newState.IsDown;
+				newState.WasReleased = !newState.IsDown;
+			}
+			else
+			{
+				newState.WasPressed = false;
+				newState.WasReleased = false;
+			}
+
+			if (newState.WasReleased)
+			{
+				newState.HoldTime = 0;
+			}
+
+			InputStates[index] = newState;
+		}
 		public static void Update(float deltaTime)
 		{
 			Vector2i mousePos;
@@ -267,9 +289,9 @@ namespace Tiler
 			MouseOffset = mousePos - MousePosition;
 			_MousePosition = mousePos;
 
-			foreach (var state in InputStates)
+			for (var index = 0; index < InputStates.Count; ++index)
 			{
-				state.Update(deltaTime);
+				UpdateInputState(index, deltaTime);
 			}
 
 			if (MouseWheelDeltasDirty)
