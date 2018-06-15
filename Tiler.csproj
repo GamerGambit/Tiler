@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity.cs" />
+    <Compile Include="Gamemode.Client.cs" />
     <Compile Include="Gamemode.cs" />
     <Compile Include="Gamemode.Server.cs" />
     <Compile Include="InputManager.cs" />
@@ -76,12 +77,14 @@
     <Compile Include="MapEditableAttribute.cs" />
     <Compile Include="Map\Layer.cs" />
     <Compile Include="Map\Tile.cs" />
+    <Compile Include="MoveData.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerSpawnEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpawnableAttribute.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="TileSet.cs" />
+    <Compile Include="UserCommand.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Vehicle.cs" />
     <Compile Include="Weapon.cs" />

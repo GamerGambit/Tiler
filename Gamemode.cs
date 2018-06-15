@@ -48,5 +48,15 @@
 		{
 			// NOP
 		}
+
+		public virtual void SetupMove(Player ply, UserCommand ucmd, MoveData mv)
+		{
+			// NOP
+		}
+
+		public virtual void Move(Player ply, MoveData mv)
+		{
+			// NOP
+		}
 	}
 }

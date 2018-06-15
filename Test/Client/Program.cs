@@ -121,26 +121,16 @@ namespace Client
 				renderWindow.DispatchEvents();
 				Tiler.Input.Manager.Update(delta);
 
-				var movespeed = 100.0f * delta;
-				var newpos = player.Position;
-				if (Tiler.Input.Manager.GetInputState(Keyboard.Key.W).IsDown)
-				{
-					newpos.Y = player.Position.Y - movespeed;
-				}
-				if (Tiler.Input.Manager.GetInputState(Keyboard.Key.S).IsDown)
-				{
-					newpos.Y = player.Position.Y + movespeed;
-				}
-				if (Tiler.Input.Manager.GetInputState(Keyboard.Key.A).IsDown)
-				{
-					newpos.X = player.Position.X - movespeed;
-				}
-				if (Tiler.Input.Manager.GetInputState(Keyboard.Key.D).IsDown)
-				{
-					newpos.X = player.Position.X + movespeed;
-				}
+				var ucmd = new UserCommand();
+				var mv = new MoveData();
 
-				player.Position = newpos;
+				gamemode.CreateUserCommand(ucmd);
+				gamemode.SetupMove(player, ucmd, mv);
+				gamemode.Move(player, mv);
+
+				player.Velocity += mv.Velocity * delta;
+				player.Position += player.Velocity;
+				player.Velocity -= player.Velocity * 0.1f;
 				
 				renderWindow.Clear();
 				{
