@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Numerics;
 
 namespace GUIGUI
 {
@@ -36,29 +35,35 @@ namespace GUIGUI
 
 		void PushScissor(float X, float Y, float W, float H) {
 			// TODO: Push and set scissor, can only decrease size of parent scissor, not increase.
+			Painter.EnableScissor(X, Y, W, H);
 		}
 
 		void PopScissor() {
-
+			Painter.DisableScissor();
 		}
 
 		// TODO: Proper implementation. Each child should draw at an offset from the parent position.
 		// So for a panel at 100, 100 and a label at 5, 5 the label should draw at 105, 105 global
 		// This should draw children from back to front.
 		void DrawSelfThenChildren(Control C, Painter P) {
-			PushScissor(C.Position.X, C.Position.Y, C.Size.X, C.Size.Y);
 			C.Draw(P);
+			PushScissor(C.Position.X, C.Position.Y, C.Size.X, C.Size.Y);
 
 			// TODO: Bounds checking
-			foreach (var Child in C.Children)
-				DrawSelfThenChildren(Child, P);
+			for (int index = 0; index < C.Children.Count; ++index)
+			{
+				DrawSelfThenChildren(C.Children[index], P);
+			}
 
 			PopScissor();
 		}
 
-		public void Draw() {
-			foreach (var C in Controls) // TODO: Back to front
-				DrawSelfThenChildren(C, Painter);
+		public void Draw()
+		{
+			for (int index = 0; index < Controls.Count; ++index)
+			{
+				DrawSelfThenChildren(Controls[index], Painter);
+			}
 		}
 	}
 }

@@ -70,7 +70,11 @@ namespace Client
 
 			// TODO: This is only temp
 			GUIGUI.Controls.Panel Panel = new GUIGUI.Controls.Panel(200, 200, 300, 60);
-			Panel.Children.Add(new GUIGUI.Controls.Label(205, 205, 40, "Hello World!"));
+			Panel.Children.Add(new GUIGUI.Controls.Label(150, 205, 40, "Hello World!")
+			{
+				G = 100,
+				B = 100
+			});
 			GUI.AddControl(Panel);
 
 			Tiler.Input.Manager.Window = renderWindow;
