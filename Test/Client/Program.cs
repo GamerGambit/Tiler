@@ -64,6 +64,14 @@ namespace Client
 
 				Tiler.Input.Manager.MouseWheelDeltas = newMouseWheelDeltas;
 			};
+			renderWindow.Resized += (s, e) =>
+			{
+				var rw = (s as RenderWindow);
+				var view = rw.GetView();
+				var size = new Vector2f(e.Width, e.Height);
+				var diff = new Vector2f(size.X - view.Size.X, size.Y - view.Size.Y) / 2;
+				rw.SetView(new View(view.Center + diff, size));
+			};
 
 			var GUI = new State(new Painter(renderWindow));
 			GUI.ParseYAML("data\\gui.yaml");
@@ -82,6 +90,10 @@ namespace Client
 			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.A);
 			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.S);
 			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.D);
+			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.Up);
+			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.Down);
+			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.Left);
+			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.Right);
 
 			if (File.Exists("testmap1.tmx")) {
 				World.LoadChunk("testmap1.tmx", new Vector2i(0, 0));
@@ -124,6 +136,34 @@ namespace Client
 
 				renderWindow.DispatchEvents();
 				Tiler.Input.Manager.Update(delta);
+
+				if (Tiler.Input.Manager.GetInputState(Keyboard.Key.Up).WasPressed)
+				{
+					var view = renderWindow.GetView();
+					view.Move(new Vector2f(0, -32));
+					renderWindow.SetView(view);
+				}
+
+				if (Tiler.Input.Manager.GetInputState(Keyboard.Key.Down).WasPressed)
+				{
+					var view = renderWindow.GetView();
+					view.Move(new Vector2f(0, 32));
+					renderWindow.SetView(view);
+				}
+
+				if (Tiler.Input.Manager.GetInputState(Keyboard.Key.Left).WasPressed)
+				{
+					var view = renderWindow.GetView();
+					view.Move(new Vector2f(-32, 0));
+					renderWindow.SetView(view);
+				}
+
+				if (Tiler.Input.Manager.GetInputState(Keyboard.Key.Right).WasPressed)
+				{
+					var view = renderWindow.GetView();
+					view.Move(new Vector2f(32, 0));
+					renderWindow.SetView(view);
+				}
 
 				var ucmd = new UserCommand();
 				var mv = new MoveData();

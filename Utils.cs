@@ -53,7 +53,8 @@ namespace Tiler
 
 		public static void SetScissor(RenderTarget RT, int X, int Y, int W, int H) {
 			View V = RT.GetView();
-			glScissor2((int)V.Size.Y, X, Y, W, H);
+			var offset = V.Center - V.Size / 2;
+			glScissor2((int)V.Size.Y, (int)(X - offset.X), (int)(Y - offset.Y), W, H);
 		}
 	}
 }

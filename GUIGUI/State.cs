@@ -35,11 +35,10 @@ namespace GUIGUI
 
 		void PushScissor(float X, float Y, float W, float H) {
 			// TODO: Push and set scissor, can only decrease size of parent scissor, not increase.
-			Painter.EnableScissor(X, Y, W, H);
 		}
 
 		void PopScissor() {
-			Painter.DisableScissor();
+
 		}
 
 		// TODO: Proper implementation. Each child should draw at an offset from the parent position.
@@ -47,7 +46,7 @@ namespace GUIGUI
 		// This should draw children from back to front.
 		void DrawSelfThenChildren(Control C, Painter P) {
 			C.Draw(P);
-			PushScissor(C.Position.X, C.Position.Y, C.Size.X, C.Size.Y);
+			Painter.EnableScissor(C.Position.X, C.Position.Y, C.Size.X, C.Size.Y);
 
 			// TODO: Bounds checking
 			for (int index = 0; index < C.Children.Count; ++index)
@@ -55,7 +54,7 @@ namespace GUIGUI
 				DrawSelfThenChildren(C.Children[index], P);
 			}
 
-			PopScissor();
+			Painter.DisableScissor();
 		}
 
 		public void Draw()
