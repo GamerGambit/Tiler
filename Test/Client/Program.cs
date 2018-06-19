@@ -69,8 +69,8 @@ namespace Client
 				var rw = (s as RenderWindow);
 				var view = rw.GetView();
 				var size = new Vector2f(e.Width, e.Height);
-				var diff = new Vector2f(size.X - view.Size.X, size.Y - view.Size.Y) / 2;
-				rw.SetView(new View(view.Center + diff, size));
+				//var diff = new Vector2f(size.X - view.Size.X, size.Y - view.Size.Y) / 2;
+				rw.SetView(new View(view.Center/* + diff*/, size));
 			};
 
 			var GUI = new State(new Painter(renderWindow));
@@ -118,6 +118,12 @@ namespace Client
 			player.Position = spawnPoint.Position;
 			gamemode.PlayerSpawn(player);
 
+			{
+				var view = renderWindow.GetView();
+				view.Center = player.Position;
+				renderWindow.SetView(view);
+			}
+
 			var swatch = Stopwatch.StartNew();
 			var runtimeWatch = Stopwatch.StartNew();
 
@@ -137,34 +143,6 @@ namespace Client
 				renderWindow.DispatchEvents();
 				Tiler.Input.Manager.Update(delta);
 
-				if (Tiler.Input.Manager.GetInputState(Keyboard.Key.Up).WasPressed)
-				{
-					var view = renderWindow.GetView();
-					view.Move(new Vector2f(0, -32));
-					renderWindow.SetView(view);
-				}
-
-				if (Tiler.Input.Manager.GetInputState(Keyboard.Key.Down).WasPressed)
-				{
-					var view = renderWindow.GetView();
-					view.Move(new Vector2f(0, 32));
-					renderWindow.SetView(view);
-				}
-
-				if (Tiler.Input.Manager.GetInputState(Keyboard.Key.Left).WasPressed)
-				{
-					var view = renderWindow.GetView();
-					view.Move(new Vector2f(-32, 0));
-					renderWindow.SetView(view);
-				}
-
-				if (Tiler.Input.Manager.GetInputState(Keyboard.Key.Right).WasPressed)
-				{
-					var view = renderWindow.GetView();
-					view.Move(new Vector2f(32, 0));
-					renderWindow.SetView(view);
-				}
-
 				var ucmd = new UserCommand();
 				var mv = new MoveData();
 
@@ -174,6 +152,11 @@ namespace Client
 
 				player.Velocity += mv.Velocity * delta;
 				player.Position += player.Velocity;
+				{
+					var view = renderWindow.GetView();
+					view.Move(player.Velocity);
+					renderWindow.SetView(view);
+				}
 				player.Velocity -= player.Velocity * 0.1f;
 				
 				renderWindow.Clear();
