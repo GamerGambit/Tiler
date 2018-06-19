@@ -15,7 +15,8 @@ namespace GUIGUI.Controls
 		public override void Draw(Painter P)
 		{
 			P.SetColor(R, G, B, A);
-			P.DrawRectangle(Position.X, Position.Y, Size.X, Size.Y);
+			var gpos = GlobalPosition;
+			P.DrawRectangle(gpos.X, gpos.Y, Size.X, Size.Y);
 		}
 	}
 }

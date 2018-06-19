@@ -13,6 +13,21 @@ namespace GUIGUI
 		public Control Parent = null;
 
 		public Vector2 Position;
+		public Vector2 GlobalPosition {
+			get
+			{
+				Vector2 ret = new Vector2(0, 0);
+				var ctrl = this;
+
+				while (!(ctrl is null))
+				{
+					ret += ctrl.Position;
+					ctrl = ctrl.Parent;
+				}
+
+				return ret;
+			}
+		}
 		public Vector2 Size;
 		public byte R, G, B, A;
 

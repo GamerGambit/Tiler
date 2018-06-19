@@ -78,7 +78,7 @@ namespace Client
 
 			// TODO: This is only temp
 			GUIGUI.Controls.Panel Panel = new GUIGUI.Controls.Panel(200, 200, 300, 60);
-			Panel.AddChild(new GUIGUI.Controls.Label(150, 205, 40, "Hello World!")
+			Panel.AddChild(new GUIGUI.Controls.Label(-50, 5, 40, "Hello World!")
 			{
 				G = 100,
 				B = 100
