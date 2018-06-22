@@ -16,7 +16,7 @@ namespace Client
 
 		public override void CreateTeams()
 		{
-			TestTeamID = TeamManager.AddTeam("Team Test", Color.Blue, new List<string>() { "PlayerSpawnEntity" });
+			TestTeamID = TeamManager.AddTeam("Team Test", Color.Blue, new List<string>() { "PlayerSpawn" });
 		}
 
 		public override void PlayerInitialSpawn(Player ply)

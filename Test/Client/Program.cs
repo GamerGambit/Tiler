@@ -19,9 +19,10 @@ namespace Client
 
 		public static T PickRandom<T>(this IList<T> list, bool ThrowIfEmpty = true)
 		{
-			if (list.Count == 0) {
+			if (list.Count == 0)
+			{
 				if (ThrowIfEmpty)
-				throw new Exception("Can not pick random item from empty list");
+					throw new Exception("Can not pick random item from empty list");
 
 				return default(T);
 			}
@@ -69,8 +70,7 @@ namespace Client
 				var rw = (s as RenderWindow);
 				var view = rw.GetView();
 				var size = new Vector2f(e.Width, e.Height);
-				//var diff = new Vector2f(size.X - view.Size.X, size.Y - view.Size.Y) / 2;
-				rw.SetView(new View(view.Center/* + diff*/, size));
+				rw.SetView(new View(view.Center, size));
 			};
 
 			var GUI = new State(new Painter(renderWindow));
@@ -90,18 +90,16 @@ namespace Client
 			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.A);
 			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.S);
 			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.D);
-			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.Up);
-			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.Down);
-			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.Left);
-			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.Right);
 
-			if (File.Exists("testmap1.tmx")) {
+			if (File.Exists("testmap1.tmx"))
+			{
 				World.LoadChunk("testmap1.tmx", new Vector2i(0, 0));
 				World.LoadChunk("testmap1.tmx", new Vector2i(320, 0));
 				World.LoadChunk("testmap1.tmx", new Vector2i(640, 0));
 			}
 
-			if (File.Exists("testmap2.tmx")) {
+			if (File.Exists("testmap2.tmx"))
+			{
 				World.LoadChunk("testmap2.tmx", new Vector2i(0, 320));
 				World.LoadChunk("testmap2.tmx", new Vector2i(320, 320));
 				World.LoadChunk("testmap2.tmx", new Vector2i(640, 320));
@@ -129,7 +127,7 @@ namespace Client
 
 			float runTime = 0;
 			float delta = 0;
-			
+
 			while (renderWindow.IsOpen)
 			{
 				// INFO: 120 FPS cap because shit bugs out at huge framerates (delta approaches 0)
@@ -158,7 +156,7 @@ namespace Client
 					renderWindow.SetView(view);
 				}
 				player.Velocity -= player.Velocity * 0.1f;
-				
+
 				renderWindow.Clear();
 				{
 					World.Draw(renderWindow);

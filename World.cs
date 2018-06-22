@@ -290,7 +290,7 @@ namespace Tiler
 			{
 				if (type.IsClass && !type.IsAbstract && type.IsSubclassOf(typeof(Entity)))
 				{
-					if (Attribute.GetCustomAttribute(type, typeof(SpawnableAttribute)) == null)
+					if (Attribute.GetCustomAttribute(type, typeof(SpawnableAttribute)) is null)
 						continue;
 
 					if ((Attribute.GetCustomAttribute(type, typeof(SpawnableAttribute)) as SpawnableAttribute).Spawnable == false)
