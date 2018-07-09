@@ -18,7 +18,7 @@ namespace GUIGUI.Controls
 		public override void Draw(Painter P)
 		{
 			P.SetColor(R, G, B, A);
-			var gpos = GlobalPosition;
+			var gpos = GetGlobalPosition();
 			P.DrawLabel(gpos.X, gpos.Y, TextSize, Text);
 		}
 	}
