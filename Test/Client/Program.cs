@@ -91,19 +91,25 @@ namespace Client
 			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.S);
 			Tiler.Input.Manager.SubscribeInput(Keyboard.Key.D);
 
-			if (File.Exists("testmap1.tmx"))
+			World.Map = new Map
 			{
-				World.LoadChunk("testmap1.tmx", new Vector2i(0, 0));
-				World.LoadChunk("testmap1.tmx", new Vector2i(320, 0));
-				World.LoadChunk("testmap1.tmx", new Vector2i(640, 0));
-			}
-
-			if (File.Exists("testmap2.tmx"))
-			{
-				World.LoadChunk("testmap2.tmx", new Vector2i(0, 320));
-				World.LoadChunk("testmap2.tmx", new Vector2i(320, 320));
-				World.LoadChunk("testmap2.tmx", new Vector2i(640, 320));
-			}
+				Size = new Vector2i(10, 10),
+				TileIDs = new List<int>()
+				{
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 2, 2, 2, 2, 2, 2, 2, 2, 0,
+					0, 2, 1, 1, 1, 1, 1, 1, 2, 0,
+					0, 2, 1, 1, 1, 1, 1, 1, 2, 0,
+					0, 2, 1, 1, 1, 1, 1, 1, 2, 0,
+					0, 2, 1, 1, 1, 1, 1, 1, 2, 0,
+					0, 2, 1, 1, 1, 1, 1, 1, 2, 0,
+					0, 2, 1, 1, 1, 1, 1, 1, 2, 0,
+					0, 2, 2, 2, 2, 2, 2, 2, 2, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				}
+			};
+			World.Entities.Add(new PlayerSpawn(192, 192));
+			World.Map.Rebuild();
 
 			var gamemode = new TestGamemode();
 			var player = new Player();
@@ -162,7 +168,7 @@ namespace Client
 					World.Draw(renderWindow);
 					renderWindow.Draw(player);
 
-					GUI.Draw();
+					//GUI.Draw();
 				}
 				renderWindow.Display();
 			}

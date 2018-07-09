@@ -58,9 +58,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="TiledSharp, Version=0.15.5889.20321, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\TiledSharp.0.15\lib\TiledSharp.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity.cs" />
@@ -70,17 +67,14 @@
     <Compile Include="Importer.cs" />
     <Compile Include="Importers\Texture.cs" />
     <Compile Include="InputManager.cs" />
-    <Compile Include="Map\Chunk.cs" />
     <Compile Include="Attributes\MapEditableAttribute.cs" />
-    <Compile Include="Map\Layer.cs" />
-    <Compile Include="Map\Tile.cs" />
+    <Compile Include="Map.cs" />
     <Compile Include="MoveData.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\PlayerSpawn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Attributes\SpawnableAttribute.cs" />
     <Compile Include="Team.cs" />
-    <Compile Include="TileSet.cs" />
     <Compile Include="UserCommand.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Vehicle.cs" />
