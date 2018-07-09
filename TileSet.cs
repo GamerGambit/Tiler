@@ -36,7 +36,7 @@ namespace Tiler
 			TileCount = tileSet.TileCount ?? 0;
 			Columns = tileSet.Columns ?? 0;
 
-			Texture = new Texture(tileSet.Image.Source);
+			Texture = Importers.Importers.Load<Texture>(tileSet.Image.Source);
 			RenderStates = new RenderStates(BlendMode.Alpha, Transform.Identity, Texture, null);
 		}
 	}
