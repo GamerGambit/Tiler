@@ -61,9 +61,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity.cs" />
-    <Compile Include="Gamemode.Client.cs" />
-    <Compile Include="Gamemode.cs" />
-    <Compile Include="Gamemode.Server.cs" />
+    <Compile Include="Gamemode\Gamemode.Client.cs" />
+    <Compile Include="Gamemode\Gamemode.cs" />
+    <Compile Include="Gamemode\Gamemode.Server.cs" />
     <Compile Include="Importer.cs" />
     <Compile Include="Importers\Texture.cs" />
     <Compile Include="InputManager.cs" />
