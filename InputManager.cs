@@ -1,23 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Numerics;
 
-using SFML.System;
-using SFML.Window;
+using Glfw3;
 
 namespace Tiler.Input
 {
-	public enum Type
+	public class InputState
 	{
-		Invalid,
-		Keyboard,
-		Mouse,
-		Joystick
-	}
-
-	public struct State
-	{
-		public Type Type;
-		public Keyboard.Key Key;
-		public Mouse.Button Button;
+		public Glfw.KeyCode? KeyboardKey;
+		public Glfw.MouseButton? MouseButton;
 
 		public bool IsDown;
 		public bool WasPressed;
@@ -26,11 +17,10 @@ namespace Tiler.Input
 
 		internal bool WasPreviouslyDown;
 
-		internal State(Keyboard.Key key)
+		internal InputState(Glfw.KeyCode key)
 		{
-			Type = Type.Keyboard;
-			Key = key;
-			Button = (Mouse.Button)(-1);
+			KeyboardKey = key;
+			MouseButton = null;
 
 			IsDown = false;
 			WasPressed = false;
@@ -40,11 +30,10 @@ namespace Tiler.Input
 			WasPreviouslyDown = false;
 		}
 
-		internal State(Mouse.Button button)
+		internal InputState(Glfw.MouseButton button)
 		{
-			Type = Type.Mouse;
-			Button = button;
-			Key = Keyboard.Key.Unknown;
+			MouseButton = button;
+			KeyboardKey = null;
 
 			IsDown = false;
 			WasPressed = false;
@@ -57,252 +46,124 @@ namespace Tiler.Input
 
 	public static class Manager
 	{
-		private static List<State> InputStates = new List<State>();
-		private static bool MouseWheelDeltasDirty = false;
-		private static Vector2f _MouseWheelDeltas = new Vector2f(0, 0);
-		private static Vector2i _MousePosition = new Vector2i(0, 0);
-		private static bool InputSubscribed(Mouse.Button button)
-		{
-			foreach (var state in InputStates)
-			{
-				if (state.Type == Type.Mouse && state.Button == button)
-					return true;
-			}
+		internal static List<InputState> inputStates = new List<InputState>();
 
-			return false;
-		}
-		private static bool InputSubscribed(Keyboard.Key key)
-		{
-			foreach (var state in InputStates)
-			{
-				if (state.Type == Type.Keyboard && state.Key == key)
-					return true;
-			}
+		private static Vector2 _mouseWheelDeltas = Vector2.Zero;
+		private static bool _mouseWheelDeltasDirty = false;
 
-			return false;
-		}
+		internal static Window Window = null;
 
-		public static Window Window = null;
-		public static Vector2i MouseOffset { get; private set; } = new Vector2i(0, 0);
-		public static Vector2f MouseWheelDeltas
+		public static Vector2 MousePosition
 		{
 			get
 			{
-				return _MouseWheelDeltas;
+				Glfw.GetCursorPos(Window.GlfwWindow, out var xpos, out var ypos);
+				return new Vector2((float)xpos, (float)ypos);
 			}
 			set
 			{
-				_MouseWheelDeltas = value;
-				MouseWheelDeltasDirty = true;
+				Glfw.SetCursorPos(Window.GlfwWindow, value.X, value.Y);
 			}
 		}
-		public static bool MouseMoved {
-			get
-			{
-				return MouseOffset != new Vector2i(0, 0);
-			}
-		}
-		public static Vector2i MousePosition
+		public static Vector2 MouseWheelDeltas
 		{
-			get
-			{
-				return _MousePosition;
-			}
+			get => _mouseWheelDeltas;
 			set
 			{
-				if (Window is null)
+				_mouseWheelDeltas = value;
+				_mouseWheelDeltasDirty = true;
+			}
+		}
+
+		internal static (int, InputState) GetStateWithIndex(Glfw.KeyCode key)
+		{
+			for (var index = 0; index < inputStates.Count; ++index)
+			{
+				var state = inputStates[index];
+
+				if (state.KeyboardKey == key)
+					return (index, state);
+			}
+
+			var newState = new InputState(key);
+			inputStates.Add(newState);
+			return (inputStates.Count - 1, newState);
+		}
+		internal static (int, InputState) GetStateWithIndex(Glfw.MouseButton mouseButton)
+		{
+			for (var index = 0; index < inputStates.Count; ++index)
+			{
+				var state = inputStates[index];
+
+				if (state.MouseButton == mouseButton)
+					return (index, state);
+			}
+
+			var newState = new InputState(mouseButton);
+			inputStates.Add(newState);
+			return (inputStates.Count - 1, newState);
+		}
+
+		internal static void Update(float deltaTime)
+		{
+			for (var index = 0; index < inputStates.Count; ++index)
+			{
+				var state = inputStates[index];
+
+				if (state.IsDown)
 				{
-					Mouse.SetPosition(value);
+					state.HoldTime += deltaTime;
+				}
+
+				if (state.IsDown != state.WasPreviouslyDown)
+				{
+					state.WasPreviouslyDown = state.IsDown;
+					state.WasPressed = state.IsDown;
+					state.WasReleased = !state.IsDown;
 				}
 				else
 				{
-					Mouse.SetPosition(value, Window);
+					state.WasPressed = false;
+					state.WasReleased = false;
 				}
-			}
-		}
 
-		public static void SubscribeInput(Mouse.Button button)
-		{
-			if (InputSubscribed(button))
-				return;
-
-			InputStates.Add(new State(button));
-		}
-		public static void SubscribeInput(Keyboard.Key key)
-		{
-			if (InputSubscribed(key))
-				return;
-
-			InputStates.Add(new State(key));
-		}
-		public static void UnsubscribeInput(Mouse.Button button)
-		{
-			foreach (var state in InputStates)
-			{
-				if (state.Type == Type.Mouse && state.Button == button)
+				if (state.WasReleased)
 				{
-					InputStates.Remove(state);
-					return;
+					state.HoldTime = 0;
 				}
+
+				inputStates[index] = state;
 			}
-		}
-		public static void UnsubscribeInput(Keyboard.Key key)
-		{
-			foreach (var state in InputStates)
+
+			if (_mouseWheelDeltasDirty)
 			{
-				if (state.Type == Type.Keyboard && state.Key == key)
-				{
-					InputStates.Remove(state);
-					return;
-				}
+				_mouseWheelDeltasDirty = false;
+			}
+			else
+			{
+				_mouseWheelDeltas = Vector2.Zero;
 			}
 		}
 
-		public static void GrabMouseCursor(bool grab = true)
+		public static InputState GetState(Glfw.KeyCode key)
 		{
-			Window?.SetMouseCursorGrabbed(grab);
-		}
-		public static void HideMouseCursor(bool hide = true)
-		{
-			Window?.SetMouseCursorVisible(!hide);
-		}
-
-		public static State GetInputState(Mouse.Button button)
-		{
-			foreach (var state in InputStates)
+			foreach (var state in inputStates)
 			{
-				if (state.Type == Type.Mouse && state.Button == button)
+				if (state.KeyboardKey == key)
 					return state;
 			}
 
-			return new State();
+			return new InputState(key);
 		}
-		public static State GetInputState(Keyboard.Key key)
+		public static InputState GetState(Glfw.MouseButton mouseButton)
 		{
-			foreach (var state in InputStates)
+			foreach (var state in inputStates)
 			{
-				if (state.Type == Type.Keyboard && state.Key == key)
+				if (state.MouseButton == mouseButton)
 					return state;
 			}
 
-			return new State();
-		}
-
-		public static bool WasHeldFor(Mouse.Button button, float seconds, bool resetOnTrue = true)
-		{
-			for (var index = 0; index < InputStates.Count; ++index)
-			{
-				var state = InputStates[index];
-
-				if (state.Type == Type.Mouse && state.Button == button)
-				{
-					var result = state.HoldTime >= seconds;
-
-					if (result && resetOnTrue)
-					{
-						state.HoldTime = 0;
-						InputStates[index] = state;
-					}
-
-					return result;
-				}
-			}
-
-			return false;
-		}
-		public static bool WasHeldFor(Keyboard.Key key, float seconds, bool resetOnTrue = true)
-		{
-			for (var index = 0; index < InputStates.Count; ++index)
-			{
-				var state = InputStates[index];
-
-				if (state.Type == Type.Keyboard && state.Key == key)
-				{
-					var result = state.HoldTime >= seconds;
-
-					if (result && resetOnTrue)
-					{
-						state.HoldTime = 0;
-						InputStates[index] = state;
-					}
-
-					return result;
-				}
-			}
-
-			return false;
-		}
-
-		public static void UpdateInputState(int index, float deltaTime)
-		{
-			var newState = InputStates[index];
-
-			switch (newState.Type)
-			{
-			case Type.Keyboard:
-				newState.IsDown = Keyboard.IsKeyPressed(newState.Key);
-				break;
-
-			case Type.Mouse:
-				newState.IsDown = Mouse.IsButtonPressed(newState.Button);
-				break;
-			}
-
-			if (newState.IsDown)
-			{
-				newState.HoldTime += deltaTime;
-			}
-
-			if (newState.IsDown != newState.WasPreviouslyDown)
-			{
-				newState.WasPreviouslyDown = newState.IsDown;
-
-				newState.WasPressed = newState.IsDown;
-				newState.WasReleased = !newState.IsDown;
-			}
-			else
-			{
-				newState.WasPressed = false;
-				newState.WasReleased = false;
-			}
-
-			if (newState.WasReleased)
-			{
-				newState.HoldTime = 0;
-			}
-
-			InputStates[index] = newState;
-		}
-		public static void Update(float deltaTime)
-		{
-			Vector2i mousePos;
-
-			if (Window is null)
-			{
-				mousePos = Mouse.GetPosition();
-			}
-			else
-			{
-				mousePos = Mouse.GetPosition(Window);
-			}
-
-			MouseOffset = mousePos - MousePosition;
-			_MousePosition = mousePos;
-
-			for (var index = 0; index < InputStates.Count; ++index)
-			{
-				UpdateInputState(index, deltaTime);
-			}
-
-			if (MouseWheelDeltasDirty)
-			{
-				MouseWheelDeltasDirty = false;
-			}
-			else
-			{
-				_MouseWheelDeltas.X = 0;
-				_MouseWheelDeltas.Y = 0;
-			}
+			return new InputState(mouseButton);
 		}
 	}
 }

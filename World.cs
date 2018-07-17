@@ -45,7 +45,7 @@ namespace Tiler
 			}
 		}
 
-		public static void Draw(RenderTarget target)
+		public static void Draw(Window target)
 		{
 			if (!(Map is null))
 				target.Draw(Map);

@@ -25,6 +25,12 @@ namespace Tiler
 				list[n] = value;
 			}
 		}
+
+		public static T Pin<T>(T input)
+		{
+			GCHandle.Alloc(input, GCHandleType.Normal);
+			return input;
+		}
 	}
 
 	public static class UtilsDrawing {

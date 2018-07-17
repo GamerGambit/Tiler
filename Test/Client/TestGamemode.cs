@@ -26,19 +26,19 @@ namespace Client
 
 		public override void CreateUserCommand(UserCommand ucmd)
 		{
-			if (Tiler.Input.Manager.GetInputState(Keyboard.Key.W).IsDown)
+			if (Tiler.Input.Manager.GetState(Glfw3.Glfw.KeyCode.W).IsDown)
 				ucmd.Keys |= InKeys.MoveForward;
 
-			if (Tiler.Input.Manager.GetInputState(Keyboard.Key.A).IsDown)
+			if (Tiler.Input.Manager.GetState(Glfw3.Glfw.KeyCode.A).IsDown)
 				ucmd.Keys |= InKeys.MoveLeft;
 
-			if (Tiler.Input.Manager.GetInputState(Keyboard.Key.S).IsDown)
+			if (Tiler.Input.Manager.GetState(Glfw3.Glfw.KeyCode.S).IsDown)
 				ucmd.Keys |= InKeys.MoveBackward;
 
-			if (Tiler.Input.Manager.GetInputState(Keyboard.Key.D).IsDown)
+			if (Tiler.Input.Manager.GetState(Glfw3.Glfw.KeyCode.D).IsDown)
 				ucmd.Keys |= InKeys.MoveRight;
 
-			if (Tiler.Input.Manager.GetInputState(Keyboard.Key.Space).IsDown)
+			if (Tiler.Input.Manager.GetState(Glfw3.Glfw.KeyCode.Space).IsDown)
 				ucmd.Keys |= InKeys.Jump;
 		}
 
@@ -60,9 +60,11 @@ namespace Client
 			if (ucmd.Keys.HasFlag(InKeys.MoveRight))
 				velocity.X += 1;
 
+			velocity += new Vector2f(Tiler.Input.Manager.MouseWheelDeltas.X * -5.0f, Tiler.Input.Manager.MouseWheelDeltas.Y * -5.0f);
+
 			// TODO: this is the movement speed (100.0f), so make it legit at some point
-			velocity.X *= 100.0f;
-			velocity.Y *= 100.0f;
+			velocity.X *= 50.0f;
+			velocity.Y *= 50.0f;
 
 			mv.Velocity = velocity;
 		}
