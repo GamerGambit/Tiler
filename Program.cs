@@ -59,8 +59,8 @@ namespace Tiler
 			{
 				var rw = ((Window)s).RenderWindow;
 				var view = rw.GetView();
-				var size = new Vector2f(e.Width, e.Height);
-				rw.SetView(new View(view.Center, size));
+				view.Size = new Vector2f(e.Width, e.Height);
+				rw.SetView(view);
 			};
 		}
 
@@ -82,6 +82,7 @@ namespace Tiler
 
 				Window.Clear();
 				OnDraw();
+				GUI.State.Draw(Window);
 				Window.Display();
 			}
 		}

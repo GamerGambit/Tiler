@@ -68,6 +68,9 @@
     <Compile Include="Gamemode\Gamemode.cs" />
     <Compile Include="Gamemode\Gamemode.Server.cs" />
     <Compile Include="Glfw.Extensions.cs" />
+    <Compile Include="GUI\Control.cs" />
+    <Compile Include="GUI\Controls\Panel.cs" />
+    <Compile Include="GUI\State.cs" />
     <Compile Include="Importer.cs" />
     <Compile Include="Importers\Texture.cs" />
     <Compile Include="Attributes\MapEditableAttribute.cs" />
@@ -95,12 +98,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="GUIGUI\GUIGUI.csproj">
-      <Project>{20aec481-ac92-4933-b36d-b7068aac2cb8}</Project>
-      <Name>GUIGUI</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

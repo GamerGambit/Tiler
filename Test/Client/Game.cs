@@ -2,32 +2,18 @@
 using System.Collections.Generic;
 
 using SFML.System;
-
 using Tiler;
 
 namespace Client
 {
 	public class Game : Tiler.Program
 	{
-		public GUIGUI.State GUIState;
 		public Gamemode Gamemode;
 		public Player Player;
 
 		public Game() : base()
 		{
 			Window.Title = "Habitat Game Thingo";
-
-			GUIState = new GUIGUI.State(new Painter(Window.RenderWindow));
-			GUIState.ParseYAML("data\\gui.yaml");
-
-			// TODO: This is only temp
-			GUIGUI.Controls.Panel Panel = new GUIGUI.Controls.Panel(200, 200, 300, 60);
-			Panel.AddChild(new GUIGUI.Controls.Label(-50, 5, 40, "Hello World!")
-			{
-				G = 100,
-				B = 100
-			});
-			GUIState.AddControl(Panel);
 
 			/*
 			{
@@ -37,6 +23,48 @@ namespace Client
 				im.Subscribe(Tiler.Input.KeyboardKey.S);
 				im.Subscribe(Tiler.Input.KeyboardKey.D);
 			}
+			*/
+
+			/*
+			// Test 1
+			var dkpink = new Tiler.GUI.Controls.Panel
+			{
+				Position = new Vector2f(100, 100),
+				Size = new System.Numerics.Vector2(300, 300),
+				Color = new SFML.Graphics.Color(231, 84, 128)
+			};
+			var pnk = new Tiler.GUI.Controls.Panel(dkpink)
+			{
+				Position = new Vector2f(100, 50),
+				Size = new System.Numerics.Vector2(250, 200),
+				Color = new SFML.Graphics.Color(255, 192, 203)
+			};
+			var orng = new Tiler.GUI.Controls.Panel(pnk)
+			{
+				Position = new Vector2f(100, 50),
+				Size = new System.Numerics.Vector2(100, 100),
+				Color = new SFML.Graphics.Color(255, 211, 106)
+			};
+
+			// Test 2
+			var red = new Tiler.GUI.Controls.Panel
+			{
+				Position = new Vector2f(100, 100),
+				Size = new Vector2f(500, 300),
+				Color = SFML.Graphics.Color.Red
+			};
+			var green = new Tiler.GUI.Controls.Panel(red)
+			{
+				Position = new Vector2f(100, 100),
+				Size = new Vector2f(300, 400),
+				Color = SFML.Graphics.Color.Green
+			};
+			var blue = new Tiler.GUI.Controls.Panel(green)
+			{
+				Position = new Vector2f(150, -50),
+				Size = new Vector2f(300, 200),
+				Color = SFML.Graphics.Color.Blue
+			};
 			*/
 
 			World.Map = new Map
@@ -83,7 +111,6 @@ namespace Client
 		{
 			World.Draw(Window);
 			Window.Draw(Player);
-			GUIState.Draw();
 		}
 
 		public override void OnUpdate(float deltaTime)
