@@ -5,6 +5,7 @@ using System.Numerics;
 using Glfw3;
 
 using SFML.Graphics;
+using SFML.Window;
 
 namespace Tiler
 {
@@ -154,6 +155,14 @@ namespace Tiler
 		private static void WindowResizedCallback(Glfw.Window window, int width, int height)
 		{
 			var engineWindow = dictionary[window];
+
+			{
+				var view = new View(engineWindow.RenderWindow.GetView());
+				engineWindow.RenderWindow?.Dispose();
+				engineWindow.RenderWindow = new RenderWindow(engineWindow.NativeHandle);
+				engineWindow.RenderWindow.SetView(view);
+			}
+
 			engineWindow.Resized?.Invoke(engineWindow, new WindowResizedEventArgs()
 			{
 				Width = width,
@@ -245,7 +254,7 @@ namespace Tiler
 			if (!GlfwWindow)
 				throw new Exception("Failed to create GLFW window");
 
-			RenderWindow = new SFML.Graphics.RenderWindow(NativeHandle);
+			RenderWindow = new RenderWindow(NativeHandle);
 
 			dictionary.Add(GlfwWindow, this);
 
