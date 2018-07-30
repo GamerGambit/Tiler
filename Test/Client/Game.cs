@@ -16,6 +16,7 @@ namespace Client
 		{
 			Window.Title = "Habitat Game Thingo";
 
+			/*
 			// Test 1
 			var dkpink = new Tiler.GUI.Controls.Panel
 			{
@@ -47,6 +48,40 @@ namespace Client
 			orng.MouseExit += (s, e) => Console.WriteLine("Mouse Exit orange");
 			orng.MousePressed += (s, e) => Console.WriteLine($"Mouse {e} pressed in orange");
 			orng.MouseScrolled += (s, e) => Console.WriteLine($"Mouse scrolled in orange");
+			*/
+
+			var font = new SFML.Graphics.Font("data/saxmono.ttf");
+
+			var panel = new Tiler.GUI.Controls.Panel()
+			{
+				Position = new Vector2f(100, 100),
+				Size = new Vector2f(256, 128),
+				Color = new SFML.Graphics.Color(64, 64, 64, 100)
+			};
+			var text = new Tiler.GUI.Controls.Label(panel)
+			{
+				Font = font,
+				CharacterSize = 14,
+				String = "Sample Label Text",
+				Size = new Vector2f(100, 25)
+			};
+			text.MouseScrolled += (s, e) =>
+			{
+				var deltas = Tiler.Input.Manager.MouseWheelDeltas;
+				if (deltas.Y < 0)
+				{
+					if (text.CharacterSize > 1)
+					{
+						text.CharacterSize--;
+						text.SizeToContents();
+					}
+				}
+				else if (deltas.Y > 0)
+				{
+					text.CharacterSize++;
+					text.SizeToContents();
+				}
+			};
 
 			World.Map = new Map
 			{

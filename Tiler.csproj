@@ -69,6 +69,7 @@
     <Compile Include="Gamemode\Gamemode.Server.cs" />
     <Compile Include="Glfw.Extensions.cs" />
     <Compile Include="GUI\Control.cs" />
+    <Compile Include="GUI\Controls\Label.cs" />
     <Compile Include="GUI\Controls\Panel.cs" />
     <Compile Include="GUI\State.cs" />
     <Compile Include="Importer.cs" />
