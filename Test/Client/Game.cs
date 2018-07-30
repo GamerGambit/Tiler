@@ -26,6 +26,7 @@ namespace Client
 			dkpink.MouseEnter += (s, e) => Console.WriteLine("Mouse Enter dark-pink");
 			dkpink.MouseExit += (s, e) => Console.WriteLine("Mouse Exit dark-pink");
 			dkpink.MousePressed += (s, e) => Console.WriteLine($"Mouse {e} pressed in dark-pink");
+			dkpink.MouseScrolled += (s, e) => Console.WriteLine($"Mouse scrolled in dark-pink");
 			var pnk = new Tiler.GUI.Controls.Panel(dkpink)
 			{
 				Position = new Vector2f(100, 50),
@@ -35,6 +36,7 @@ namespace Client
 			pnk.MouseEnter += (s, e) => Console.WriteLine("Mouse Enter pink");
 			pnk.MouseExit += (s, e) => Console.WriteLine("Mouse Exit pink");
 			pnk.MousePressed += (s, e) => Console.WriteLine($"Mouse {e} pressed in pink");
+			pnk.MouseScrolled += (s, e) => Console.WriteLine($"Mouse scrolled in pink");
 			var orng = new Tiler.GUI.Controls.Panel(dkpink)
 			{
 				Position = new Vector2f(85, 50),
@@ -44,6 +46,7 @@ namespace Client
 			orng.MouseEnter += (s, e) => Console.WriteLine("Mouse Enter orange");
 			orng.MouseExit += (s, e) => Console.WriteLine("Mouse Exit orange");
 			orng.MousePressed += (s, e) => Console.WriteLine($"Mouse {e} pressed in orange");
+			orng.MouseScrolled += (s, e) => Console.WriteLine($"Mouse scrolled in orange");
 
 			World.Map = new Map
 			{

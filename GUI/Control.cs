@@ -90,7 +90,7 @@ namespace Tiler.GUI
 		}
 		internal bool HandledMouseReleased(Glfw3.Glfw.MouseButton mouseButton)
 		{
-			if (!Visible || !hasFocus)
+			if (!Visible)
 				return false;
 
 			for (var index = children.Count - 1; index >= 0; --index)
@@ -99,13 +99,16 @@ namespace Tiler.GUI
 					return true;
 			}
 
+			if (!hasFocus)
+				return false;
+
 			OnMouseReleased(mouseButton);
 			MouseReleased?.Invoke(this, mouseButton);
 			return true;
 		}
 		internal bool HandledMouseScroll()
 		{
-			if (!Visible || !mouseOver)
+			if (!Visible)
 				return false;
 
 			for (var index = children.Count - 1; index >= 0; --index)
@@ -113,6 +116,9 @@ namespace Tiler.GUI
 				if (children[index].HandledMouseScroll())
 					return true;
 			}
+
+			if (!mouseOver)
+				return false;
 
 			OnMouseScroll();
 			MouseScrolled?.Invoke(this, EventArgs.Empty);
