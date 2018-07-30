@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 
 using Glfw3;
@@ -104,7 +105,7 @@ namespace Tiler.Input
 			return (inputStates.Count - 1, newState);
 		}
 
-		internal static void Update(float deltaTime)
+		internal static void Update(TimeSpan deltaTime)
 		{
 			for (var index = 0; index < inputStates.Count; ++index)
 			{
@@ -112,7 +113,7 @@ namespace Tiler.Input
 
 				if (state.IsDown)
 				{
-					state.HoldTime += deltaTime;
+					state.HoldTime += (float)deltaTime.TotalSeconds;
 				}
 
 				if (state.IsDown != state.WasPreviouslyDown)

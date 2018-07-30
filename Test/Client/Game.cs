@@ -94,7 +94,7 @@ namespace Client
 			Window.Draw(Player);
 		}
 
-		public override void OnUpdate(float deltaTime)
+		public override void OnUpdate(TimeSpan deltaTime)
 		{
 			var ucmd = new UserCommand();
 			var mv = new MoveData();
@@ -103,7 +103,7 @@ namespace Client
 			Gamemode.SetupMove(Player, ucmd, mv);
 			Gamemode.Move(Player, mv);
 
-			Player.Velocity += mv.Velocity * deltaTime;
+			Player.Velocity += mv.Velocity * (float)deltaTime.TotalSeconds;
 			Player.Position += Player.Velocity;
 
 			{

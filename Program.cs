@@ -8,7 +8,7 @@ using SFML.System;
 
 namespace Tiler
 {
-	public abstract class Program
+	public abstract class Program : IUpdatable
 	{
 		public Window Window;
 
@@ -82,7 +82,7 @@ namespace Tiler
 
 				Glfw.PollEvents();
 
-				Update(deltaTime);
+				Update(TimeSpan.FromSeconds(deltaTime));
 
 				Window.Clear();
 				OnDraw();
@@ -91,7 +91,7 @@ namespace Tiler
 			}
 		}
 
-		public void Update(float deltaTime)
+		public void Update(TimeSpan deltaTime)
 		{
 			Input.Manager.Update(deltaTime);
 			GUI.State.Update(deltaTime);
@@ -100,6 +100,6 @@ namespace Tiler
 		}
 
 		public abstract void OnDraw();
-		public abstract void OnUpdate(float deltaTime);
+		public abstract void OnUpdate(TimeSpan deltaTime);
 	}
 }

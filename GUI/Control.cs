@@ -7,7 +7,7 @@ using SFML.System;
 
 namespace Tiler.GUI
 {
-	public abstract class Control : Transformable, Drawable
+	public abstract class Control : Transformable, Drawable, IUpdatable
 	{
 		private Control parent = null;
 		private List<Control> children = new List<Control>();
@@ -274,7 +274,7 @@ namespace Tiler.GUI
 			children.Clear();
 		}
 
-		public void Update(float deltaTime)
+		public void Update(TimeSpan deltaTime)
 		{
 			if (!Visible)
 				return;
@@ -301,7 +301,7 @@ namespace Tiler.GUI
 			}
 		}
 
-		public virtual void OnUpdate(float deltaTime)
+		public virtual void OnUpdate(TimeSpan deltaTime)
 		{
 			// NOP
 		}

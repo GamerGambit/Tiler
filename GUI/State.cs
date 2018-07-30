@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using SFML.Graphics;
 using SFML.System;
@@ -66,7 +67,7 @@ namespace Tiler.GUI
 			return view.Center - view.Size / 2;
 		}
 
-		public static void Update(float deltaTime)
+		public static void Update(TimeSpan deltaTime)
 		{
 			for (var index = Roots.Count - 1; index >= 0; --index)
 			{

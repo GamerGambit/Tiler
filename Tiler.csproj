@@ -75,6 +75,7 @@
     <Compile Include="Importers\Texture.cs" />
     <Compile Include="Attributes\MapEditableAttribute.cs" />
     <Compile Include="InputManager.cs" />
+    <Compile Include="IUpdatable.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="MoveData.cs" />
     <Compile Include="Entities\Player.cs" />
