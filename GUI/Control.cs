@@ -290,13 +290,13 @@ namespace Tiler.GUI
 
 			states.Transform *= Transform;
 
-			OnDraw(target, states);
-
 			var offset = State.GetRelativeOffset(target);
+			UtilsDrawing.SetScissor(target, (int)(offset.X + GlobalPosition.X), (int)(offset.Y + GlobalPosition.Y), (int)Size.X, (int)Size.Y);
+
+			OnDraw(target, states);
 
 			for (var index = 0; index < children.Count; ++index)
 			{
-				UtilsDrawing.SetScissor(target, (int)(offset.X + GlobalPosition.X), (int)(offset.Y + GlobalPosition.Y), (int)Size.X, (int)Size.Y);
 				target.Draw(children[index], states);
 			}
 		}
