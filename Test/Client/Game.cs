@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using SFML.System;
+
 using Tiler;
 
 namespace Client
@@ -15,57 +16,34 @@ namespace Client
 		{
 			Window.Title = "Habitat Game Thingo";
 
-			/*
-			{
-				var im = (InputManager)(InputManager);
-				im.Subscribe(Tiler.Input.KeyboardKey.W);
-				im.Subscribe(Tiler.Input.KeyboardKey.A);
-				im.Subscribe(Tiler.Input.KeyboardKey.S);
-				im.Subscribe(Tiler.Input.KeyboardKey.D);
-			}
-			*/
-
-			/*
 			// Test 1
 			var dkpink = new Tiler.GUI.Controls.Panel
 			{
 				Position = new Vector2f(100, 100),
-				Size = new System.Numerics.Vector2(300, 300),
+				Size = new Vector2f(300, 300),
 				Color = new SFML.Graphics.Color(231, 84, 128)
 			};
+			dkpink.MouseEnter += (s, e) => Console.WriteLine("Mouse Enter dark-pink");
+			dkpink.MouseExit += (s, e) => Console.WriteLine("Mouse Exit dark-pink");
+			dkpink.MousePressed += (s, e) => Console.WriteLine($"Mouse {e} pressed in dark-pink");
 			var pnk = new Tiler.GUI.Controls.Panel(dkpink)
 			{
 				Position = new Vector2f(100, 50),
-				Size = new System.Numerics.Vector2(250, 200),
+				Size = new Vector2f(250, 200),
 				Color = new SFML.Graphics.Color(255, 192, 203)
 			};
-			var orng = new Tiler.GUI.Controls.Panel(pnk)
+			pnk.MouseEnter += (s, e) => Console.WriteLine("Mouse Enter pink");
+			pnk.MouseExit += (s, e) => Console.WriteLine("Mouse Exit pink");
+			pnk.MousePressed += (s, e) => Console.WriteLine($"Mouse {e} pressed in pink");
+			var orng = new Tiler.GUI.Controls.Panel(dkpink)
 			{
-				Position = new Vector2f(100, 50),
-				Size = new System.Numerics.Vector2(100, 100),
+				Position = new Vector2f(85, 50),
+				Size = new Vector2f(100, 100),
 				Color = new SFML.Graphics.Color(255, 211, 106)
 			};
-
-			// Test 2
-			var red = new Tiler.GUI.Controls.Panel
-			{
-				Position = new Vector2f(100, 100),
-				Size = new Vector2f(500, 300),
-				Color = SFML.Graphics.Color.Red
-			};
-			var green = new Tiler.GUI.Controls.Panel(red)
-			{
-				Position = new Vector2f(100, 100),
-				Size = new Vector2f(300, 400),
-				Color = SFML.Graphics.Color.Green
-			};
-			var blue = new Tiler.GUI.Controls.Panel(green)
-			{
-				Position = new Vector2f(150, -50),
-				Size = new Vector2f(300, 200),
-				Color = SFML.Graphics.Color.Blue
-			};
-			*/
+			orng.MouseEnter += (s, e) => Console.WriteLine("Mouse Enter orange");
+			orng.MouseExit += (s, e) => Console.WriteLine("Mouse Exit orange");
+			orng.MousePressed += (s, e) => Console.WriteLine($"Mouse {e} pressed in orange");
 
 			World.Map = new Map
 			{

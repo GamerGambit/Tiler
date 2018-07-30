@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 
 using Glfw3;
-using SFML.Graphics;
+
 using SFML.System;
 
 namespace Tiler
@@ -44,16 +44,19 @@ namespace Tiler
 				var (index, state) = Input.Manager.GetStateWithIndex(e.Button);
 				state.IsDown = true;
 				Input.Manager.inputStates[index] = state;
+				GUI.State.HandleMousePressed(e.Button);
 			};
 			Window.MouseReleased += (s, e) =>
 			{
 				var (index, state) = Input.Manager.GetStateWithIndex(e.Button);
 				state.IsDown = true;
 				Input.Manager.inputStates[index] = state;
+				GUI.State.HandleMouseReleased(e.Button);
 			};
 			Window.MouseScrolled += (s, e) =>
 			{
 				Input.Manager.MouseWheelDeltas = new System.Numerics.Vector2((float)e.X, (float)e.Y);
+				GUI.State.HandleMouseScroll();
 			};
 			Window.Resized += (s, e) =>
 			{
@@ -62,6 +65,7 @@ namespace Tiler
 				view.Size = new Vector2f(e.Width, e.Height);
 				rw.SetView(view);
 			};
+			Input.Manager.Window = Window;
 		}
 
 		public void Run()
@@ -90,6 +94,7 @@ namespace Tiler
 		public void Update(float deltaTime)
 		{
 			Input.Manager.Update(deltaTime);
+			GUI.State.Update(deltaTime);
 
 			OnUpdate(deltaTime);
 		}

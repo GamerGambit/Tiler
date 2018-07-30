@@ -13,7 +13,7 @@ namespace Tiler.GUI.Controls
 			{
 				if (!(rectShape is null))
 				{
-					rectShape.Size = new SFML.System.Vector2f(value.X, value.Y);
+					rectShape.Size = new Vector2f(value.X, value.Y);
 				}
 
 				base.Size = value;
