@@ -63,7 +63,10 @@ namespace Client
 				Font = font,
 				CharacterSize = 14,
 				String = "Sample Label Text",
-				Size = new Vector2f(100, 25)
+				Size = new Vector2f(100, 25),
+				OutlineColor = SFML.Graphics.Color.Blue,
+				OutlineThickness = 1,
+				FillColor = SFML.Graphics.Color.Cyan
 			};
 			text.MouseScrolled += (s, e) =>
 			{
@@ -81,6 +84,11 @@ namespace Client
 					text.CharacterSize++;
 					text.SizeToContents();
 				}
+
+				if (deltas.X < 0)
+					text.Styles ^= SFML.Graphics.Text.Styles.Underlined;
+				else if (deltas.X > 0)
+					text.Styles ^= SFML.Graphics.Text.Styles.Bold;
 			};
 
 			World.Map = new Map
