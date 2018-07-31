@@ -291,7 +291,11 @@ namespace Tiler.GUI
 			states.Transform *= Transform;
 
 			var offset = State.GetRelativeOffset(target);
-			UtilsDrawing.SetScissor(target, (int)(offset.X + GlobalPosition.X), (int)(offset.Y + GlobalPosition.Y), (int)Size.X, (int)Size.Y);
+			ScissorStack.Push(new ScissorRect()
+			{
+				Position = new Vector2i((int)(offset.X + GlobalPosition.X), (int)(offset.Y + GlobalPosition.Y)),
+				Size = new Vector2i((int)Size.X, (int)Size.Y)
+			});
 
 			OnDraw(target, states);
 
@@ -299,6 +303,8 @@ namespace Tiler.GUI
 			{
 				target.Draw(children[index], states);
 			}
+
+			ScissorStack.Pop();
 		}
 
 		public virtual void OnUpdate(TimeSpan deltaTime)

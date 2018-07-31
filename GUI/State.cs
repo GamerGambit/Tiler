@@ -85,15 +85,10 @@ namespace Tiler.GUI
 			var states = RenderStates.Default;
 			states.Transform *= transform;
 
-			UtilsDrawing.EnableScissor(true);
-
 			for (var index = 0; index < Roots.Count; ++index)
 			{
 				window.RenderWindow.Draw(Roots[index], states);
 			}
-
-			UtilsDrawing.SetScissor(window.RenderWindow, (int)offset.X, (int)offset.Y, (int)window.RenderWindow.Size.X, (int)window.RenderWindow.Size.Y);
-			UtilsDrawing.EnableScissor(false);
 		}
 	}
 }

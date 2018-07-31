@@ -84,6 +84,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Attributes\SpawnableAttribute.cs" />
+    <Compile Include="ScissorStack.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="thirdparty\Glfw3\Glfw.cs" />
     <Compile Include="thirdparty\Glfw3\Glfw.Delegate.cs" />
