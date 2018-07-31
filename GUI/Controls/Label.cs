@@ -17,7 +17,8 @@ namespace Tiler.GUI.Controls
 
 		public Label(Control parent = null) : base(parent)
 		{
-			// NOP
+			HandlesKeyboardInput = false;
+			HandlesMouseInput = false;
 		}
 
 		public void SizeToContents()

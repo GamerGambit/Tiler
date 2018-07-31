@@ -19,6 +19,9 @@ namespace Tiler.GUI
 
 		internal bool HandledMouseMove()
 		{
+			if (!Visible || !HandlesMouseInput)
+				return false;
+
 			var mousePos = Input.Manager.MousePosition;
 			var globalPosition = GlobalPosition;
 
@@ -76,7 +79,7 @@ namespace Tiler.GUI
 				}
 			}
 
-			if (!mouseOver)
+			if (!HandlesMouseInput || !mouseOver)
 			{
 				hasFocus = false;
 				return false;
@@ -99,7 +102,7 @@ namespace Tiler.GUI
 					return true;
 			}
 
-			if (!hasFocus)
+			if (!HandlesMouseInput || !hasFocus || !mouseInBounds)
 				return false;
 
 			OnMouseReleased(mouseButton);
@@ -117,7 +120,7 @@ namespace Tiler.GUI
 					return true;
 			}
 
-			if (!mouseOver)
+			if (!HandlesMouseInput || !mouseOver)
 				return false;
 
 			OnMouseScroll();
@@ -135,7 +138,7 @@ namespace Tiler.GUI
 					return true;
 			}
 
-			if (!hasFocus)
+			if (!HandlesKeyboardInput || !hasFocus)
 				return false;
 
 			OnKeyPressed(key);
@@ -153,13 +156,16 @@ namespace Tiler.GUI
 					return true;
 			}
 
-			if (!hasFocus)
+			if (!HandlesKeyboardInput || !hasFocus)
 				return false;
 
 			OnKeyReleased(key);
 			KeyReleased?.Invoke(this, key);
 			return true;
 		}
+
+		protected bool HandlesKeyboardInput { get; set; } = true;
+		protected bool HandlesMouseInput { get; set; } = true;
 
 		public event EventHandler MouseEnter;
 		public event EventHandler MouseExit;

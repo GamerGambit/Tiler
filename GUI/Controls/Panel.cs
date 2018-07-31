@@ -5,17 +5,13 @@ namespace Tiler.GUI.Controls
 {
 	public class Panel : Control
 	{
-		private RectangleShape rectShape;
+		private RectangleShape rectShape = new RectangleShape();
 		public new Vector2f Size
 		{
 			get => base.Size;
 			set
 			{
-				if (!(rectShape is null))
-				{
-					rectShape.Size = new Vector2f(value.X, value.Y);
-				}
-
+				rectShape.Size = new Vector2f(value.X, value.Y);
 				base.Size = value;
 			}
 		}
@@ -26,16 +22,15 @@ namespace Tiler.GUI.Controls
 			set => rectShape.FillColor = value;
 		}
 
-
 		public Panel(Control parent = null) : base(parent)
 		{
+			HandlesKeyboardInput = false;
+			HandlesMouseInput = false;
+
 			Size = new Vector2f(250, 100);
-			rectShape = new RectangleShape(Size)
-			{
-				FillColor = new Color(0, 128, 255, 100),
-				OutlineColor = Color.Black,
-				OutlineThickness = 0.1f
-			};
+			rectShape.FillColor = new Color(0, 128, 255, 100);
+			rectShape.OutlineColor = Color.Black;
+			rectShape.OutlineThickness = 0.1f;
 		}
 
 		protected override void OnDraw(RenderTarget target, RenderStates states)

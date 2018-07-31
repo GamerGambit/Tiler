@@ -58,8 +58,20 @@ namespace Client
 				Size = new Vector2f(256, 128),
 				Color = new SFML.Graphics.Color(64, 64, 64, 100)
 			};
+			var button = new Tiler.GUI.Controls.Button(panel)
+			{
+				Font = font,
+				CharacterSize = 12,
+				Text = "Fancy Button",
+				FillColor = new SFML.Graphics.Color(255, 0, 0, 100),
+				OutlineColor = new SFML.Graphics.Color(0, 255, 0, 50),
+				OutlineThickness = -0.5f
+			};
+			button.Click += (s, e) => Console.WriteLine($"Fancy button clicked with {e}");
+			button.SizeToContents();
 			var text = new Tiler.GUI.Controls.Label(panel)
 			{
+				Position = new Vector2f(0, button.Position.Y + button.Size.Y + 2),
 				Font = font,
 				CharacterSize = 14,
 				String = "Sample Label Text",
@@ -67,28 +79,6 @@ namespace Client
 				OutlineColor = SFML.Graphics.Color.Blue,
 				OutlineThickness = 1,
 				FillColor = SFML.Graphics.Color.Cyan
-			};
-			text.MouseScrolled += (s, e) =>
-			{
-				var deltas = Tiler.Input.Manager.MouseWheelDeltas;
-				if (deltas.Y < 0)
-				{
-					if (text.CharacterSize > 1)
-					{
-						text.CharacterSize--;
-						text.SizeToContents();
-					}
-				}
-				else if (deltas.Y > 0)
-				{
-					text.CharacterSize++;
-					text.SizeToContents();
-				}
-
-				if (deltas.X < 0)
-					text.Styles ^= SFML.Graphics.Text.Styles.Underlined;
-				else if (deltas.X > 0)
-					text.Styles ^= SFML.Graphics.Text.Styles.Bold;
 			};
 
 			World.Map = new Map
