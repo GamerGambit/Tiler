@@ -281,6 +281,11 @@ namespace Tiler.GUI
 
 			HandledMouseMove();
 			OnUpdate(deltaTime);
+
+			foreach (var child in children)
+			{
+				child.Update(deltaTime);
+			}
 		}
 
 		public void Draw(RenderTarget target, RenderStates states)
@@ -307,47 +312,52 @@ namespace Tiler.GUI
 			ScissorStack.Pop();
 		}
 
-		public virtual void OnUpdate(TimeSpan deltaTime)
+		protected virtual void OnUpdate(TimeSpan deltaTime)
 		{
 			// NOP
 		}
 
-		public virtual void OnDraw(RenderTarget target, RenderStates states)
+		protected virtual void OnDraw(RenderTarget target, RenderStates states)
 		{
 			// NOP
 		}
 
-		public virtual void OnMouseEnter()
+		protected virtual void OnRemove()
 		{
 			// NOP
 		}
 
-		public virtual void OnMouseExit()
+		protected virtual void OnMouseEnter()
 		{
 			// NOP
 		}
 
-		public virtual void OnMousePressed(Glfw3.Glfw.MouseButton mouseButton)
+		protected virtual void OnMouseExit()
 		{
 			// NOP
 		}
 
-		public virtual void OnMouseReleased(Glfw3.Glfw.MouseButton mouseButton)
+		protected virtual void OnMousePressed(Glfw3.Glfw.MouseButton mouseButton)
 		{
 			// NOP
 		}
 
-		public virtual void OnMouseScroll()
+		protected virtual void OnMouseReleased(Glfw3.Glfw.MouseButton mouseButton)
 		{
 			// NOP
 		}
 
-		public virtual void OnKeyPressed(Glfw3.Glfw.KeyCode key)
+		protected virtual void OnMouseScroll()
 		{
 			// NOP
 		}
 
-		public virtual void OnKeyReleased(Glfw3.Glfw.KeyCode key)
+		protected virtual void OnKeyPressed(Glfw3.Glfw.KeyCode key)
+		{
+			// NOP
+		}
+
+		protected virtual void OnKeyReleased(Glfw3.Glfw.KeyCode key)
 		{
 			// NOP
 		}

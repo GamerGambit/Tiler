@@ -38,7 +38,7 @@ namespace Tiler.GUI.Controls
 			};
 		}
 
-		public override void OnDraw(RenderTarget target, RenderStates states)
+		protected override void OnDraw(RenderTarget target, RenderStates states)
 		{
 			target.Draw(rectShape, states);
 		}

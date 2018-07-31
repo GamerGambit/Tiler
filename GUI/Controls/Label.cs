@@ -26,7 +26,7 @@ namespace Tiler.GUI.Controls
 			Size = new Vector2f(gbounds.Left + gbounds.Width, gbounds.Top + gbounds.Height);
 		}
 
-		public override void OnDraw(RenderTarget target, RenderStates states)
+		protected override void OnDraw(RenderTarget target, RenderStates states)
 		{
 			target.Draw(text, states);
 		}
