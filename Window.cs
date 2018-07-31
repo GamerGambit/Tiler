@@ -5,7 +5,6 @@ using System.Numerics;
 using Glfw3;
 
 using SFML.Graphics;
-using SFML.Window;
 
 namespace Tiler
 {
@@ -156,12 +155,14 @@ namespace Tiler
 		{
 			var engineWindow = dictionary[window];
 
+			/*
 			{
 				var view = new View(engineWindow.RenderWindow.GetView());
 				engineWindow.RenderWindow?.Dispose();
 				engineWindow.RenderWindow = new RenderWindow(engineWindow.NativeHandle);
 				engineWindow.RenderWindow.SetView(view);
 			}
+			*/
 
 			engineWindow.Resized?.Invoke(engineWindow, new WindowResizedEventArgs()
 			{
@@ -247,6 +248,8 @@ namespace Tiler
 			Glfw.WindowHint(Glfw.Hint.OpenglForwardCompat, true);
 			Glfw.WindowHint(Glfw.Hint.OpenglProfile, Glfw.OpenGLProfile.Core);
 			*/
+
+			Glfw.WindowHint(Glfw.Hint.Resizable, false);
 
 			_title = title;
 			GlfwWindow = Glfw.CreateWindow(width, height, title);
