@@ -265,6 +265,8 @@ namespace Tiler.GUI
 
 		public void Remove()
 		{
+			OnRemove();
+
 			if (parent is null)
 			{
 				State.Roots.Remove(this);
@@ -277,6 +279,11 @@ namespace Tiler.GUI
 
 		public void RemoveAllChildren()
 		{
+			foreach (var child in children)
+			{
+				child.OnRemove();
+			}
+
 			children.Clear();
 		}
 
