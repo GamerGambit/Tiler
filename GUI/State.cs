@@ -61,12 +61,6 @@ namespace Tiler.GUI
 			return false;
 		}
 
-		public static Vector2f GetRelativeOffset(RenderTarget target)
-		{
-			var view = target.GetView();
-			return view.Center - view.Size / 2;
-		}
-
 		public static void Update(TimeSpan deltaTime)
 		{
 			for (var index = Roots.Count - 1; index >= 0; --index)
@@ -77,17 +71,9 @@ namespace Tiler.GUI
 
 		public static void Draw(Window window)
 		{
-			var offset = GetRelativeOffset(window.RenderWindow);
-
-			var transform = Transform.Identity;
-			transform.Translate(offset);
-
-			var states = RenderStates.Default;
-			states.Transform *= transform;
-
 			for (var index = 0; index < Roots.Count; ++index)
 			{
-				window.RenderWindow.Draw(Roots[index], states);
+				window.RenderWindow.Draw(Roots[index]);
 			}
 		}
 	}

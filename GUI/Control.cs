@@ -301,10 +301,9 @@ namespace Tiler.GUI
 
 			states.Transform *= Transform;
 
-			var offset = State.GetRelativeOffset(target);
 			ScissorStack.Push(new ScissorRect()
 			{
-				Position = new Vector2i((int)(offset.X + GlobalPosition.X), (int)(offset.Y + GlobalPosition.Y)),
+				Position = new Vector2i((int)(GlobalPosition.X), (int)(GlobalPosition.Y)),
 				Size = new Vector2i((int)Size.X, (int)Size.Y)
 			});
 

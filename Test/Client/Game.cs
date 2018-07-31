@@ -12,10 +12,12 @@ namespace Client
 		public Gamemode Gamemode;
 		public Player Player;
 
+		public SFML.Graphics.View GameView;
+
 		public Game() : base()
 		{
 			Window.Title = "Habitat Game Thingo";
-
+			GameView = new SFML.Graphics.View(Window.RenderWindow.GetView());
 			/*
 			// Test 1
 			var dkpink = new Tiler.GUI.Controls.Panel
@@ -73,13 +75,14 @@ namespace Client
 			{
 				Position = new Vector2f(0, button.Position.Y + button.Size.Y + 2),
 				Font = font,
-				CharacterSize = 14,
+				CharacterSize = 140,
 				String = "Sample Label Text",
 				Size = new Vector2f(100, 25),
 				OutlineColor = SFML.Graphics.Color.Blue,
 				OutlineThickness = 1,
 				FillColor = SFML.Graphics.Color.Cyan
 			};
+			text.SizeToContents();
 
 			World.Map = new Map
 			{
@@ -114,15 +117,12 @@ namespace Client
 			Player.Position = spawnPoint.Position;
 			Gamemode.PlayerSpawn(Player);
 
-			{
-				var view = Window.RenderWindow.GetView();
-				view.Center = Player.Position;
-				Window.RenderWindow.SetView(view);
-			}
+			GameView.Center = Player.Position;
 		}
 
 		public override void OnDraw()
 		{
+			Window.RenderWindow.SetView(GameView);
 			World.Draw(Window);
 			Window.Draw(Player);
 		}
@@ -139,11 +139,7 @@ namespace Client
 			Player.Velocity += mv.Velocity * (float)deltaTime.TotalSeconds;
 			Player.Position += Player.Velocity;
 
-			{
-				var view = Window.RenderWindow.GetView();
-				view.Move(Player.Velocity);
-				Window.RenderWindow.SetView(view);
-			}
+			GameView.Move(Player.Velocity);
 
 			Player.Velocity -= Player.Velocity * 0.1f;
 		}

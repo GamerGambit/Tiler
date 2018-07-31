@@ -87,6 +87,7 @@ namespace Tiler
 
 				Window.Clear();
 				OnDraw();
+				Window.RenderWindow.SetView(Window.RenderWindow.DefaultView);
 				GUI.State.Draw(Window);
 				Window.Display();
 			}

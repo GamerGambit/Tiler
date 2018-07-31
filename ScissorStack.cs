@@ -57,8 +57,8 @@ namespace Tiler
 					Clamp(rect.Position.Y, top.Position.Y, top.Position.Y + top.Size.Y)
 				);
 				rect.Size = new Vector2i(
-					Math.Min(rect.Size.X, top.Position.X + top.Size.X - rect.Position.X),
-					Math.Min(rect.Size.Y, top.Position.Y + top.Size.Y - rect.Position.Y)
+					Clamp(rect.Size.X, 0, top.Position.X + top.Size.X - rect.Position.X),
+					Clamp(rect.Size.Y, 0, top.Position.Y + top.Size.Y - rect.Position.Y)
 				);
 
 				Stack.Push(rect);
