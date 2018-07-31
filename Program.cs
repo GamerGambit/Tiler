@@ -66,7 +66,6 @@ namespace Tiler
 				rw.SetView(view);
 			};
 			Input.Manager.Window = Window;
-			ScissorStack.RenderTarget = Window.RenderWindow;
 		}
 
 		public void Run()

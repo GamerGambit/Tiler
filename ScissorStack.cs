@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using SFML.Graphics;
 using SFML.System;
 
 namespace Tiler
@@ -24,7 +24,7 @@ namespace Tiler
 			return value;
 		}
 
-		private static void Apply()
+		private static void Apply(RenderTarget renderTarget)
 		{
 			if (Stack.Count == 0)
 			{
@@ -32,18 +32,14 @@ namespace Tiler
 				return;
 			}
 
-			if (RenderTarget is null)
-				throw new Exception("RenderTarget not set");
-
 			var top = Stack.Peek();
 			UtilsDrawing.EnableScissor(true);
-			UtilsDrawing.SetScissor(RenderTarget, top.Position.X, top.Position.Y, top.Size.X, top.Size.Y);
+			UtilsDrawing.SetScissor(renderTarget, top.Position.X, top.Position.Y, top.Size.X, top.Size.Y);
 		}
 
-		public static SFML.Graphics.RenderTarget RenderTarget { get; set; } = null;
 		public static Stack<ScissorRect> Stack = new Stack<ScissorRect>();
 
-		public static void Push(ScissorRect rect)
+		public static void Push(RenderTarget renderTarget, ScissorRect rect)
 		{
 			if (Stack.Count == 0)
 			{
@@ -64,16 +60,16 @@ namespace Tiler
 				Stack.Push(rect);
 			}
 
-			Apply();
+			Apply(renderTarget);
 		}
 
-		public static void Pop()
+		public static void Pop(RenderTarget renderTarget)
 		{
 			if (Stack.Count == 0)
 				return;
 
 			Stack.Pop();
-			Apply();
+			Apply(renderTarget);
 		}
 	}
 }

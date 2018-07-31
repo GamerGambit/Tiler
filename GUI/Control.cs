@@ -301,7 +301,7 @@ namespace Tiler.GUI
 
 			states.Transform *= Transform;
 
-			ScissorStack.Push(new ScissorRect()
+			ScissorStack.Push(target, new ScissorRect()
 			{
 				Position = new Vector2i((int)(GlobalPosition.X), (int)(GlobalPosition.Y)),
 				Size = new Vector2i((int)Size.X, (int)Size.Y)
@@ -314,7 +314,7 @@ namespace Tiler.GUI
 				target.Draw(children[index], states);
 			}
 
-			ScissorStack.Pop();
+			ScissorStack.Pop(target);
 		}
 
 		protected virtual void OnUpdate(TimeSpan deltaTime)
