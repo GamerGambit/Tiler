@@ -209,21 +209,22 @@ namespace Tiler.GUI
 		}
 		public ReadOnlyCollection<Control> Children { get; private set; }
 		public Vector2i Size { get => size; set { size = value; InvalidateLayout(); } }
-		public Vector2f GlobalPosition {
+		public Vector2i GlobalPosition {
 			get
 			{
-				var gpos = new Vector2f(0, 0);
+				var gpos = new Vector2i(0, 0);
 				var ctrl = this;
 
 				while(!(ctrl is null))
 				{
-					gpos += ctrl.Position;
+					gpos += new Vector2i((int)ctrl.Position.X, (int)ctrl.Position.Y);
 					ctrl = ctrl.Parent;
 				}
 
 				return gpos;
 			}
 		}
+		public IntRect AABB { get => new IntRect(GlobalPosition, Size); }
 		public bool Visible {
 			get => visible;
 			set
@@ -329,11 +330,7 @@ namespace Tiler.GUI
 
 			states.Transform *= Transform;
 
-			ScissorStack.Push(target, new ScissorRect()
-			{
-				Position = new Vector2i((int)(GlobalPosition.X), (int)(GlobalPosition.Y)),
-				Size = new Vector2i(Size.X, Size.Y)
-			});
+			target.PushScissor(AABB);
 
 			OnDraw(target, states);
 
@@ -342,7 +339,7 @@ namespace Tiler.GUI
 				target.Draw(children[index], states);
 			}
 
-			ScissorStack.Pop(target);
+			target.PopScissor();
 		}
 
 		protected virtual void OnUpdate(TimeSpan deltaTime)

@@ -5,12 +5,6 @@ using SFML.System;
 
 namespace Tiler
 {
-	public struct ScissorRect
-	{
-		public Vector2i Position;
-		public Vector2i Size;
-	}
-
 	public static class ScissorStack
 	{
 		private static int Clamp(int value, int min, int max)
@@ -34,12 +28,12 @@ namespace Tiler
 
 			var top = Stack.Peek();
 			UtilsDrawing.EnableScissor(true);
-			UtilsDrawing.SetScissor(renderTarget, top.Position.X, top.Position.Y, top.Size.X, top.Size.Y);
+			UtilsDrawing.SetScissor(renderTarget, top.Left, top.Top, top.Width, top.Height);
 		}
 
-		public static Stack<ScissorRect> Stack = new Stack<ScissorRect>();
+		public static Stack<IntRect> Stack = new Stack<IntRect>();
 
-		public static void Push(RenderTarget renderTarget, ScissorRect rect)
+		public static void Push(RenderTarget renderTarget, IntRect rect)
 		{
 			if (Stack.Count == 0)
 			{
@@ -48,14 +42,11 @@ namespace Tiler
 			else
 			{
 				var top = Stack.Peek();
-				rect.Position = new Vector2i(
-					Clamp(rect.Position.X, top.Position.X, top.Position.X + top.Size.X),
-					Clamp(rect.Position.Y, top.Position.Y, top.Position.Y + top.Size.Y)
-				);
-				rect.Size = new Vector2i(
-					Clamp(rect.Size.X, 0, top.Position.X + top.Size.X - rect.Position.X),
-					Clamp(rect.Size.Y, 0, top.Position.Y + top.Size.Y - rect.Position.Y)
-				);
+
+				rect.Left = Clamp(rect.Left, top.Left, top.Left + top.Width);
+				rect.Top = Clamp(rect.Top, top.Top, top.Top + top.Height);
+				rect.Width = Clamp(rect.Width, 0, top.Left + top.Width - rect.Left);
+				rect.Height = Clamp(rect.Height, 0, top.Top + top.Height - rect.Top);
 
 				Stack.Push(rect);
 			}
@@ -70,6 +61,16 @@ namespace Tiler
 
 			Stack.Pop();
 			Apply(renderTarget);
+		}
+
+		public static void PushScissor(this RenderTarget target, IntRect rect)
+		{
+			Push(target, rect);
+		}
+
+		public static void PopScissor(this RenderTarget target)
+		{
+			Pop(target);
 		}
 	}
 }
