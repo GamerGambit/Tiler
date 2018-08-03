@@ -12,10 +12,12 @@ namespace Tiler.GUI
 		private Control parent = null;
 		private List<Control> children = new List<Control>();
 		private bool visible = true;
+		private Vector2i size = new Vector2i(0, 0);
 
 		private bool hasFocus = false;
 		private bool mouseOver = false;
 		private bool mouseInBounds = false;
+		private bool layoutDirty = true;
 
 		internal bool HandledMouseMove()
 		{
@@ -206,7 +208,7 @@ namespace Tiler.GUI
 			}
 		}
 		public ReadOnlyCollection<Control> Children { get; private set; }
-		public Vector2f Size { get; set; } = new Vector2f(0, 0);
+		public Vector2i Size { get => size; set { size = value; InvalidateLayout(); } }
 		public Vector2f GlobalPosition {
 			get
 			{
@@ -287,6 +289,19 @@ namespace Tiler.GUI
 			children.Clear();
 		}
 
+		public void InvalidateLayout(bool immediately = false)
+		{
+			if (immediately)
+			{
+				Layout();
+				layoutDirty = false;
+			}
+			else
+			{
+				layoutDirty = true;
+			}
+		}
+
 		public void Update(TimeSpan deltaTime)
 		{
 			if (!Visible)
@@ -306,12 +321,18 @@ namespace Tiler.GUI
 			if (!Visible)
 				return;
 
+			if (layoutDirty)
+			{
+				Layout();
+				layoutDirty = false;
+			}
+
 			states.Transform *= Transform;
 
 			ScissorStack.Push(target, new ScissorRect()
 			{
 				Position = new Vector2i((int)(GlobalPosition.X), (int)(GlobalPosition.Y)),
-				Size = new Vector2i((int)Size.X, (int)Size.Y)
+				Size = new Vector2i(Size.X, Size.Y)
 			});
 
 			OnDraw(target, states);
@@ -370,6 +391,11 @@ namespace Tiler.GUI
 		}
 
 		protected virtual void OnKeyReleased(Glfw3.Glfw.KeyCode key)
+		{
+			// NOP
+		}
+
+		protected virtual void Layout()
 		{
 			// NOP
 		}

@@ -24,7 +24,7 @@ namespace Tiler.GUI.Controls
 		public void SizeToContents()
 		{
 			var gbounds = text.GetGlobalBounds();
-			Size = new Vector2f(gbounds.Left + gbounds.Width, gbounds.Top + gbounds.Height);
+			Size = new Vector2i((int)(gbounds.Left + gbounds.Width), (int)(gbounds.Top + gbounds.Height));
 		}
 
 		protected override void OnDraw(RenderTarget target, RenderStates states)

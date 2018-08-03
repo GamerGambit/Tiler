@@ -12,7 +12,7 @@ namespace Tiler.GUI.Controls
 		private Label label;
 		private RectangleShape shape = new RectangleShape();
 
-		public new Vector2f Size { get => base.Size; set { base.Size = value; shape.Size = value; } }
+		public new Vector2i Size { get => base.Size; set { base.Size = value; shape.Size = new Vector2f(value.X, value.Y); } }
 		public string Text { get => label.String; set => label.String = value; }
 		public Font Font { get => label.Font; set => label.Font = value; }
 		public uint CharacterSize { get => label.CharacterSize; set => label.CharacterSize = value; }
@@ -36,7 +36,7 @@ namespace Tiler.GUI.Controls
 		public void SizeToContents()
 		{
 			label.SizeToContents();
-			Size = label.Size + new Vector2f(4, 4);
+			Size = label.Size + new Vector2i(4, 4);
 		}
 
 		protected override void OnDraw(RenderTarget target, RenderStates states)

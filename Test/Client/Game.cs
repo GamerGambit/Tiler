@@ -57,7 +57,7 @@ namespace Client
 			var panel = new Tiler.GUI.Controls.Panel()
 			{
 				Position = new Vector2f(100, 100),
-				Size = new Vector2f(256, 128),
+				Size = new Vector2i(256, 128),
 				Color = new SFML.Graphics.Color(64, 64, 64, 100)
 			};
 			var button = new Tiler.GUI.Controls.Button(panel)
@@ -77,7 +77,7 @@ namespace Client
 				Font = font,
 				CharacterSize = 140,
 				String = "Sample Label Text",
-				Size = new Vector2f(100, 25),
+				Size = new Vector2i(100, 25),
 				OutlineColor = SFML.Graphics.Color.Blue,
 				OutlineThickness = 1,
 				FillColor = SFML.Graphics.Color.Cyan
