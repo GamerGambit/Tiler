@@ -22,7 +22,7 @@ namespace Tiler.GUI.Controls
 			set => rectShape.FillColor = value;
 		}
 
-		public Panel(Control parent = null) : base(parent)
+		public Panel()
 		{
 			HandlesKeyboardInput = false;
 			HandlesMouseInput = false;

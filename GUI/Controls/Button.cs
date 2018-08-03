@@ -23,13 +23,14 @@ namespace Tiler.GUI.Controls
 
 		public event EventHandler<Glfw.MouseButton> Click;
 
-		public Button(Control parent) : base(parent)
+		public Button()
 		{
-			label = new Label(this)
+			label = new Label()
 			{
 				Position = new Vector2f(2, 2),
 				String = "Button"
 			};
+			AddChild(label);
 			SizeToContents();
 		}
 

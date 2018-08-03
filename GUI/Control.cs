@@ -186,7 +186,7 @@ namespace Tiler.GUI
 				{
 					if (!(parent is null))
 					{
-						parent.children.Remove(this);
+						parent.RemoveChild(this);
 						parent = null;
 						State.Roots.Add(this);
 					}
@@ -198,13 +198,8 @@ namespace Tiler.GUI
 				{
 					State.Roots.Remove(this);
 				}
-				else
-				{
-					parent.children.Remove(this);
-				}
 
 				parent = value;
-				parent.children.Add(this);
 			}
 		}
 		public ReadOnlyCollection<Control> Children { get; private set; }
@@ -238,18 +233,10 @@ namespace Tiler.GUI
 			}
 		}
 
-		public Control(Control parent)
+		public Control()
 		{
 			Children = new ReadOnlyCollection<Control>(children);
-
-			if (parent is null)
-			{
-				State.Roots.Add(this);
-			}
-			else
-			{
-				Parent = parent;
-			}
+			State.Roots.Add(this);
 		}
 
 		public void BringToFront()
@@ -276,8 +263,27 @@ namespace Tiler.GUI
 			}
 			else
 			{
-				parent.children.Remove(this);
+				parent.RemoveChild(this);
 			}
+		}
+
+		public void AddChild(Control child)
+		{
+			if (child.parent is null && State.Roots.Contains(child))
+			{
+				State.Roots.Remove(child);
+			}
+
+			child.parent?.RemoveChild(child);
+
+			children.Add(child);
+			child.parent = this;
+		}
+
+		public void RemoveChild(Control child)
+		{
+			child.parent = null;
+			children.Remove(child);
 		}
 
 		public void RemoveAllChildren()

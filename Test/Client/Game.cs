@@ -60,7 +60,7 @@ namespace Client
 				Size = new Vector2i(256, 128),
 				Color = new SFML.Graphics.Color(64, 64, 64, 100)
 			};
-			var button = new Tiler.GUI.Controls.Button(panel)
+			var button = new Tiler.GUI.Controls.Button()
 			{
 				Font = font,
 				CharacterSize = 12,
@@ -71,7 +71,8 @@ namespace Client
 			};
 			button.Click += (s, e) => Console.WriteLine($"Fancy button clicked with {e}");
 			button.SizeToContents();
-			var text = new Tiler.GUI.Controls.Label(panel)
+			panel.AddChild(button);
+			var text = new Tiler.GUI.Controls.Label()
 			{
 				Position = new Vector2f(0, button.Position.Y + button.Size.Y + 2),
 				Font = font,
@@ -83,6 +84,7 @@ namespace Client
 				FillColor = SFML.Graphics.Color.Cyan
 			};
 			text.SizeToContents();
+			panel.AddChild(text);
 
 			World.Map = new Map
 			{
