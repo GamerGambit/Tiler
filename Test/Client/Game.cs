@@ -54,6 +54,27 @@ namespace Client
 
 			var font = new SFML.Graphics.Font("data/saxmono.ttf");
 
+			var window = new Tiler.GUI.Controls.Window()
+			{
+				Font = font,
+				Position = new Vector2f(100, 100),
+				Size = new Vector2i(300, 300)
+			};
+
+			var button = new Tiler.GUI.Controls.Button()
+			{
+				Parent = window,
+				Font = font,
+				CharacterSize = 12,
+				Text = "Fancy Button",
+				FillColor = new SFML.Graphics.Color(255, 0, 0, 100),
+				OutlineColor = new SFML.Graphics.Color(0, 255, 0, 50),
+				OutlineThickness = -0.5f
+			};
+			button.Click += (s, e) => { Console.WriteLine($"Fancy button clicked with {e}"); window.CloseWindow(); };
+			button.SizeToContents();
+
+			/*
 			var panel = new Tiler.GUI.Controls.Panel()
 			{
 				Position = new Vector2f(100, 100),
@@ -85,6 +106,7 @@ namespace Client
 			};
 			text.SizeToContents();
 			panel.AddChild(text);
+			*/
 
 			World.Map = new Map
 			{
