@@ -200,6 +200,7 @@ namespace Tiler.GUI
 				}
 
 				parent = value;
+				parent.AddChild(this);
 			}
 		}
 		public ReadOnlyCollection<Control> Children { get; private set; }
@@ -278,10 +279,13 @@ namespace Tiler.GUI
 
 			children.Add(child);
 			child.parent = this;
+
+			OnChildAdded(child);
 		}
 
 		public void RemoveChild(Control child)
 		{
+			OnChildRemoved(child);
 			child.parent = null;
 			children.Remove(child);
 		}
@@ -290,7 +294,10 @@ namespace Tiler.GUI
 		{
 			foreach (var child in children)
 			{
-				child.OnRemove();
+				if (HasChild(child))
+				{
+					child.OnRemove();
+				}
 			}
 
 			children.Clear();
@@ -399,6 +406,21 @@ namespace Tiler.GUI
 		}
 
 		protected virtual void Layout()
+		{
+			// NOP
+		}
+
+		public virtual bool HasChild(Control child)
+		{
+			return children.Contains(child);
+		}
+
+		protected virtual void OnChildAdded(Control child)
+		{
+			// NOP
+		}
+
+		protected virtual void OnChildRemoved(Control child)
 		{
 			// NOP
 		}
