@@ -15,7 +15,6 @@ namespace Tiler
 		static Program()
 		{
 			Glfw.ConfigureNativesDirectory(Path.GetFullPath(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)) + "\\thirdparty\\Glfw3");
-			string foo = Path.GetFullPath(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
 			if (!Glfw.Init())
 			{
 				Environment.Exit(1);
