@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using Glfw3;
 
 using SFML.Graphics;
@@ -54,6 +54,11 @@ namespace Tiler.GUI.Controls
 		protected virtual void OnClick(Glfw.MouseButton mouseButton)
 		{
 			// NOP
+		}
+
+		public override IEnumerable<Control> GetChildren()
+		{
+			yield break;
 		}
 	}
 }

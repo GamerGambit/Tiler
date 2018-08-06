@@ -106,20 +106,15 @@ namespace Tiler.GUI.Controls
 			ClientArea.Size = new SFML.System.Vector2i(Size.X - 4, Size.Y - 20 - 4);
 		}
 
-		public override bool HasChild(Control child)
+		public override IEnumerable<Control> GetChildren()
 		{
-			if (child == TitleLabel || child == TitleLabel || child == CloseButton || child == Body || child == ClientArea)
-				return false;
-
-			return ClientArea.HasChild(child);
+			foreach (var child in ClientArea.GetChildren())
+				yield return child;
 		}
 
 		protected override void OnChildAdded(Control child)
 		{
-			if (child == TitleLabel || child == TitleLabel || child == CloseButton || child == Body || child == ClientArea)
-				return;
-
-			if (ClientArea is null)
+			if (ClientArea is null || child == TitleLabel || child == TitleLabel || child == CloseButton || child == Body || child == ClientArea)
 				return;
 
 			ClientArea.AddChild(child);

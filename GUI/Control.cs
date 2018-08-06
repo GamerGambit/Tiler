@@ -268,6 +268,17 @@ namespace Tiler.GUI
 			}
 		}
 
+		public bool HasChild(Control child)
+		{
+			foreach (var c in GetChildren())
+			{
+				if (c == child)
+					return true;
+			}
+
+			return false;
+		}
+
 		public void AddChild(Control child)
 		{
 			if (child.parent is null && State.Roots.Contains(child))
@@ -292,12 +303,9 @@ namespace Tiler.GUI
 
 		public void RemoveAllChildren()
 		{
-			foreach (var child in children)
+			foreach (var child in GetChildren())
 			{
-				if (HasChild(child))
-				{
-					child.OnRemove();
-				}
+				child.OnRemove();
 			}
 
 			children.Clear();
@@ -410,9 +418,10 @@ namespace Tiler.GUI
 			// NOP
 		}
 
-		public virtual bool HasChild(Control child)
+		public virtual IEnumerable<Control> GetChildren()
 		{
-			return children.Contains(child);
+			foreach (var child in children)
+				yield return child;
 		}
 
 		protected virtual void OnChildAdded(Control child)
