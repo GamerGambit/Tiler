@@ -305,7 +305,7 @@ namespace Tiler.GUI
 		{
 			foreach (var child in GetChildren())
 			{
-				child.OnRemove();
+				RemoveChild(child);
 			}
 
 			children.Clear();
