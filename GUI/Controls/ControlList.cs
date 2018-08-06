@@ -82,5 +82,10 @@ namespace Tiler.GUI.Controls
 		{
 			return canvas.Size;
 		}
+
+		public override void OnMouseScroll()
+		{
+			vscrollbar.OnMouseScroll();
+		}
 	}
 }

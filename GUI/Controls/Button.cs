@@ -45,13 +45,13 @@ namespace Tiler.GUI.Controls
 			target.Draw(shape, states);
 		}
 
-		protected override void OnMouseReleased(Glfw.MouseButton mouseButton)
+		public override void OnMouseReleased(Glfw.MouseButton mouseButton)
 		{
 			OnClick(mouseButton);
 			Click?.Invoke(this, mouseButton);
 		}
 
-		protected virtual void OnClick(Glfw.MouseButton mouseButton)
+		public virtual void OnClick(Glfw.MouseButton mouseButton)
 		{
 			// NOP
 		}

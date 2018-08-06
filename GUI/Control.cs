@@ -409,37 +409,37 @@ namespace Tiler.GUI
 			// NOP
 		}
 
-		protected virtual void OnMouseEnter()
+		public virtual void OnMouseEnter()
 		{
 			// NOP
 		}
 
-		protected virtual void OnMouseExit()
+		public virtual void OnMouseExit()
 		{
 			// NOP
 		}
 
-		protected virtual void OnMousePressed(Glfw3.Glfw.MouseButton mouseButton)
+		public virtual void OnMousePressed(Glfw3.Glfw.MouseButton mouseButton)
 		{
 			// NOP
 		}
 
-		protected virtual void OnMouseReleased(Glfw3.Glfw.MouseButton mouseButton)
+		public virtual void OnMouseReleased(Glfw3.Glfw.MouseButton mouseButton)
 		{
 			// NOP
 		}
 
-		protected virtual void OnMouseScroll()
+		public virtual void OnMouseScroll()
 		{
 			// NOP
 		}
 
-		protected virtual void OnKeyPressed(Glfw3.Glfw.KeyCode key)
+		public virtual void OnKeyPressed(Glfw3.Glfw.KeyCode key)
 		{
 			// NOP
 		}
 
-		protected virtual void OnKeyReleased(Glfw3.Glfw.KeyCode key)
+		public virtual void OnKeyReleased(Glfw3.Glfw.KeyCode key)
 		{
 			// NOP
 		}

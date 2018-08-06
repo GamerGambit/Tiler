@@ -53,7 +53,7 @@ namespace Tiler.GUI.Controls
 			target.Draw(grip, states);
 		}
 
-		protected override void OnMouseScroll()
+		public override void OnMouseScroll()
 		{
 			if (!Enabled)
 				return;
