@@ -25,6 +25,8 @@ namespace Tiler.GUI.Controls
 
 		public Button()
 		{
+			RegisterEventTypes = EventType.MousePress | EventType.MouseRelease;
+
 			label = new Label()
 			{
 				Position = new Vector2f(2, 2),

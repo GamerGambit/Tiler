@@ -15,12 +15,6 @@ namespace Tiler.GUI.Controls
 		public float OutlineThickness { get => text.OutlineThickness; set => text.OutlineThickness = value; }
 		public Text.Styles Styles { get => text.Style; set => text.Style = value; }
 
-		public Label()
-		{
-			HandlesKeyboardInput = false;
-			HandlesMouseInput = false;
-		}
-
 		public void SizeToContents()
 		{
 			var gbounds = text.GetGlobalBounds();

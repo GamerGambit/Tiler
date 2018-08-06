@@ -30,6 +30,8 @@ namespace Tiler.GUI.Controls
 
 		public ControlList()
 		{
+			RegisterEventTypes = EventType.MouseScroll;
+
 			vscrollbar = new VerticalScrollBar()
 			{
 				Parent = this

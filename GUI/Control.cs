@@ -8,6 +8,21 @@ namespace Tiler.GUI
 {
 	public abstract class Control : Transformable, Drawable, IUpdatable
 	{
+		[Flags]
+		protected enum EventType
+		{
+			None = 0,
+			MouseEnterExit = 1,
+			MousePress = 2,
+			MouseRelease = 4,
+			MouseScroll = 8,
+
+			KeyPress = 16,
+			KeyRelease = 32
+		}
+		protected static EventType Mouse = EventType.MouseEnterExit | EventType.MousePress | EventType.MouseRelease | EventType.MouseScroll;
+		protected static EventType Keyboard = EventType.KeyPress | EventType.KeyRelease;
+
 		private Control parent = null;
 		private List<Control> children = new List<Control>();
 		private bool visible = true;
@@ -32,7 +47,7 @@ namespace Tiler.GUI
 
 		internal bool HandledMouseMove()
 		{
-			if (!Visible || !HandlesMouseInput)
+			if (!Visible)
 				return false;
 
 			var mousePos = Input.Manager.MousePosition;
@@ -47,20 +62,30 @@ namespace Tiler.GUI
 				{
 					mouseInBounds = false;
 					mouseOver = false;
-					OnMouseExit();
-					MouseExit?.Invoke(this, EventArgs.Empty);
+
+					if (RegisterEventTypes.HasFlag(EventType.MouseEnterExit))
+					{
+						OnMouseExit();
+						MouseExit?.Invoke(this, EventArgs.Empty);
+					}
 				}
 
 				return false;
 			}
 
+			var ret = false;
 			mouseOver = true;
 
 			if (!mouseInBounds)
 			{
 				mouseInBounds = true;
-				OnMouseEnter();
-				MouseEnter?.Invoke(this, EventArgs.Empty);
+
+				if (RegisterEventTypes.HasFlag(EventType.MouseEnterExit))
+				{
+					OnMouseEnter();
+					MouseEnter?.Invoke(this, EventArgs.Empty);
+					ret = true;
+				}
 			}
 
 			for (var index = children.Count - 1; index >= 0; --index)
@@ -76,7 +101,7 @@ namespace Tiler.GUI
 				}
 			}
 
-			return true;
+			return ret;
 		}
 		internal bool HandledMousePressed(Glfw3.Glfw.MouseButton mouseButton)
 		{
@@ -92,7 +117,7 @@ namespace Tiler.GUI
 				}
 			}
 
-			if (!HandlesMouseInput || !mouseOver)
+			if (!RegisterEventTypes.HasFlag(EventType.MousePress) || !mouseOver)
 			{
 				hasFocus = false;
 				return false;
@@ -116,7 +141,7 @@ namespace Tiler.GUI
 					return true;
 			}
 
-			if (!HandlesMouseInput || !hasFocus || !mouseInBounds)
+			if (!RegisterEventTypes.HasFlag(EventType.MouseRelease) || !hasFocus || !mouseInBounds)
 				return false;
 
 			OnMouseReleased(mouseButton);
@@ -134,7 +159,7 @@ namespace Tiler.GUI
 					return true;
 			}
 
-			if (!HandlesMouseInput || !mouseOver)
+			if (!RegisterEventTypes.HasFlag(EventType.MouseScroll) || !mouseOver)
 				return false;
 
 			OnMouseScroll();
@@ -152,7 +177,7 @@ namespace Tiler.GUI
 					return true;
 			}
 
-			if (!HandlesKeyboardInput || !hasFocus)
+			if (!RegisterEventTypes.HasFlag(EventType.KeyPress) || !hasFocus)
 				return false;
 
 			OnKeyPressed(key);
@@ -170,7 +195,7 @@ namespace Tiler.GUI
 					return true;
 			}
 
-			if (!HandlesKeyboardInput || !hasFocus)
+			if (!RegisterEventTypes.HasFlag(EventType.KeyRelease) || !hasFocus)
 				return false;
 
 			OnKeyReleased(key);
@@ -178,8 +203,7 @@ namespace Tiler.GUI
 			return true;
 		}
 
-		protected bool HandlesKeyboardInput { get; set; } = true;
-		protected bool HandlesMouseInput { get; set; } = true;
+		protected EventType RegisterEventTypes = EventType.None;
 
 		public event EventHandler MouseEnter;
 		public event EventHandler MouseExit;

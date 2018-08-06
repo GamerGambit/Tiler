@@ -24,9 +24,6 @@ namespace Tiler.GUI.Controls
 
 		public Panel()
 		{
-			HandlesKeyboardInput = false;
-			HandlesMouseInput = false;
-
 			Size = new Vector2i(250, 100);
 			rectShape.FillColor = new Color(0, 128, 255, 100);
 			rectShape.OutlineColor = Color.Black;

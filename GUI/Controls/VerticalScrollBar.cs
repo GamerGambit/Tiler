@@ -28,6 +28,8 @@ namespace Tiler.GUI.Controls
 
 		public VerticalScrollBar()
 		{
+			RegisterEventTypes = EventType.MouseScroll;
+
 			rect = new RectangleShape()
 			{
 				FillColor = new Color(50, 50, 50)
