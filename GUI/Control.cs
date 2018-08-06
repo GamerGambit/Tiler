@@ -311,6 +311,9 @@ namespace Tiler.GUI
 
 		public void RemoveChild(Control child)
 		{
+			if (!HasChild(child))
+				return;
+
 			OnChildRemoved(child);
 			child.parent = null;
 			children.Remove(child);
