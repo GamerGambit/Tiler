@@ -61,18 +61,30 @@ namespace Client
 				Size = new Vector2i(300, 300)
 			};
 
-			var button = new Tiler.GUI.Controls.Button()
+			var controlList = new Tiler.GUI.Controls.ControlList()
 			{
 				Parent = window,
-				Font = font,
-				CharacterSize = 12,
-				Text = "Fancy Button",
-				FillColor = new SFML.Graphics.Color(255, 0, 0, 100),
-				OutlineColor = new SFML.Graphics.Color(0, 255, 0, 50),
-				OutlineThickness = -0.5f
+				YPadding = 2
 			};
-			button.Click += (s, e) => { Console.WriteLine($"Fancy button clicked with {e}"); window.CloseWindow(); };
-			button.SizeToContents();
+			window.InvalidateLayout(true);
+			controlList.SizeToParent();
+
+			for (var count = 0; count < 20; ++count)
+			{
+				int i = count;
+				var button = new Tiler.GUI.Controls.Button()
+				{
+					Parent = controlList,
+					Font = font,
+					CharacterSize = 12,
+					Text = $"Fancy Button #{i}",
+					FillColor = new SFML.Graphics.Color(255, 0, 0, 100),
+					OutlineColor = new SFML.Graphics.Color(0, 255, 0, 50),
+					OutlineThickness = -0.5f,
+				};
+				button.Click += (s, e) => Console.WriteLine($"Button {i} clicked with {e}");
+				button.SizeToContents();
+			}
 
 			/*
 			var panel = new Tiler.GUI.Controls.Panel()
