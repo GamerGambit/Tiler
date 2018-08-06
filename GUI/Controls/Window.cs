@@ -76,24 +76,6 @@ namespace Tiler.GUI.Controls
 			// NOP
 		}
 
-		protected override void OnUpdate(TimeSpan deltaTime)
-		{
-			TitlePanel.Update(deltaTime);
-			TitleLabel.Update(deltaTime);
-			CloseButton.Update(deltaTime);
-			Body.Update(deltaTime);
-			ClientArea.Update(deltaTime);
-		}
-
-		protected override void OnDraw(RenderTarget target, RenderStates states)
-		{
-			TitlePanel.Draw(target, states);
-			TitleLabel.Draw(target, states);
-			CloseButton.Draw(target, states);
-			Body.Draw(target, states);
-			ClientArea.Draw(target, states);
-		}
-
 		protected override void Layout()
 		{
 			TitlePanel.Size = new Vector2i(Size.X, 20);
