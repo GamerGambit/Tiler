@@ -19,6 +19,18 @@ namespace Tiler.GUI
 		private bool mouseInBounds = false;
 		private bool layoutDirty = true;
 
+		private void DoLayout()
+		{
+			Layout();
+
+			foreach (var child in children)
+			{
+				child.DoLayout();
+			}
+
+			layoutDirty = false;
+		}
+
 		internal bool HandledMouseMove()
 		{
 			if (!Visible || !HandlesMouseInput)
@@ -318,8 +330,7 @@ namespace Tiler.GUI
 		{
 			if (immediately)
 			{
-				Layout();
-				layoutDirty = false;
+				DoLayout();
 			}
 			else
 			{
@@ -334,6 +345,11 @@ namespace Tiler.GUI
 				HandledMouseMove();
 			}
 
+			if (layoutDirty)
+			{
+				DoLayout();
+			}
+
 			OnUpdate(deltaTime);
 
 			foreach (var child in children)
@@ -346,12 +362,6 @@ namespace Tiler.GUI
 		{
 			if (!Visible)
 				return;
-
-			if (layoutDirty)
-			{
-				Layout();
-				layoutDirty = false;
-			}
 
 			states.Transform *= Transform;
 
