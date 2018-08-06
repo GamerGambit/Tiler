@@ -12,9 +12,10 @@ namespace Tiler.GUI.Controls
 		private int barHeight = 0;
 		private int canvasHeight = 0;
 		private float scroll = 0;
+		private bool enabled = true;
 
 		public float Scroll { get => scroll; private set { scroll = Utils.Clamp(value, 0, canvasHeight); Parent?.InvalidateLayout(); } }
-		public bool Enabled { get; private set; }
+		public bool Enabled { get => enabled; private set { enabled = value; Visible = value; } }
 		public float BarScale {
 			get
 			{
@@ -64,12 +65,9 @@ namespace Tiler.GUI.Controls
 		{
 			rect.Size = new SFML.System.Vector2f(Size.X, Size.Y);
 
-			var scroll = Scroll / canvasHeight;
 			var gripHeight = Math.Max(BarScale * Size.Y, 10);
-			var track = Size.Y - gripHeight;
-			track++;
-
-			scroll *= (int)track;
+			var track = (Size.Y - gripHeight) + 1;
+			var scroll = (Scroll / canvasHeight) * track;
 
 			grip.Position = new SFML.System.Vector2f(0, scroll);
 			grip.Size = new SFML.System.Vector2f(Size.X, gripHeight);

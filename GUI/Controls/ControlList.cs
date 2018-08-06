@@ -44,12 +44,14 @@ namespace Tiler.GUI.Controls
 
 		protected override void Layout()
 		{
-			canvas.Size = new Vector2i(Size.X - 13, GetCanvasChildrenSizeY());
+			var canvasHeight = GetCanvasChildrenSizeY();
 
-			vscrollbar.Position = new Vector2f(Size.X - 13, 0);
 			vscrollbar.Size = new Vector2i(13, Size.Y);
-			vscrollbar.Setup(Size.Y, canvas.Size.Y);
+			vscrollbar.Position = new Vector2f(Size.X - vscrollbar.Size.X, 0);
+			vscrollbar.Setup(Size.Y, canvasHeight);
+
 			canvas.Position = new Vector2f(0, -vscrollbar.Scroll);
+			canvas.Size = new Vector2i(Size.X - (vscrollbar.Enabled ? 13 : 0), canvasHeight);
 		}
 
 		public override IEnumerable<Control> GetChildren()
