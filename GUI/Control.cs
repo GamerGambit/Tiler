@@ -300,7 +300,10 @@ namespace Tiler.GUI
 				State.Roots.Remove(child);
 			}
 
-			child.parent?.RemoveChild(child);
+			if (!(child.parent is null) && child.parent != this)
+			{
+				child.parent?.RemoveChild(child);
+			}
 
 			children.Add(child);
 			child.parent = this;
