@@ -329,10 +329,11 @@ namespace Tiler.GUI
 
 		public void Update(TimeSpan deltaTime)
 		{
-			if (!Visible)
-				return;
+			if (Visible)
+			{
+				HandledMouseMove();
+			}
 
-			HandledMouseMove();
 			OnUpdate(deltaTime);
 
 			foreach (var child in children)
