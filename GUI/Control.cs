@@ -240,6 +240,11 @@ namespace Tiler.GUI
 			State.Roots.Add(this);
 		}
 
+		~Control()
+		{
+			OnRemove();
+		}
+
 		public void BringToFront()
 		{
 			if (parent is null)
