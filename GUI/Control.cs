@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 using SFML.Graphics;
 using SFML.System;
@@ -341,6 +340,14 @@ namespace Tiler.GUI
 			}
 		}
 
+		public void SizeToParent()
+		{
+			if (parent is null)
+				return;
+
+			Size = parent.GetInternalSize();
+		}
+
 		public void Update(TimeSpan deltaTime)
 		{
 			if (Visible)
@@ -449,6 +456,11 @@ namespace Tiler.GUI
 		protected virtual void OnChildRemoved(Control child)
 		{
 			// NOP
+		}
+
+		protected virtual Vector2i GetInternalSize()
+		{
+			return Size;
 		}
 	}
 }

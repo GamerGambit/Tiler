@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using SFML.Graphics;
+using SFML.System;
 
 namespace Tiler.GUI.Controls
 {
@@ -32,7 +31,7 @@ namespace Tiler.GUI.Controls
 				Parent = this,
 				String = "Window",
 				CharacterSize = 12,
-				Position = new SFML.System.Vector2f(2, 2)
+				Position = new Vector2f(2, 2)
 			};
 
 			CloseButton = new Button()
@@ -54,13 +53,13 @@ namespace Tiler.GUI.Controls
 			{
 				Parent = this,
 				Color = new Color(200, 200, 200),
-				Position = new SFML.System.Vector2f(0, 20)
+				Position = new Vector2f(0, 20)
 			};
 
 			ClientArea = new Panel()
 			{
 				Parent = this,
-				Position = new SFML.System.Vector2f(2, 22),
+				Position = new Vector2f(2, 22),
 				Color = Color.Transparent
 			};
 		}
@@ -97,13 +96,13 @@ namespace Tiler.GUI.Controls
 
 		protected override void Layout()
 		{
-			TitlePanel.Size = new SFML.System.Vector2i(Size.X, 20);
+			TitlePanel.Size = new Vector2i(Size.X, 20);
 			TitleLabel.SizeToContents();
-			TitleLabel.Position = new SFML.System.Vector2f(2, 2);
+			TitleLabel.Position = new Vector2f(2, 2);
 			CloseButton.SizeToContents();
-			CloseButton.Position = new SFML.System.Vector2f(Size.X - CloseButton.Size.X - 2, 2);
-			Body.Size = new SFML.System.Vector2i(Size.X, Size.Y - 20);
-			ClientArea.Size = new SFML.System.Vector2i(Size.X - 4, Size.Y - 20 - 4);
+			CloseButton.Position = new Vector2f(Size.X - CloseButton.Size.X - 2, 2);
+			Body.Size = new Vector2i(Size.X, Size.Y - 20);
+			ClientArea.Size = new Vector2i(Size.X - 4, Size.Y - 20 - 4);
 		}
 
 		public override IEnumerable<Control> GetChildren()
@@ -118,6 +117,11 @@ namespace Tiler.GUI.Controls
 				return;
 
 			ClientArea.AddChild(child);
+		}
+
+		protected override Vector2i GetInternalSize()
+		{
+			return ClientArea.Size;
 		}
 	}
 }
