@@ -119,6 +119,14 @@ namespace Tiler.GUI.Controls
 			ClientArea.AddChild(child);
 		}
 
+		protected override void OnChildRemoved(Control child)
+		{
+			if (child == ClientArea || child == TitlePanel || child == TitleLabel || child == CloseButton || child == Body)
+				return;
+
+			ClientArea.RemoveChild(child);
+		}
+
 		protected override Vector2i GetInternalSize()
 		{
 			return ClientArea.Size;
