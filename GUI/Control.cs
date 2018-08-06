@@ -203,7 +203,6 @@ namespace Tiler.GUI
 				parent.AddChild(this);
 			}
 		}
-		public ReadOnlyCollection<Control> Children { get; private set; }
 		public Vector2i Size { get => size; set { size = value; InvalidateLayout(); } }
 		public Vector2i GlobalPosition {
 			get
@@ -236,7 +235,6 @@ namespace Tiler.GUI
 
 		public Control()
 		{
-			Children = new ReadOnlyCollection<Control>(children);
 			State.Roots.Add(this);
 		}
 
