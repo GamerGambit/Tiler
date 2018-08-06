@@ -98,7 +98,8 @@ namespace Tiler.GUI
 				return false;
 			}
 
-			BringToFront();
+			// TODO: Add smarter bring-to-front functionality. Right now, clicking on ANY child will bring it to the front which will cause lists of Controls to be reordered.
+			//BringToFront();
 			OnMousePressed(mouseButton);
 			MousePressed?.Invoke(this, mouseButton);
 			hasFocus = true;
@@ -305,10 +306,11 @@ namespace Tiler.GUI
 				child.parent?.RemoveChild(child);
 			}
 
+			if (!OnChildAdded(child))
+				return;
+
 			children.Add(child);
 			child.parent = this;
-
-			OnChildAdded(child);
 		}
 
 		public void RemoveChild(Control child)
@@ -316,7 +318,9 @@ namespace Tiler.GUI
 			if (!HasChild(child))
 				return;
 
-			OnChildRemoved(child);
+			if (!OnChildRemoved(child))
+				return;
+
 			child.parent = null;
 			children.Remove(child);
 		}
@@ -451,14 +455,24 @@ namespace Tiler.GUI
 				yield return child;
 		}
 
-		protected virtual void OnChildAdded(Control child)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="child"></param>
+		/// <returns>Whether or not to add the control</returns>
+		protected virtual bool OnChildAdded(Control child)
 		{
-			// NOP
+			return true;
 		}
 
-		protected virtual void OnChildRemoved(Control child)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="child"></param>
+		/// <returns>Whether or not to remove the control</returns>
+		protected virtual bool OnChildRemoved(Control child)
 		{
-			// NOP
+			return true;
 		}
 
 		protected virtual Vector2i GetInternalSize()

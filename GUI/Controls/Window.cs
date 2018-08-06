@@ -93,20 +93,22 @@ namespace Tiler.GUI.Controls
 				yield return child;
 		}
 
-		protected override void OnChildAdded(Control child)
+		protected override bool OnChildAdded(Control child)
 		{
 			if (ClientArea is null || child == TitlePanel || child == TitleLabel || child == CloseButton || child == Body || child == ClientArea)
-				return;
+				return true;
 
 			ClientArea.AddChild(child);
+			return false;
 		}
 
-		protected override void OnChildRemoved(Control child)
+		protected override bool OnChildRemoved(Control child)
 		{
 			if (child == ClientArea || child == TitlePanel || child == TitleLabel || child == CloseButton || child == Body)
-				return;
+				return true;
 
 			ClientArea.RemoveChild(child);
+			return false;
 		}
 
 		protected override Vector2i GetInternalSize()
