@@ -113,7 +113,7 @@ namespace Tiler.GUI.Controls
 
 		protected override void OnChildAdded(Control child)
 		{
-			if (ClientArea is null || child == TitleLabel || child == TitleLabel || child == CloseButton || child == Body || child == ClientArea)
+			if (ClientArea is null || child == TitlePanel || child == TitleLabel || child == CloseButton || child == Body || child == ClientArea)
 				return;
 
 			ClientArea.AddChild(child);
