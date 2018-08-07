@@ -60,7 +60,7 @@ namespace Client
 			if (ucmd.Keys.HasFlag(InKeys.MoveRight))
 				velocity.X += 1;
 
-			velocity += new Vector2f(Tiler.Input.Manager.MouseWheelDeltas.X * -5.0f, Tiler.Input.Manager.MouseWheelDeltas.Y * -5.0f);
+			//velocity += new Vector2f(Tiler.Input.Manager.MouseWheelDeltas.X * -5.0f, Tiler.Input.Manager.MouseWheelDeltas.Y * -5.0f);
 
 			// TODO: this is the movement speed (100.0f), so make it legit at some point
 			velocity.X *= 50.0f;
