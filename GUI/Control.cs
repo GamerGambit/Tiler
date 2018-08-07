@@ -145,17 +145,20 @@ namespace Tiler.GUI
 			if (!Visible || !enabled)
 				return false;
 
+			bool handled = false;
 			for (var index = children.Count - 1; index >= 0; --index)
 			{
 				if (children[index].HandledMouseReleased(mouseButton))
-					return true;
+				{
+					handled = true;
+				}
 			}
 
-			if (!HasFocus || !mouseInBounds)
-				return false;
+			if (!HasFocus)
+				return handled;
 
 			if (!RegisterEventTypes.HasFlag(EventType.MouseRelease))
-				return false;
+				return handled;
 
 			OnMouseReleased(mouseButton);
 			MouseReleased?.Invoke(this, mouseButton);
@@ -203,14 +206,17 @@ namespace Tiler.GUI
 			if (!Visible || !enabled)
 				return false;
 
+			bool handled = false;
 			for (var index = children.Count - 1; index >= 0; --index)
 			{
 				if (children[index].HandledKeyReleased(key))
-					return true;
+				{
+					handled = true;
+				}
 			}
 
 			if (!RegisterEventTypes.HasFlag(EventType.KeyRelease) || !HasFocus)
-				return false;
+				return handled;
 
 			OnKeyReleased(key);
 			KeyReleased?.Invoke(this, key);
