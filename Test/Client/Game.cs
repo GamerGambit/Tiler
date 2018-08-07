@@ -46,7 +46,7 @@ namespace Client
 			window.InvalidateLayout(true);
 			controlList.SizeToParent();
 			controlList.Position = new Vector2f(0, textinput.Size.Y + 2);
-			controlList.Size = new Vector2i(controlList.Size.X, controlList.Size.Y - (int)controlList.Position.Y - textinput.Size.Y);
+			controlList.Size = new Vector2i(controlList.Size.X, controlList.Size.Y - (int)controlList.Position.Y);
 			textinput.Submit += (s, e) =>
 			{
 				if (textinput.Text == "/close")
@@ -67,6 +67,19 @@ namespace Client
 				controlList.AddChild(label);
 				textinput.Text = "";
 			};
+
+			for (var count = 0; count < 50; ++count)
+			{
+				var i = count;
+				var label = new Tiler.GUI.Controls.Label()
+				{
+					Font = font,
+					CharacterSize = 12,
+					String = "Label " + i.ToString()
+				};
+				label.SizeToContents();
+				controlList.AddChild(label);
+			}
 
 			World.Map = new Map
 			{

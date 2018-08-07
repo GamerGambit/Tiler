@@ -1,6 +1,9 @@
 ﻿using System;
 
+using Glfw3;
+
 using SFML.Graphics;
+using SFML.System;
 
 namespace Tiler.GUI.Controls
 {
@@ -12,10 +15,12 @@ namespace Tiler.GUI.Controls
 		private int barHeight = 0;
 		private int canvasHeight = 0;
 		private float scroll = 0;
-		private bool enabled = true;
+
+		private bool dragging = false;
+		private Vector2i mouseClickPos = new Vector2i(0, 0);
 
 		public float Scroll { get => scroll; private set { scroll = Utils.Clamp(value, 0, canvasHeight); Parent?.InvalidateLayout(); } }
-		public bool Enabled { get => enabled; private set { enabled = value; Visible = value; } }
+		public new bool Enabled { get => base.Enabled; private set { base.Enabled = value; Visible = value; } }
 		public float BarScale {
 			get
 			{
@@ -28,7 +33,7 @@ namespace Tiler.GUI.Controls
 
 		public VerticalScrollBar()
 		{
-			RegisterEventTypes = EventType.MouseScroll;
+			RegisterEventTypes = EventType.MouseScroll | EventType.MousePress | EventType.MouseRelease;
 
 			rect = new RectangleShape()
 			{
@@ -51,10 +56,44 @@ namespace Tiler.GUI.Controls
 			InvalidateLayout();
 		}
 
+		protected override void OnUpdate(TimeSpan deltaTime)
+		{
+			if (dragging)
+			{
+				var mousePos = ScreenToLocal(new Vector2i((int)Input.Manager.MousePosition.X, (int)Input.Manager.MousePosition.Y));
+				var diff = mousePos - mouseClickPos;
+				Scroll += diff.Y / BarScale;
+				//Console.WriteLine(diff.Y / BarScale);
+				mouseClickPos = mousePos;
+			}
+		}
+
 		protected override void OnDraw(RenderTarget target, RenderStates states)
 		{
 			target.Draw(rect, states);
 			target.Draw(grip, states);
+		}
+
+		public override void OnMousePressed(Glfw.MouseButton mouseButton)
+		{
+			if (mouseButton != Glfw.MouseButton.ButtonLeft)
+				return;
+
+			var mousePos = ScreenToLocal(new Vector2i((int)Input.Manager.MousePosition.X, (int)Input.Manager.MousePosition.Y));
+
+			if (grip.GetGlobalBounds().Contains(mousePos.X, mousePos.Y))
+			{
+				dragging = true;
+				mouseClickPos = mousePos;
+			}
+		}
+
+		public override void OnMouseReleased(Glfw.MouseButton mouseButton)
+		{
+			if (mouseButton != Glfw.MouseButton.ButtonLeft)
+				return;
+
+			dragging = false;
 		}
 
 		public override void OnMouseScroll()
@@ -67,14 +106,14 @@ namespace Tiler.GUI.Controls
 
 		protected override void Layout()
 		{
-			rect.Size = new SFML.System.Vector2f(Size.X, Size.Y);
+			rect.Size = new Vector2f(Size.X, Size.Y);
 
 			var gripHeight = Math.Max(BarScale * (Size.Y - 1), 10);
 			var track = (Size.Y - 3 - gripHeight) + 1;
 			var scroll = (Scroll / canvasHeight) * track;
 
-			grip.Position = new SFML.System.Vector2f(1, 1 + scroll);
-			grip.Size = new SFML.System.Vector2f(Size.X - 2, gripHeight);
+			grip.Position = new Vector2f(1, 1 + scroll);
+			grip.Size = new Vector2f(Size.X - 2, gripHeight);
 		}
 	}
 }
