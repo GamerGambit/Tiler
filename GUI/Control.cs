@@ -35,6 +35,7 @@ namespace Tiler.GUI
 		private bool mouseOver = false;
 		private bool mouseInBounds = false;
 		private bool layoutDirty = true;
+		private bool enabled = true;
 
 		private void DoLayout()
 		{
@@ -50,7 +51,7 @@ namespace Tiler.GUI
 
 		internal bool HandledMouseMove()
 		{
-			if (!Visible)
+			if (!Visible || !enabled)
 				return false;
 
 			var mousePos = Input.Manager.MousePosition;
@@ -108,7 +109,7 @@ namespace Tiler.GUI
 		}
 		internal bool HandledMousePressed(Glfw.MouseButton mouseButton)
 		{
-			if (!Visible)
+			if (!Visible || !enabled)
 				return false;
 
 			for (var index = children.Count - 1; index >= 0; --index)
@@ -141,7 +142,7 @@ namespace Tiler.GUI
 		}
 		internal bool HandledMouseReleased(Glfw.MouseButton mouseButton)
 		{
-			if (!Visible)
+			if (!Visible || !enabled)
 				return false;
 
 			for (var index = children.Count - 1; index >= 0; --index)
@@ -163,7 +164,7 @@ namespace Tiler.GUI
 		}
 		internal bool HandledMouseScroll()
 		{
-			if (!Visible)
+			if (!Visible || !enabled)
 				return false;
 
 			for (var index = children.Count - 1; index >= 0; --index)
@@ -181,7 +182,7 @@ namespace Tiler.GUI
 		}
 		internal bool HandledKeyPress(Glfw.KeyCode key)
 		{
-			if (!Visible)
+			if (!Visible || !enabled)
 				return false;
 
 			for (var index = children.Count - 1; index >= 0; --index)
@@ -199,7 +200,7 @@ namespace Tiler.GUI
 		}
 		internal bool HandledKeyReleased(Glfw.KeyCode key)
 		{
-			if (!Visible)
+			if (!Visible || !enabled)
 				return false;
 
 			for (var index = children.Count - 1; index >= 0; --index)
@@ -217,7 +218,7 @@ namespace Tiler.GUI
 		}
 		internal bool HandledTextInput(uint codepoint)
 		{
-			if (!visible)
+			if (!visible || !enabled)
 				return false;
 
 			for (var index = children.Count - 1; index >= 0; --index)
@@ -295,6 +296,19 @@ namespace Tiler.GUI
 			{
 				visible = value;
 				if (!visible)
+				{
+					HasFocus = false;
+					mouseOver = false;
+				}
+			}
+		}
+		public bool Enabled
+		{
+			get => enabled;
+			set
+			{
+				enabled = value;
+				if (!enabled)
 				{
 					HasFocus = false;
 					mouseOver = false;
