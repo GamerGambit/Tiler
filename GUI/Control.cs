@@ -325,6 +325,11 @@ namespace Tiler.GUI
 			}
 		}
 
+		public Vector2i ScreenToLocal(Vector2i vec)
+		{
+			return vec - GlobalPosition;
+		}
+
 		public void Remove()
 		{
 			OnRemove();
