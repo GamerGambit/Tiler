@@ -42,7 +42,7 @@ namespace Tiler
 			};
 			Window.UnicodeInput += (s, e) =>
 			{
-				GUI.State.HandleTextInput(e.CodePoint, e.Modifiers);
+				GUI.State.HandleTextInput(e.CodePoint);
 			};
 			Window.MousePressed += (s, e) =>
 			{

@@ -10,12 +10,6 @@ namespace Tiler.GUI
 {
 	public abstract class Control : Transformable, Drawable, IUpdatable
 	{
-		public struct TextEnteredEventArgs
-		{
-			public uint CodePoint;
-			public Glfw.KeyMods Modifiers;
-		}
-
 		[Flags]
 		protected enum EventType
 		{
@@ -112,7 +106,7 @@ namespace Tiler.GUI
 
 			return ret;
 		}
-		internal bool HandledMousePressed(Glfw3.Glfw.MouseButton mouseButton)
+		internal bool HandledMousePressed(Glfw.MouseButton mouseButton)
 		{
 			if (!Visible)
 				return false;
@@ -144,7 +138,7 @@ namespace Tiler.GUI
 			hasFocus = true;
 			return true;
 		}
-		internal bool HandledMouseReleased(Glfw3.Glfw.MouseButton mouseButton)
+		internal bool HandledMouseReleased(Glfw.MouseButton mouseButton)
 		{
 			if (!Visible)
 				return false;
@@ -184,7 +178,7 @@ namespace Tiler.GUI
 			MouseScrolled?.Invoke(this, EventArgs.Empty);
 			return true;
 		}
-		internal bool HandledKeyPress(Glfw3.Glfw.KeyCode key)
+		internal bool HandledKeyPress(Glfw.KeyCode key)
 		{
 			if (!Visible)
 				return false;
@@ -202,7 +196,7 @@ namespace Tiler.GUI
 			KeyPressed?.Invoke(this, key);
 			return true;
 		}
-		internal bool HandledKeyReleased(Glfw3.Glfw.KeyCode key)
+		internal bool HandledKeyReleased(Glfw.KeyCode key)
 		{
 			if (!Visible)
 				return false;
@@ -220,26 +214,22 @@ namespace Tiler.GUI
 			KeyReleased?.Invoke(this, key);
 			return true;
 		}
-		internal bool HandledTextInput(uint codepoint, Glfw.KeyMods modifiers)
+		internal bool HandledTextInput(uint codepoint)
 		{
 			if (!visible)
 				return false;
 
 			for (var index = children.Count - 1; index >= 0; --index)
 			{
-				if (children[index].HandledTextInput(codepoint, modifiers))
+				if (children[index].HandledTextInput(codepoint))
 					return true;
 			}
 
 			if (!RegisterEventTypes.HasFlag(EventType.TextEntered) || !hasFocus)
 				return false;
 
-			OnTextEntered(codepoint, modifiers);
-			TextEntered?.Invoke(this, new TextEnteredEventArgs()
-			{
-				CodePoint = codepoint,
-				Modifiers = modifiers
-			});
+			OnTextEntered(codepoint);
+			TextEntered?.Invoke(this, codepoint);
 
 			return true;
 		}
@@ -248,12 +238,12 @@ namespace Tiler.GUI
 
 		public event EventHandler MouseEnter;
 		public event EventHandler MouseExit;
-		public event EventHandler<Glfw3.Glfw.MouseButton> MousePressed;
-		public event EventHandler<Glfw3.Glfw.MouseButton> MouseReleased;
+		public event EventHandler<Glfw.MouseButton> MousePressed;
+		public event EventHandler<Glfw.MouseButton> MouseReleased;
 		public event EventHandler MouseScrolled;
-		public event EventHandler<Glfw3.Glfw.KeyCode> KeyPressed;
-		public event EventHandler<Glfw3.Glfw.KeyCode> KeyReleased;
-		public event EventHandler<TextEnteredEventArgs> TextEntered;
+		public event EventHandler<Glfw.KeyCode> KeyPressed;
+		public event EventHandler<Glfw.KeyCode> KeyReleased;
+		public event EventHandler<uint> TextEntered;
 
 		public Control Parent
 		{
@@ -485,12 +475,12 @@ namespace Tiler.GUI
 			// NOP
 		}
 
-		public virtual void OnMousePressed(Glfw3.Glfw.MouseButton mouseButton)
+		public virtual void OnMousePressed(Glfw.MouseButton mouseButton)
 		{
 			// NOP
 		}
 
-		public virtual void OnMouseReleased(Glfw3.Glfw.MouseButton mouseButton)
+		public virtual void OnMouseReleased(Glfw.MouseButton mouseButton)
 		{
 			// NOP
 		}
@@ -500,17 +490,17 @@ namespace Tiler.GUI
 			// NOP
 		}
 
-		public virtual void OnKeyPressed(Glfw3.Glfw.KeyCode key)
+		public virtual void OnKeyPressed(Glfw.KeyCode key)
 		{
 			// NOP
 		}
 
-		public virtual void OnKeyReleased(Glfw3.Glfw.KeyCode key)
+		public virtual void OnKeyReleased(Glfw.KeyCode key)
 		{
 			// NOP
 		}
 
-		public virtual void OnTextEntered(uint codepoint, Glfw.KeyMods modifiers)
+		public virtual void OnTextEntered(uint codepoint)
 		{
 			// NOP
 		}
