@@ -25,13 +25,13 @@ namespace Tiler.GUI
 		}
 		protected static EventType Mouse = EventType.MouseEnterExit | EventType.MousePress | EventType.MouseRelease | EventType.MouseScroll;
 		protected static EventType Keyboard = EventType.KeyPress | EventType.KeyRelease;
+		protected bool HasFocus { get; private set; } = false;
 
 		private Control parent = null;
 		private List<Control> children = new List<Control>();
 		private bool visible = true;
 		private Vector2i size = new Vector2i(0, 0);
 
-		private bool hasFocus = false;
 		private bool mouseOver = false;
 		private bool mouseInBounds = false;
 		private bool layoutDirty = true;
@@ -115,14 +115,14 @@ namespace Tiler.GUI
 			{
 				if (children[index].HandledMousePressed(mouseButton))
 				{
-					hasFocus = false;
+					HasFocus = false;
 					return true;
 				}
 			}
 
 			if (!mouseOver)
 			{
-				hasFocus = false;
+				HasFocus = false;
 				return false;
 			}
 
@@ -135,7 +135,7 @@ namespace Tiler.GUI
 				MousePressed?.Invoke(this, mouseButton);
 			}
 
-			hasFocus = true;
+			HasFocus = true;
 			return true;
 		}
 		internal bool HandledMouseReleased(Glfw.MouseButton mouseButton)
@@ -149,7 +149,7 @@ namespace Tiler.GUI
 					return true;
 			}
 
-			if (!hasFocus || !mouseInBounds)
+			if (!HasFocus || !mouseInBounds)
 				return false;
 
 			if (RegisterEventTypes.HasFlag(EventType.MouseRelease))
@@ -189,7 +189,7 @@ namespace Tiler.GUI
 					return true;
 			}
 
-			if (!RegisterEventTypes.HasFlag(EventType.KeyPress) || !hasFocus)
+			if (!RegisterEventTypes.HasFlag(EventType.KeyPress) || !HasFocus)
 				return false;
 
 			OnKeyPressed(key);
@@ -207,7 +207,7 @@ namespace Tiler.GUI
 					return true;
 			}
 
-			if (!RegisterEventTypes.HasFlag(EventType.KeyRelease) || !hasFocus)
+			if (!RegisterEventTypes.HasFlag(EventType.KeyRelease) || !HasFocus)
 				return false;
 
 			OnKeyReleased(key);
@@ -225,7 +225,7 @@ namespace Tiler.GUI
 					return true;
 			}
 
-			if (!RegisterEventTypes.HasFlag(EventType.TextEntered) || !hasFocus)
+			if (!RegisterEventTypes.HasFlag(EventType.TextEntered) || !HasFocus)
 				return false;
 
 			OnTextEntered(codepoint);
@@ -295,7 +295,7 @@ namespace Tiler.GUI
 				visible = value;
 				if (!visible)
 				{
-					hasFocus = false;
+					HasFocus = false;
 					mouseOver = false;
 				}
 			}
