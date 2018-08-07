@@ -73,6 +73,7 @@
     <Compile Include="GUI\Controls\ControlList.cs" />
     <Compile Include="GUI\Controls\Label.cs" />
     <Compile Include="GUI\Controls\Panel.cs" />
+    <Compile Include="GUI\Controls\TextInput.cs" />
     <Compile Include="GUI\Controls\VerticalScrollBar.cs" />
     <Compile Include="GUI\Controls\Window.cs" />
     <Compile Include="GUI\State.cs" />

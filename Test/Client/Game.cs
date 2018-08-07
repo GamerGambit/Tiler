@@ -18,39 +18,6 @@ namespace Client
 		{
 			Window.Title = "Habitat Game Thingo";
 			GameView = new SFML.Graphics.View(Window.RenderWindow.GetView());
-			/*
-			// Test 1
-			var dkpink = new Tiler.GUI.Controls.Panel
-			{
-				Position = new Vector2f(100, 100),
-				Size = new Vector2f(300, 300),
-				Color = new SFML.Graphics.Color(231, 84, 128)
-			};
-			dkpink.MouseEnter += (s, e) => Console.WriteLine("Mouse Enter dark-pink");
-			dkpink.MouseExit += (s, e) => Console.WriteLine("Mouse Exit dark-pink");
-			dkpink.MousePressed += (s, e) => Console.WriteLine($"Mouse {e} pressed in dark-pink");
-			dkpink.MouseScrolled += (s, e) => Console.WriteLine($"Mouse scrolled in dark-pink");
-			var pnk = new Tiler.GUI.Controls.Panel(dkpink)
-			{
-				Position = new Vector2f(100, 50),
-				Size = new Vector2f(250, 200),
-				Color = new SFML.Graphics.Color(255, 192, 203)
-			};
-			pnk.MouseEnter += (s, e) => Console.WriteLine("Mouse Enter pink");
-			pnk.MouseExit += (s, e) => Console.WriteLine("Mouse Exit pink");
-			pnk.MousePressed += (s, e) => Console.WriteLine($"Mouse {e} pressed in pink");
-			pnk.MouseScrolled += (s, e) => Console.WriteLine($"Mouse scrolled in pink");
-			var orng = new Tiler.GUI.Controls.Panel(dkpink)
-			{
-				Position = new Vector2f(85, 50),
-				Size = new Vector2f(100, 100),
-				Color = new SFML.Graphics.Color(255, 211, 106)
-			};
-			orng.MouseEnter += (s, e) => Console.WriteLine("Mouse Enter orange");
-			orng.MouseExit += (s, e) => Console.WriteLine("Mouse Exit orange");
-			orng.MousePressed += (s, e) => Console.WriteLine($"Mouse {e} pressed in orange");
-			orng.MouseScrolled += (s, e) => Console.WriteLine($"Mouse scrolled in orange");
-			*/
 
 			var font = new SFML.Graphics.Font("data/saxmono.ttf");
 
@@ -61,6 +28,16 @@ namespace Client
 				Size = new Vector2i(300, 300)
 			};
 
+			var textinput = new Tiler.GUI.Controls.TextInput()
+			{
+				Parent = window,
+				Font = font,
+				CharacterSize = 12,
+				MaxCharacters = 10
+			};
+			window.InvalidateLayout(true);
+			textinput.SizeToParent();
+
 			var controlList = new Tiler.GUI.Controls.ControlList()
 			{
 				Parent = window,
@@ -68,57 +45,28 @@ namespace Client
 			};
 			window.InvalidateLayout(true);
 			controlList.SizeToParent();
-
-			for (var count = 0; count < 20; ++count)
+			controlList.Position = new Vector2f(0, textinput.Size.Y + 2);
+			controlList.Size = new Vector2i(controlList.Size.X, controlList.Size.Y - (int)controlList.Position.Y - textinput.Size.Y);
+			textinput.Submit += (s, e) =>
 			{
-				int i = count;
-				var button = new Tiler.GUI.Controls.Button()
+				if (textinput.Text == "/close")
 				{
-					Parent = controlList,
+					window.CloseWindow();
+					return;
+				}
+
+				var label = new Tiler.GUI.Controls.Label()
+				{
 					Font = font,
 					CharacterSize = 12,
-					Text = $"Fancy Button #{i}",
-					FillColor = new SFML.Graphics.Color(255, 0, 0, 100),
-					OutlineColor = new SFML.Graphics.Color(0, 255, 0, 50),
-					OutlineThickness = -0.5f,
+					String = textinput.Text,
+					FillColor = SFML.Graphics.Color.Black
 				};
-				button.Click += (s, e) => Console.WriteLine($"Button {i} clicked with {e}");
-				button.SizeToContents();
-			}
+				label.SizeToContents();
 
-			/*
-			var panel = new Tiler.GUI.Controls.Panel()
-			{
-				Position = new Vector2f(100, 100),
-				Size = new Vector2i(256, 128),
-				Color = new SFML.Graphics.Color(64, 64, 64, 100)
+				controlList.AddChild(label);
+				textinput.Text = "";
 			};
-			var button = new Tiler.GUI.Controls.Button()
-			{
-				Font = font,
-				CharacterSize = 12,
-				Text = "Fancy Button",
-				FillColor = new SFML.Graphics.Color(255, 0, 0, 100),
-				OutlineColor = new SFML.Graphics.Color(0, 255, 0, 50),
-				OutlineThickness = -0.5f
-			};
-			button.Click += (s, e) => Console.WriteLine($"Fancy button clicked with {e}");
-			button.SizeToContents();
-			panel.AddChild(button);
-			var text = new Tiler.GUI.Controls.Label()
-			{
-				Position = new Vector2f(0, button.Position.Y + button.Size.Y + 2),
-				Font = font,
-				CharacterSize = 140,
-				String = "Sample Label Text",
-				Size = new Vector2i(100, 25),
-				OutlineColor = SFML.Graphics.Color.Blue,
-				OutlineThickness = 1,
-				FillColor = SFML.Graphics.Color.Cyan
-			};
-			text.SizeToContents();
-			panel.AddChild(text);
-			*/
 
 			World.Map = new Map
 			{
