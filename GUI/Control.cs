@@ -11,7 +11,7 @@ namespace Tiler.GUI
 	public abstract class Control : Transformable, Drawable, IUpdatable
 	{
 		[Flags]
-		protected enum EventType
+		public enum EventType
 		{
 			None = 0,
 			MouseEnterExit = 1,
@@ -236,8 +236,6 @@ namespace Tiler.GUI
 			return true;
 		}
 
-		protected EventType RegisterEventTypes = EventType.None;
-
 		public event EventHandler MouseEnter;
 		public event EventHandler MouseExit;
 		public event EventHandler<Glfw.MouseButton> MousePressed;
@@ -315,6 +313,7 @@ namespace Tiler.GUI
 				}
 			}
 		}
+		public EventType RegisterEventTypes { get; set; } = EventType.None;
 
 		public Control()
 		{
