@@ -31,12 +31,14 @@ namespace Tiler
 				var (index, state) = Input.Manager.GetStateWithIndex(e.Key);
 				state.IsDown = true;
 				Input.Manager.inputStates[index] = state;
+				GUI.State.HandleKeyPressed(e.Key);
 			};
 			Window.KeyReleased += (s, e) =>
 			{
 				var (index, state) = Input.Manager.GetStateWithIndex(e.Key);
 				state.IsDown = false;
 				Input.Manager.inputStates[index] = state;
+				GUI.State.HandleKeyReleased(e.Key);
 			};
 			Window.UnicodeInput += (s, e) =>
 			{
