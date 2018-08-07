@@ -14,6 +14,9 @@ namespace Tiler.GUI.Controls
 		private Panel Body;
 		private Panel ClientArea;
 
+		private bool dragging = false;
+		private Vector2i mouseClickPos = new Vector2i(0, 0);
+
 		public Font Font { get => TitleLabel.Font; set { TitleLabel.Font = value; CloseButton.Font = value; } }
 
 		public event EventHandler Close;
@@ -24,6 +27,22 @@ namespace Tiler.GUI.Controls
 			{
 				Parent = this,
 				Color = new Color(100, 100, 100)
+			};
+			TitlePanel.RegisterEventTypes |= EventType.MousePress | EventType.MouseRelease;
+			TitlePanel.MousePressed += (s, e) =>
+			{
+				if (e != Glfw3.Glfw.MouseButton.ButtonLeft)
+					return;
+
+				dragging = true;
+				mouseClickPos = ScreenToLocal(new Vector2i((int)Input.Manager.MousePosition.X, (int)Input.Manager.MousePosition.Y));
+			};
+			TitlePanel.MouseReleased += (s, e) =>
+			{
+				if (e != Glfw3.Glfw.MouseButton.ButtonLeft)
+					return;
+
+				dragging = false;
 			};
 
 			TitleLabel = new Label()
@@ -74,6 +93,16 @@ namespace Tiler.GUI.Controls
 		protected virtual void OnClose()
 		{
 			// NOP
+		}
+
+		protected override void OnUpdate(TimeSpan deltaTime)
+		{
+			if (dragging)
+			{
+				var mousePos = ScreenToLocal(new Vector2i((int)Input.Manager.MousePosition.X, (int)Input.Manager.MousePosition.Y));
+				var diff = mousePos - mouseClickPos;
+				Position += new Vector2f(diff.X, diff.Y);
+			}
 		}
 
 		protected override void Layout()
