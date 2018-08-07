@@ -68,7 +68,7 @@ namespace Tiler.GUI.Controls
 				return true;
 
 			canvas.AddChild(child);
-			GetCanvasChildrenSizeY();
+			InvalidateLayout();
 
 			return false;
 		}
@@ -76,7 +76,7 @@ namespace Tiler.GUI.Controls
 		protected override bool OnChildRemoved(Control child)
 		{
 			canvas.RemoveChild(child);
-			GetCanvasChildrenSizeY();
+			InvalidateLayout();
 			return false;
 		}
 
