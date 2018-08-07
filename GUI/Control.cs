@@ -117,7 +117,7 @@ namespace Tiler.GUI
 				}
 			}
 
-			if (!RegisterEventTypes.HasFlag(EventType.MousePress) || !mouseOver)
+			if (!mouseOver)
 			{
 				hasFocus = false;
 				return false;
@@ -125,8 +125,13 @@ namespace Tiler.GUI
 
 			// TODO: Add smarter bring-to-front functionality. Right now, clicking on ANY child will bring it to the front which will cause lists of Controls to be reordered.
 			//BringToFront();
-			OnMousePressed(mouseButton);
-			MousePressed?.Invoke(this, mouseButton);
+
+			if (RegisterEventTypes.HasFlag(EventType.MousePress))
+			{
+				OnMousePressed(mouseButton);
+				MousePressed?.Invoke(this, mouseButton);
+			}
+
 			hasFocus = true;
 			return true;
 		}
@@ -141,11 +146,15 @@ namespace Tiler.GUI
 					return true;
 			}
 
-			if (!RegisterEventTypes.HasFlag(EventType.MouseRelease) || !hasFocus || !mouseInBounds)
+			if (!hasFocus || !mouseInBounds)
 				return false;
 
-			OnMouseReleased(mouseButton);
-			MouseReleased?.Invoke(this, mouseButton);
+			if (RegisterEventTypes.HasFlag(EventType.MouseRelease))
+			{
+				OnMouseReleased(mouseButton);
+				MouseReleased?.Invoke(this, mouseButton);
+			}
+
 			return true;
 		}
 		internal bool HandledMouseScroll()
