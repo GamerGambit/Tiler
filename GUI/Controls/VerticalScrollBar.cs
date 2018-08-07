@@ -32,12 +32,14 @@ namespace Tiler.GUI.Controls
 
 			rect = new RectangleShape()
 			{
-				FillColor = new Color(50, 50, 50)
+				FillColor = new Color(100, 100, 100)
 			};
 
 			grip = new RectangleShape()
 			{
-				FillColor = new Color(100, 100, 100)
+				FillColor = new Color(150, 150, 150),
+				OutlineColor = new Color(50, 50, 50),
+				OutlineThickness = -2.0f
 			};
 		}
 
@@ -60,19 +62,19 @@ namespace Tiler.GUI.Controls
 			if (!Enabled)
 				return;
 
-			Scroll += ((int)Input.Manager.MouseWheelDeltas.Y * -2);
+			Scroll += Input.Manager.MouseWheelDeltas.Y * -2;
 		}
 
 		protected override void Layout()
 		{
 			rect.Size = new SFML.System.Vector2f(Size.X, Size.Y);
 
-			var gripHeight = Math.Max(BarScale * Size.Y, 10);
-			var track = (Size.Y - gripHeight) + 1;
+			var gripHeight = Math.Max(BarScale * (Size.Y - 1), 10);
+			var track = (Size.Y - 3 - gripHeight) + 1;
 			var scroll = (Scroll / canvasHeight) * track;
 
-			grip.Position = new SFML.System.Vector2f(0, scroll);
-			grip.Size = new SFML.System.Vector2f(Size.X, gripHeight);
+			grip.Position = new SFML.System.Vector2f(1, 1 + scroll);
+			grip.Size = new SFML.System.Vector2f(Size.X - 2, gripHeight);
 		}
 	}
 }
