@@ -63,7 +63,6 @@ namespace Tiler.GUI.Controls
 				var mousePos = ScreenToLocal(new Vector2i((int)Input.Manager.MousePosition.X, (int)Input.Manager.MousePosition.Y));
 				var diff = mousePos - mouseClickPos;
 				Scroll += diff.Y / BarScale;
-				//Console.WriteLine(diff.Y / BarScale);
 				mouseClickPos = mousePos;
 			}
 		}
@@ -101,7 +100,7 @@ namespace Tiler.GUI.Controls
 			if (!Enabled)
 				return;
 
-			Scroll += Input.Manager.MouseWheelDeltas.Y * -2;
+			Scroll += Input.Manager.MouseWheelDeltas.Y * -50;
 		}
 
 		protected override void Layout()
