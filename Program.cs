@@ -38,6 +38,10 @@ namespace Tiler
 				state.IsDown = false;
 				Input.Manager.inputStates[index] = state;
 			};
+			Window.UnicodeInput += (s, e) =>
+			{
+				GUI.State.HandleTextInput(e.CodePoint, e.Modifiers);
+			};
 			Window.MousePressed += (s, e) =>
 			{
 				var (index, state) = Input.Manager.GetStateWithIndex(e.Button);

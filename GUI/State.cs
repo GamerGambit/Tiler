@@ -60,6 +60,16 @@ namespace Tiler.GUI
 
 			return false;
 		}
+		public static bool HandleTextInput(uint codepoint, Glfw.KeyMods modifiers)
+		{
+			for (var index = Roots.Count - 1; index >= 0; --index)
+			{
+				if (Roots[index].HandledTextInput(codepoint, modifiers))
+					return true;
+			}
+
+			return false;
+		}
 
 		public static void Update(TimeSpan deltaTime)
 		{

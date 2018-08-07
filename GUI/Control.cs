@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Glfw3;
+
 using SFML.Graphics;
 using SFML.System;
 
@@ -8,6 +10,12 @@ namespace Tiler.GUI
 {
 	public abstract class Control : Transformable, Drawable, IUpdatable
 	{
+		public struct TextEnteredEventArgs
+		{
+			public uint CodePoint;
+			public Glfw.KeyMods Modifiers;
+		}
+
 		[Flags]
 		protected enum EventType
 		{
@@ -18,7 +26,8 @@ namespace Tiler.GUI
 			MouseScroll = 8,
 
 			KeyPress = 16,
-			KeyRelease = 32
+			KeyRelease = 32,
+			TextEntered = 64
 		}
 		protected static EventType Mouse = EventType.MouseEnterExit | EventType.MousePress | EventType.MouseRelease | EventType.MouseScroll;
 		protected static EventType Keyboard = EventType.KeyPress | EventType.KeyRelease;
@@ -211,6 +220,29 @@ namespace Tiler.GUI
 			KeyReleased?.Invoke(this, key);
 			return true;
 		}
+		internal bool HandledTextInput(uint codepoint, Glfw.KeyMods modifiers)
+		{
+			if (!visible)
+				return false;
+
+			for (var index = children.Count - 1; index >= 0; --index)
+			{
+				if (children[index].HandledTextInput(codepoint, modifiers))
+					return true;
+			}
+
+			if (!RegisterEventTypes.HasFlag(EventType.TextEntered) || !hasFocus)
+				return false;
+
+			OnTextEntered(codepoint, modifiers);
+			TextEntered?.Invoke(this, new TextEnteredEventArgs()
+			{
+				CodePoint = codepoint,
+				Modifiers = modifiers
+			});
+
+			return true;
+		}
 
 		protected EventType RegisterEventTypes = EventType.None;
 
@@ -221,6 +253,7 @@ namespace Tiler.GUI
 		public event EventHandler MouseScrolled;
 		public event EventHandler<Glfw3.Glfw.KeyCode> KeyPressed;
 		public event EventHandler<Glfw3.Glfw.KeyCode> KeyReleased;
+		public event EventHandler<TextEnteredEventArgs> TextEntered;
 
 		public Control Parent
 		{
@@ -473,6 +506,11 @@ namespace Tiler.GUI
 		}
 
 		public virtual void OnKeyReleased(Glfw3.Glfw.KeyCode key)
+		{
+			// NOP
+		}
+
+		public virtual void OnTextEntered(uint codepoint, Glfw.KeyMods modifiers)
 		{
 			// NOP
 		}
