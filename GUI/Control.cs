@@ -26,14 +26,14 @@ namespace Tiler.GUI
 		protected static EventType Mouse = EventType.MouseEnterExit | EventType.MousePress | EventType.MouseRelease | EventType.MouseScroll;
 		protected static EventType Keyboard = EventType.KeyPress | EventType.KeyRelease;
 		protected bool HasFocus { get; private set; } = false;
+		protected bool MouseInBounds { get; private set; } = false;
+		protected bool MouseDirectlyOver { get; private set; } = false;
 
 		private Control parent = null;
 		private List<Control> children = new List<Control>();
 		private bool visible = true;
 		private Vector2i size = new Vector2i(0, 0);
 
-		private bool mouseOver = false;
-		private bool mouseInBounds = false;
 		private bool layoutDirty = true;
 		private bool enabled = true;
 
@@ -62,10 +62,10 @@ namespace Tiler.GUI
 				mousePos.Y >= globalPosition.Y && mousePos.Y <= globalPosition.Y + Size.Y
 				))
 			{
-				if (mouseInBounds)
+				if (MouseInBounds)
 				{
-					mouseInBounds = false;
-					mouseOver = false;
+					MouseInBounds = false;
+					MouseDirectlyOver = false;
 
 					if (RegisterEventTypes.HasFlag(EventType.MouseEnterExit))
 					{
@@ -78,11 +78,11 @@ namespace Tiler.GUI
 			}
 
 			var ret = false;
-			mouseOver = true;
+			MouseDirectlyOver = true;
 
-			if (!mouseInBounds)
+			if (!MouseInBounds)
 			{
-				mouseInBounds = true;
+				MouseInBounds = true;
 
 				if (RegisterEventTypes.HasFlag(EventType.MouseEnterExit))
 				{
@@ -96,9 +96,9 @@ namespace Tiler.GUI
 			{
 				if (children[index].HandledMouseMove())
 				{
-					if (mouseOver)
+					if (MouseDirectlyOver)
 					{
-						mouseOver = false;
+						MouseDirectlyOver = false;
 					}
 
 					return true;
@@ -121,7 +121,7 @@ namespace Tiler.GUI
 				}
 			}
 
-			if (!mouseOver)
+			if (!MouseDirectlyOver)
 			{
 				HasFocus = false;
 				return false;
@@ -176,7 +176,7 @@ namespace Tiler.GUI
 					return true;
 			}
 
-			if (!RegisterEventTypes.HasFlag(EventType.MouseScroll) || !mouseOver)
+			if (!RegisterEventTypes.HasFlag(EventType.MouseScroll) || !MouseDirectlyOver)
 				return false;
 
 			OnMouseScroll();
@@ -302,7 +302,7 @@ namespace Tiler.GUI
 				if (!visible)
 				{
 					HasFocus = false;
-					mouseOver = false;
+					MouseDirectlyOver = false;
 				}
 			}
 		}
@@ -315,7 +315,7 @@ namespace Tiler.GUI
 				if (!enabled)
 				{
 					HasFocus = false;
-					mouseOver = false;
+					MouseDirectlyOver = false;
 				}
 			}
 		}
