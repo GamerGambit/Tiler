@@ -58,7 +58,7 @@ namespace Tiler.GUI.Controls
 			if (Text.Length == 0 || CaretPos == 0)
 				return;
 
-			SetText(Text.Remove(CaretPos - 1, 1));
+			SetText(Text.Remove(CaretPos - 1, 1), false);
 			CaretPos--;
 		}
 
