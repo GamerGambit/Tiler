@@ -22,7 +22,7 @@ namespace Tiler.GUI.Controls
 			set
 			{
 				caretPos = Utils.Clamp(value, 0, Text.Length);
-				CalculateLabelPosition();
+				InvalidateLayout();
 			}
 		}
 
@@ -41,6 +41,12 @@ namespace Tiler.GUI.Controls
 
 		private void CalculateLabelPosition()
 		{
+			if (Text.Length == 0 || CaretPos == 0)
+			{
+				label.Position = new Vector2f(4, 2);
+				return;
+			}
+
 			var characterPosAtCaretX = label.FindCharacterPos((uint)CaretPos).X + 4;
 			var diff = (characterPosAtCaretX + label.Position.X) - Size.X;
 			if (diff > 0)
@@ -109,14 +115,12 @@ namespace Tiler.GUI.Controls
 			if (Input.Manager.GetState(Glfw.KeyCode.Left).IsDown && moveAccumulator >= 0.05f)
 			{
 				CaretPos--;
-				InvalidateLayout();
 				moveAccumulator = 0.0f;
 			}
 			
 			if (Input.Manager.GetState(Glfw.KeyCode.Right).IsDown && moveAccumulator >= 0.05f)
 			{
 				CaretPos++;
-				InvalidateLayout();
 				moveAccumulator = 0.0f;
 			}
 		}
@@ -157,7 +161,6 @@ namespace Tiler.GUI.Controls
 			}
 
 			CaretPos = lastPos;
-			InvalidateLayout();
 		}
 
 		public override void OnKeyPressed(Glfw.KeyCode key)
@@ -188,18 +191,14 @@ namespace Tiler.GUI.Controls
 				{
 					CaretPos--;
 				}
-
-				InvalidateLayout();
 			}
 			else if (key == Glfw.KeyCode.Home)
 			{
 				CaretPos = 0;
-				InvalidateLayout();
 			}
 			else if (key == Glfw.KeyCode.End)
 			{
 				CaretPos = Text.Length;
-				InvalidateLayout();
 			}
 			else if (key == Glfw.KeyCode.Enter || key == Glfw.KeyCode.NumpadEnter)
 			{
@@ -221,7 +220,6 @@ namespace Tiler.GUI.Controls
 				case Glfw.KeyCode.V:
 					SetText(Text.Insert(CaretPos, Glfw.GetClipboardString(Input.Manager.Window.GlfwWindow)));
 					CaretPos = Text.Length;
-					InvalidateLayout();
 					break;
 
 				case Glfw.KeyCode.C:
@@ -252,6 +250,7 @@ namespace Tiler.GUI.Controls
 
 		protected override void Layout()
 		{
+			CalculateLabelPosition();
 			caret.Position = new Vector2f(label.Position.X + label.FindCharacterPos((uint)CaretPos).X, 4);
 
 			if (!(label.Font is null))
