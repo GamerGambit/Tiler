@@ -48,7 +48,7 @@ namespace Tiler.GUI.Controls
 			TitleLabel = new Label()
 			{
 				Parent = this,
-				String = "Window",
+				Text = "Window",
 				CharacterSize = 12,
 				Position = new Vector2f(2, 2)
 			};

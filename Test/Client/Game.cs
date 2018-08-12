@@ -32,8 +32,8 @@ namespace Client
 			{
 				Parent = window,
 				Font = font,
-				CharacterSize = 12,
-				MaxCharacters = 10
+				CharacterSize = 21,
+				//MaxCharacters = 10
 			};
 			window.InvalidateLayout(true);
 			textinput.SizeToParent();
@@ -54,13 +54,22 @@ namespace Client
 					window.CloseWindow();
 					return;
 				}
+				else if (textinput.Text.StartsWith("/chsize"))
+				{
+					textinput.CharacterSize = uint.Parse(textinput.Text.Substring(8));
+					textinput.InvalidateLayout();
+					textinput.Text = "";
+					return;
+				}
 
 				var label = new Tiler.GUI.Controls.Label()
 				{
 					Font = font,
 					CharacterSize = 12,
-					String = textinput.Text,
-					FillColor = SFML.Graphics.Color.Black
+					Text = textinput.Text,
+					FillColor = new SFML.Graphics.Color(Utils.RandomByte(), Utils.RandomByte(), Utils.RandomByte()),
+					WrapType = Tiler.GUI.Controls.Label.WrapTypes.Normal,
+					Size = new Vector2i(controlList.Size.X, 0)
 				};
 				label.SizeToContents();
 
@@ -68,6 +77,7 @@ namespace Client
 				textinput.Text = "";
 			};
 
+			/*
 			for (var count = 0; count < 50; ++count)
 			{
 				var i = count;
@@ -75,11 +85,12 @@ namespace Client
 				{
 					Font = font,
 					CharacterSize = 12,
-					String = "Label " + i.ToString()
+					Text = "Label " + i.ToString()
 				};
 				label.SizeToContents();
 				controlList.AddChild(label);
 			}
+			*/
 
 			World.Map = new Map
 			{

@@ -26,6 +26,11 @@ namespace Tiler
 			}
 		}
 
+		public static byte RandomByte()
+		{
+			return (byte)rng.Next(0, 256);
+		}
+
 		public static T Pin<T>(T input)
 		{
 			GCHandle.Alloc(input, GCHandleType.Normal);
