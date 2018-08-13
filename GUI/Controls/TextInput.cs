@@ -12,8 +12,6 @@ namespace Tiler.GUI.Controls
 		private RectangleShape rect = new RectangleShape();
 		private RectangleShape caret = new RectangleShape();
 		private Text label;
-		private float backspaceAccumulator = 0.0f;
-		private float moveAccumulator = 0.0f;
 		private int caretPos = 0;
 
 		private int CaretPos {
@@ -91,38 +89,6 @@ namespace Tiler.GUI.Controls
 			caret.FillColor = Color.Black;
 		}
 
-		protected override void OnUpdate(TimeSpan deltaTime)
-		{
-			backspaceAccumulator += (float)deltaTime.TotalSeconds;
-			moveAccumulator += (float)deltaTime.TotalSeconds;
-
-			if ((Input.Manager.GetState(Glfw.KeyCode.Backspace).IsDown || Input.Manager.GetState(Glfw.KeyCode.Delete).IsDown)&& backspaceAccumulator >= 0.05f)
-			{
-				if (Input.Manager.GetState(Glfw.KeyCode.Delete).IsDown)
-				{
-					if (CaretPos >= Text.Length)
-						return;
-
-					CaretPos++;
-				}
-
-				Backspace();
-				backspaceAccumulator = 0.0f;
-			}
-
-			if (Input.Manager.GetState(Glfw.KeyCode.Left).IsDown && moveAccumulator >= 0.05f)
-			{
-				CaretPos--;
-				moveAccumulator = 0.0f;
-			}
-			
-			if (Input.Manager.GetState(Glfw.KeyCode.Right).IsDown && moveAccumulator >= 0.05f)
-			{
-				CaretPos++;
-				moveAccumulator = 0.0f;
-			}
-		}
-
 		protected override void OnDraw(RenderTarget target, RenderStates states)
 		{
 			target.Draw(rect, states);
@@ -165,7 +131,6 @@ namespace Tiler.GUI.Controls
 		{
 			if (key == Glfw.KeyCode.Backspace)
 			{
-				backspaceAccumulator = -0.5f;
 				Backspace();
 			}
 			else if (key == Glfw.KeyCode.Delete)
@@ -174,13 +139,10 @@ namespace Tiler.GUI.Controls
 					return;
 
 				CaretPos++;
-				backspaceAccumulator = -0.5f;
 				Backspace();
 			}
 			else if (key == Glfw.KeyCode.Left || key == Glfw.KeyCode.Right)
 			{
-				moveAccumulator = -0.5f;
-
 				if (key == Glfw.KeyCode.Right)
 				{
 					CaretPos++;
