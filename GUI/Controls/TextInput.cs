@@ -134,7 +134,7 @@ namespace Tiler.GUI.Controls
 			}
 		}
 
-		public override void OnMousePressed(Glfw.MouseButton mouseButton)
+		public override void OnMousePressed(Glfw.MouseButton mouseButton, Glfw.KeyMods modifiers)
 		{
 			if (mouseButton != Glfw.MouseButton.ButtonLeft)
 				return;
@@ -161,7 +161,7 @@ namespace Tiler.GUI.Controls
 			CaretPos = lastPos;
 		}
 
-		public override void OnKeyPressed(Glfw.KeyCode key)
+		public override void OnKeyPressed(Glfw.KeyCode key, Glfw.KeyMods modifiers)
 		{
 			if (key == Glfw.KeyCode.Backspace)
 			{
@@ -203,7 +203,7 @@ namespace Tiler.GUI.Controls
 				OnSubmit();
 				Submit?.Invoke(this, EventArgs.Empty);
 			}
-			else if (Input.Manager.GetState(Glfw.KeyCode.LeftControl).IsDown || Input.Manager.GetState(Glfw.KeyCode.RightControl).IsDown)
+			else if (modifiers.HasFlag(Glfw.KeyMods.Control))
 			{
 				switch (key)
 				{
@@ -235,7 +235,7 @@ namespace Tiler.GUI.Controls
 			}
 		}
 
-		public override void OnTextEntered(uint codepoint)
+		public override void OnTextEntered(uint codepoint, Glfw.KeyMods modifiers)
 		{
 			if (MaxCharacters > 0 && Text.Length >= MaxCharacters)
 				return;

@@ -21,7 +21,7 @@ namespace Tiler.GUI.Controls
 		public Color OutlineColor { get => shape.OutlineColor; set => shape.OutlineColor = value; }
 		public float OutlineThickness { get => shape.OutlineThickness; set => shape.OutlineThickness = value; }
 
-		public event EventHandler<Glfw.MouseButton> Click;
+		public event EventHandler<MouseButtonEventArgs> Click;
 
 		public Button()
 		{
@@ -47,10 +47,14 @@ namespace Tiler.GUI.Controls
 			target.Draw(shape, states);
 		}
 
-		public override void OnMouseReleased(Glfw.MouseButton mouseButton)
+		public override void OnMouseReleased(Glfw.MouseButton mouseButton, Glfw.KeyMods modifiers)
 		{
 			OnClick(mouseButton);
-			Click?.Invoke(this, mouseButton);
+			Click?.Invoke(this, new MouseButtonEventArgs()
+			{
+				Button = mouseButton,
+				Modifiers = modifiers
+			});
 		}
 
 		public virtual void OnClick(Glfw.MouseButton mouseButton)

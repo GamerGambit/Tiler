@@ -10,21 +10,21 @@ namespace Tiler.GUI
 	{
 		public static List<Control> Roots = new List<Control>();
 
-		public static bool HandleMousePressed(Glfw3.Glfw.MouseButton mouseButton)
+		public static bool HandleMousePressed(MouseButtonEventArgs e)
 		{
 			for (var index = Roots.Count - 1; index >= 0; --index)
 			{
-				if (Roots[index].HandledMousePressed(mouseButton))
+				if (Roots[index].HandledMousePressed(e))
 					return true;
 			}
 
 			return false;
 		}
-		public static bool HandleMouseReleased(Glfw3.Glfw.MouseButton mouseButton)
+		public static bool HandleMouseReleased(MouseButtonEventArgs e)
 		{
 			for (var index = Roots.Count - 1; index >= 0; --index)
 			{
-				if (Roots[index].HandledMouseReleased(mouseButton))
+				if (Roots[index].HandledMouseReleased(e))
 					return true;
 			}
 
@@ -40,31 +40,31 @@ namespace Tiler.GUI
 
 			return false;
 		}
-		public static bool HandleKeyPressed(Glfw3.Glfw.KeyCode key)
+		public static bool HandleKeyPressed(KeyEventArgs e)
 		{
 			for (var index = Roots.Count - 1; index >= 0; --index)
 			{
-				if (Roots[index].HandledKeyPress(key))
+				if (Roots[index].HandledKeyPress(e))
 					return true;
 			}
 
 			return false;
 		}
-		public static bool HandleKeyReleased(Glfw3.Glfw.KeyCode key)
+		public static bool HandleKeyReleased(KeyEventArgs e)
 		{
 			for (var index = Roots.Count - 1; index >= 0; --index)
 			{
-				if (Roots[index].HandledKeyReleased(key))
+				if (Roots[index].HandledKeyReleased(e))
 					return true;
 			}
 
 			return false;
 		}
-		public static bool HandleTextInput(uint codepoint)
+		public static bool HandleTextInput(UnicodeInputEventArgs e)
 		{
 			for (var index = Roots.Count - 1; index >= 0; --index)
 			{
-				if (Roots[index].HandledTextInput(codepoint))
+				if (Roots[index].HandledTextInput(e))
 					return true;
 			}
 

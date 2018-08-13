@@ -73,7 +73,7 @@ namespace Tiler.GUI.Controls
 			target.Draw(grip, states);
 		}
 
-		public override void OnMousePressed(Glfw.MouseButton mouseButton)
+		public override void OnMousePressed(Glfw.MouseButton mouseButton, Glfw.KeyMods modifiers)
 		{
 			if (mouseButton != Glfw.MouseButton.ButtonLeft)
 				return;
@@ -87,7 +87,7 @@ namespace Tiler.GUI.Controls
 			}
 		}
 
-		public override void OnMouseReleased(Glfw.MouseButton mouseButton)
+		public override void OnMouseReleased(Glfw.MouseButton mouseButton, Glfw.KeyMods modifiers)
 		{
 			if (mouseButton != Glfw.MouseButton.ButtonLeft)
 				return;

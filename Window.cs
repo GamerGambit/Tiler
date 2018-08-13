@@ -8,43 +8,43 @@ using SFML.Graphics;
 
 namespace Tiler
 {
-	public struct KeyEventArgs
+	public class KeyEventArgs : EventArgs
 	{
 		public Glfw.KeyCode Key;
 		public int ScanCode;
 		public Glfw.KeyMods Modifiers;
 	}
 
-	public struct UnicodeInputEventArgs
+	public class UnicodeInputEventArgs : EventArgs
 	{
 		public uint CodePoint;
 		public Glfw.KeyMods Modifiers;
 	}
 
-	public struct MouseEventArgs
+	public class MouseEventArgs : EventArgs
 	{
 		public double X;
 		public double Y;
 	}
 
-	public struct MouseButtonEventArgs
+	public class MouseButtonEventArgs : EventArgs
 	{
 		public Glfw.MouseButton Button;
 		public Glfw.KeyMods Modifiers;
 	}
 
-	public struct DroppedEventArgs
+	public class DroppedEventArgs : EventArgs
 	{
 		public string[] Paths;
 	}
 
-	public struct WindowMovedEventArgs
+	public class WindowMovedEventArgs : EventArgs
 	{
 		public int X;
 		public int Y;
 	}
 
-	public struct WindowResizedEventArgs
+	public class WindowResizedEventArgs : EventArgs
 	{
 		public int Width;
 		public int Height;

@@ -31,7 +31,7 @@ namespace Tiler.GUI.Controls
 			TitlePanel.RegisterEventTypes |= EventType.MousePress | EventType.MouseRelease;
 			TitlePanel.MousePressed += (s, e) =>
 			{
-				if (e != Glfw3.Glfw.MouseButton.ButtonLeft)
+				if (e.Button != Glfw3.Glfw.MouseButton.ButtonLeft)
 					return;
 
 				dragging = true;
@@ -39,7 +39,7 @@ namespace Tiler.GUI.Controls
 			};
 			TitlePanel.MouseReleased += (s, e) =>
 			{
-				if (e != Glfw3.Glfw.MouseButton.ButtonLeft)
+				if (e.Button != Glfw3.Glfw.MouseButton.ButtonLeft)
 					return;
 
 				dragging = false;
@@ -62,7 +62,7 @@ namespace Tiler.GUI.Controls
 			};
 			CloseButton.Click += (s, e) =>
 			{
-				if (e == Glfw3.Glfw.MouseButton.ButtonLeft)
+				if (e.Button == Glfw3.Glfw.MouseButton.ButtonLeft)
 				{
 					CloseWindow();
 				}

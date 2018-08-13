@@ -32,11 +32,11 @@ namespace Tiler
 			Window = new Window(1024, 768, "Tiler Program");
 			Window.Activate();
 			Window.Closed += (s, e) => ((Window)s).Close();
-			Window.KeyPressed += (s, e) => GUI.State.HandleKeyPressed(e.Key);
-			Window.KeyReleased += (s, e) => GUI.State.HandleKeyReleased(e.Key);
-			Window.UnicodeInput += (s, e) => GUI.State.HandleTextInput(e.CodePoint);
-			Window.MousePressed += (s, e) => GUI.State.HandleMousePressed(e.Button);
-			Window.MouseReleased += (s, e) => GUI.State.HandleMouseReleased(e.Button);
+			Window.KeyPressed += (s, e) => GUI.State.HandleKeyPressed(e);
+			Window.KeyReleased += (s, e) => GUI.State.HandleKeyReleased(e);
+			Window.UnicodeInput += (s, e) => GUI.State.HandleTextInput(e);
+			Window.MousePressed += (s, e) => GUI.State.HandleMousePressed(e);
+			Window.MouseReleased += (s, e) => GUI.State.HandleMouseReleased(e);
 			Window.MouseScrolled += (s, e) => 
 			{
 				Input.Manager.MouseWheelDeltas = new System.Numerics.Vector2((float)e.X, (float)e.Y);

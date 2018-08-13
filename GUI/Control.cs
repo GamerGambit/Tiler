@@ -107,14 +107,14 @@ namespace Tiler.GUI
 
 			return ret;
 		}
-		internal bool HandledMousePressed(Glfw.MouseButton mouseButton)
+		internal bool HandledMousePressed(MouseButtonEventArgs e)
 		{
 			if (!Visible || !enabled)
 				return false;
 
 			for (var index = children.Count - 1; index >= 0; --index)
 			{
-				if (children[index].HandledMousePressed(mouseButton))
+				if (children[index].HandledMousePressed(e))
 				{
 					HasFocus = false;
 					return true;
@@ -135,12 +135,12 @@ namespace Tiler.GUI
 			if (!RegisterEventTypes.HasFlag(EventType.MousePress))
 				return false;
 
-			OnMousePressed(mouseButton);
-			MousePressed?.Invoke(this, mouseButton);
+			OnMousePressed(e.Button, e.Modifiers);
+			MousePressed?.Invoke(this, e);
 
 			return true;
 		}
-		internal bool HandledMouseReleased(Glfw.MouseButton mouseButton)
+		internal bool HandledMouseReleased(MouseButtonEventArgs e)
 		{
 			if (!Visible || !enabled)
 				return false;
@@ -148,7 +148,7 @@ namespace Tiler.GUI
 			bool handled = false;
 			for (var index = children.Count - 1; index >= 0; --index)
 			{
-				if (children[index].HandledMouseReleased(mouseButton))
+				if (children[index].HandledMouseReleased(e))
 				{
 					handled = true;
 				}
@@ -160,8 +160,8 @@ namespace Tiler.GUI
 			if (!RegisterEventTypes.HasFlag(EventType.MouseRelease))
 				return handled;
 
-			OnMouseReleased(mouseButton);
-			MouseReleased?.Invoke(this, mouseButton);
+			OnMouseReleased(e.Button, e.Modifiers);
+			MouseReleased?.Invoke(this, e);
 
 			return true;
 		}
@@ -183,25 +183,25 @@ namespace Tiler.GUI
 			MouseScrolled?.Invoke(this, EventArgs.Empty);
 			return true;
 		}
-		internal bool HandledKeyPress(Glfw.KeyCode key)
+		internal bool HandledKeyPress(KeyEventArgs e)
 		{
 			if (!Visible || !enabled)
 				return false;
 
 			for (var index = children.Count - 1; index >= 0; --index)
 			{
-				if (children[index].HandledKeyPress(key))
+				if (children[index].HandledKeyPress(e))
 					return true;
 			}
 
 			if (!RegisterEventTypes.HasFlag(EventType.KeyPress) || !HasFocus)
 				return false;
 
-			OnKeyPressed(key);
-			KeyPressed?.Invoke(this, key);
+			OnKeyPressed(e.Key, e.Modifiers);
+			KeyPressed?.Invoke(this, e);
 			return true;
 		}
-		internal bool HandledKeyReleased(Glfw.KeyCode key)
+		internal bool HandledKeyReleased(KeyEventArgs e)
 		{
 			if (!Visible || !enabled)
 				return false;
@@ -209,7 +209,7 @@ namespace Tiler.GUI
 			bool handled = false;
 			for (var index = children.Count - 1; index >= 0; --index)
 			{
-				if (children[index].HandledKeyReleased(key))
+				if (children[index].HandledKeyReleased(e))
 				{
 					handled = true;
 				}
@@ -218,38 +218,38 @@ namespace Tiler.GUI
 			if (!RegisterEventTypes.HasFlag(EventType.KeyRelease) || !HasFocus)
 				return handled;
 
-			OnKeyReleased(key);
-			KeyReleased?.Invoke(this, key);
+			OnKeyReleased(e.Key, e.Modifiers);
+			KeyReleased?.Invoke(this, e);
 			return true;
 		}
-		internal bool HandledTextInput(uint codepoint)
+		internal bool HandledTextInput(UnicodeInputEventArgs e)
 		{
 			if (!visible || !enabled)
 				return false;
 
 			for (var index = children.Count - 1; index >= 0; --index)
 			{
-				if (children[index].HandledTextInput(codepoint))
+				if (children[index].HandledTextInput(e))
 					return true;
 			}
 
 			if (!RegisterEventTypes.HasFlag(EventType.TextEntered) || !HasFocus)
 				return false;
 
-			OnTextEntered(codepoint);
-			TextEntered?.Invoke(this, codepoint);
+			OnTextEntered(e.CodePoint, e.Modifiers);
+			TextEntered?.Invoke(this, e);
 
 			return true;
 		}
 
 		public event EventHandler MouseEnter;
 		public event EventHandler MouseExit;
-		public event EventHandler<Glfw.MouseButton> MousePressed;
-		public event EventHandler<Glfw.MouseButton> MouseReleased;
+		public event EventHandler<MouseButtonEventArgs> MousePressed;
+		public event EventHandler<MouseButtonEventArgs> MouseReleased;
 		public event EventHandler MouseScrolled;
-		public event EventHandler<Glfw.KeyCode> KeyPressed;
-		public event EventHandler<Glfw.KeyCode> KeyReleased;
-		public event EventHandler<uint> TextEntered;
+		public event EventHandler<KeyEventArgs> KeyPressed;
+		public event EventHandler<KeyEventArgs> KeyReleased;
+		public event EventHandler<UnicodeInputEventArgs> TextEntered;
 
 		public Control Parent
 		{
@@ -500,12 +500,12 @@ namespace Tiler.GUI
 			// NOP
 		}
 
-		public virtual void OnMousePressed(Glfw.MouseButton mouseButton)
+		public virtual void OnMousePressed(Glfw.MouseButton mouseButton, Glfw.KeyMods modifiers)
 		{
 			// NOP
 		}
 
-		public virtual void OnMouseReleased(Glfw.MouseButton mouseButton)
+		public virtual void OnMouseReleased(Glfw.MouseButton mouseButton, Glfw.KeyMods modifiers)
 		{
 			// NOP
 		}
@@ -515,17 +515,17 @@ namespace Tiler.GUI
 			// NOP
 		}
 
-		public virtual void OnKeyPressed(Glfw.KeyCode key)
+		public virtual void OnKeyPressed(Glfw.KeyCode key, Glfw.KeyMods modifiers)
 		{
 			// NOP
 		}
 
-		public virtual void OnKeyReleased(Glfw.KeyCode key)
+		public virtual void OnKeyReleased(Glfw.KeyCode key, Glfw.KeyMods modifiers)
 		{
 			// NOP
 		}
 
-		public virtual void OnTextEntered(uint codepoint)
+		public virtual void OnTextEntered(uint codepoint, Glfw.KeyMods modifiers)
 		{
 			// NOP
 		}
