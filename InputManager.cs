@@ -148,23 +148,19 @@ namespace Tiler.Input
 
 		public static InputState GetState(Glfw.KeyCode key)
 		{
-			foreach (var state in inputStates)
-			{
-				if (state.KeyboardKey == key)
-					return state;
-			}
+			var (index, state) = GetStateWithIndex(key);
+			state.IsDown = Glfw.GetKey(Window.GlfwWindow, (int)key);
+			inputStates[index] = state;
 
-			return new InputState(key);
+			return state;
 		}
 		public static InputState GetState(Glfw.MouseButton mouseButton)
 		{
-			foreach (var state in inputStates)
-			{
-				if (state.MouseButton == mouseButton)
-					return state;
-			}
+			var (index, state) = GetStateWithIndex(mouseButton);
+			state.IsDown = Glfw.GetMouseButton(Window.GlfwWindow, mouseButton);
+			inputStates[index] = state;
 
-			return new InputState(mouseButton);
+			return state;
 		}
 	}
 }

@@ -32,39 +32,12 @@ namespace Tiler
 			Window = new Window(1024, 768, "Tiler Program");
 			Window.Activate();
 			Window.Closed += (s, e) => ((Window)s).Close();
-			Window.KeyPressed += (s, e) =>
-			{
-				var (index, state) = Input.Manager.GetStateWithIndex(e.Key);
-				state.IsDown = true;
-				Input.Manager.inputStates[index] = state;
-				GUI.State.HandleKeyPressed(e.Key);
-			};
-			Window.KeyReleased += (s, e) =>
-			{
-				var (index, state) = Input.Manager.GetStateWithIndex(e.Key);
-				state.IsDown = false;
-				Input.Manager.inputStates[index] = state;
-				GUI.State.HandleKeyReleased(e.Key);
-			};
-			Window.UnicodeInput += (s, e) =>
-			{
-				GUI.State.HandleTextInput(e.CodePoint);
-			};
-			Window.MousePressed += (s, e) =>
-			{
-				var (index, state) = Input.Manager.GetStateWithIndex(e.Button);
-				state.IsDown = true;
-				Input.Manager.inputStates[index] = state;
-				GUI.State.HandleMousePressed(e.Button);
-			};
-			Window.MouseReleased += (s, e) =>
-			{
-				var (index, state) = Input.Manager.GetStateWithIndex(e.Button);
-				state.IsDown = true;
-				Input.Manager.inputStates[index] = state;
-				GUI.State.HandleMouseReleased(e.Button);
-			};
-			Window.MouseScrolled += (s, e) =>
+			Window.KeyPressed += (s, e) => GUI.State.HandleKeyPressed(e.Key);
+			Window.KeyReleased += (s, e) => GUI.State.HandleKeyReleased(e.Key);
+			Window.UnicodeInput += (s, e) => GUI.State.HandleTextInput(e.CodePoint);
+			Window.MousePressed += (s, e) => GUI.State.HandleMousePressed(e.Button);
+			Window.MouseReleased += (s, e) => GUI.State.HandleMouseReleased(e.Button);
+			Window.MouseScrolled += (s, e) => 
 			{
 				Input.Manager.MouseWheelDeltas = new System.Numerics.Vector2((float)e.X, (float)e.Y);
 				GUI.State.HandleMouseScroll();
