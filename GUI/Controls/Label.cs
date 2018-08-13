@@ -116,7 +116,7 @@ namespace Tiler.GUI.Controls
 		public WrapTypes WrapType { get => wrapType; set { wrapType = value; CalculateWrap(); } }
 		public uint TabWrapWidth { get; set; } = 4;
 
-		public void SizeToContents()
+		public void SizeToContents(bool resizeX = true, bool resizeY = true)
 		{
 			if (Font is null)
 				return;
@@ -133,7 +133,7 @@ namespace Tiler.GUI.Controls
 				y = text.Position.Y + gb.Top + gb.Height;
 			}
 
-			Size = new Vector2i((int)Math.Ceiling(x), (int)Math.Ceiling(y));
+			Size = new Vector2i(resizeX ? (int)Math.Ceiling(x) : Size.X, resizeY ? (int)Math.Ceiling(y) : Size.Y);
 		}
 
 		protected override void OnDraw(RenderTarget target, RenderStates states)
