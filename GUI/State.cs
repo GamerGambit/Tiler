@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using SFML.Graphics;
-using SFML.System;
-
 namespace Tiler.GUI
 {
 	internal static class State
 	{
 		public static List<Control> Roots = new List<Control>();
+		public static Control FocusedControl = null;
+
+		public static bool Focused { get => FocusedControl?.HasFocus ?? false; }
 
 		public static bool HandleMousePressed(MouseButtonEventArgs e)
 		{
@@ -76,6 +76,11 @@ namespace Tiler.GUI
 			for (var index = Roots.Count - 1; index >= 0; --index)
 			{
 				Roots[index].Update(deltaTime);
+			}
+
+			if (!(FocusedControl is null) && !FocusedControl.HasFocus)
+			{
+				FocusedControl = null;
 			}
 		}
 

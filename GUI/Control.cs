@@ -25,7 +25,6 @@ namespace Tiler.GUI
 		}
 		protected static EventType Mouse = EventType.MouseEnterExit | EventType.MousePress | EventType.MouseRelease | EventType.MouseScroll;
 		protected static EventType Keyboard = EventType.KeyPress | EventType.KeyRelease;
-		protected bool HasFocus { get; private set; } = false;
 		protected bool MouseInBounds { get; private set; } = false;
 		protected bool MouseDirectlyOver { get; private set; } = false;
 
@@ -131,6 +130,7 @@ namespace Tiler.GUI
 			//BringToFront();
 
 			HasFocus = true;
+			State.FocusedControl = this;
 
 			if (!RegisterEventTypes.HasFlag(EventType.MousePress))
 				return false;
@@ -320,6 +320,7 @@ namespace Tiler.GUI
 			}
 		}
 		public EventType RegisterEventTypes { get; set; } = EventType.None;
+		public bool HasFocus { get; private set; } = false;
 
 		public Control()
 		{
