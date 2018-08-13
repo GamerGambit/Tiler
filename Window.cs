@@ -58,7 +58,7 @@ namespace Tiler
 		private static void KeyCallback(Glfw.Window window, Glfw.KeyCode key, int scancode, Glfw.InputState state, Glfw.KeyMods mods)
 		{
 			var engineWindow = dictionary[window];
-			if (state == Glfw.InputState.Press)
+			if (state == Glfw.InputState.Press || state == Glfw.InputState.Repeat)
 			{
 				engineWindow.KeyPressed?.Invoke(engineWindow, new KeyEventArgs()
 				{
@@ -98,7 +98,7 @@ namespace Tiler
 		private static void MouseButtonCallback(Glfw.Window window, Glfw.MouseButton button, Glfw.InputState state, Glfw.KeyMods mods)
 		{
 			var engineWindow = dictionary[window];
-			if (state == Glfw.InputState.Press)
+			if (state == Glfw.InputState.Press || state == Glfw.InputState.Repeat)
 			{
 				engineWindow.MousePressed?.Invoke(engineWindow, new MouseButtonEventArgs()
 				{
