@@ -12,7 +12,6 @@ namespace Tiler.GUI.Controls
 		private RectangleShape rect = new RectangleShape();
 		private RectangleShape caret = new RectangleShape();
 		private Text label;
-		private float curtime = 0.0f;
 		private float backspaceAccumulator = 0.0f;
 		private float moveAccumulator = 0.0f;
 		private int caretPos = 0;
@@ -94,7 +93,6 @@ namespace Tiler.GUI.Controls
 
 		protected override void OnUpdate(TimeSpan deltaTime)
 		{
-			curtime += (float)deltaTime.TotalSeconds;
 			backspaceAccumulator += (float)deltaTime.TotalSeconds;
 			moveAccumulator += (float)deltaTime.TotalSeconds;
 
@@ -130,7 +128,7 @@ namespace Tiler.GUI.Controls
 			target.Draw(rect, states);
 			target.Draw(label, states);
 
-			if (HasFocus && Math.Round(Math.Sin(curtime * 5)) >= 0)
+			if (HasFocus && Math.Sin(Program.ElapsedTime.TotalSeconds * 5) >= 0)
 			{
 				target.Draw(caret, states);
 			}

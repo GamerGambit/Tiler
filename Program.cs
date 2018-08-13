@@ -10,7 +10,11 @@ namespace Tiler
 {
 	public abstract class Program : IUpdatable
 	{
+		private static Stopwatch runtimeSW = new Stopwatch();
+
 		public Window Window;
+
+		public static TimeSpan ElapsedTime { get => runtimeSW.Elapsed; }
 
 		static Program()
 		{
@@ -19,6 +23,8 @@ namespace Tiler
 			{
 				Environment.Exit(1);
 			}
+
+			runtimeSW.Start();
 		}
 
 		public Program()
