@@ -74,6 +74,8 @@ namespace Tiler
 				GUI.State.Draw(Window);
 				Window.Display();
 			}
+
+			Glfw.Terminate();
 		}
 
 		public void Update(TimeSpan deltaTime)
