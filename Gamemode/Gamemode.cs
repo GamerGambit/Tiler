@@ -7,7 +7,7 @@ namespace Tiler
 {
 	public abstract partial class Gamemode
 	{
-		private const float MaxPlayerVelocity = 100.0f;
+		private const float MaxPlayerVelocity = 120.0f;
 
 		public virtual bool IsTeamBased { get; protected set; } = false;
 		public virtual float AirResistance { get; set; } = 0.01f;
@@ -64,34 +64,32 @@ namespace Tiler
 
 		public virtual void Move(Player ply, MoveData mv, TimeSpan deltaTime)
 		{
-			ply.Velocity += mv.Acceleration * (float)deltaTime.TotalSeconds;
-
-			var vec2Velocity = new Vector2(ply.Velocity.X, ply.Velocity.Y);
+			var velocity = ply.PhysicsBody.Velocity + mv.Acceleration * (float)deltaTime.TotalSeconds;
 
 			#region air resistance
 			if (mv.Acceleration.X == 0 && mv.Acceleration.Y == 0)
 			{
 				/*
-				var airVelocity = -vec2Velocity * Utils.Clamp(AirResistance, 0, 1);
-				vec2Velocity += airVelocity;
+				var airVelocity = -velocity * Utils.Clamp(AirResistance, 0, 1);
+				velocity += airVelocity;
 				*/
-				vec2Velocity = Vector2.Zero;
+				velocity *= 0.9f;
 			}
 			#endregion
 
 			#region velocity clamping
-			if (vec2Velocity.Length() > MaxPlayerVelocity)
+			if (velocity.Length() > MaxPlayerVelocity)
 			{
-				var norm = Vector2.Normalize(vec2Velocity) * MaxPlayerVelocity;
-				ply.Velocity = new Vector2f(norm.X, norm.Y);
-			}
-			else
-			{
-				ply.Velocity = new Vector2f(vec2Velocity.X, vec2Velocity.Y);
+				velocity = Vector2.Normalize(velocity) * MaxPlayerVelocity;
 			}
 			#endregion
 
-			ply.Position += ply.Velocity * (float)deltaTime.TotalSeconds;
+			var pb = ply.PhysicsBody;
+			pb.Acceleration = mv.Acceleration;
+			pb.Velocity = velocity;
+			ply.PhysicsBody = pb;
+
+			ply.Position += velocity * (float)deltaTime.TotalSeconds;
 		}
 	}
 }

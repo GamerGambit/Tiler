@@ -11,8 +11,10 @@ namespace Tiler
 
 		public Player()
 		{
-			shape = new RectangleShape(new Vector2f(32, 32));
-			shape.FillColor = Color.Blue;
+			shape = new RectangleShape(new Vector2f(32, 32))
+			{
+				FillColor = Color.Blue
+			};
 		}
 
 		public override void Draw(RenderTarget target, RenderStates states)

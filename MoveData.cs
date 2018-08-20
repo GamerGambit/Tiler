@@ -1,10 +1,10 @@
-﻿using SFML.System;
+﻿using System.Numerics;
 
 namespace Tiler
 {
 	public class MoveData
 	{
-		public Vector2f Origin;
-		public Vector2f Acceleration;
+		public Vector2 Origin;
+		public Vector2 Acceleration;
 	}
 }

@@ -1,4 +1,6 @@
-﻿using SFML.Graphics;
+﻿using System.Numerics;
+
+using SFML.Graphics;
 using SFML.System;
 
 namespace Tiler
@@ -18,7 +20,7 @@ namespace Tiler
 
 		public PlayerSpawn(float X, float Y) : this()
 		{
-			Position = new Vector2f(X, Y);
+			Position = new Vector2(X, Y);
 		}
 
 		public override void Draw(RenderTarget target, RenderStates states)

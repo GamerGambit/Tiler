@@ -153,7 +153,7 @@ namespace Client
 			Gamemode.SetupMove(Player, ucmd, mv);
 			Gamemode.Move(Player, mv, deltaTime);
 
-			GameView.Center = Player.Position;
+			GameView.Center = new Vector2f(Player.Position.X, Player.Position.Y);
 		}
 	}
 }

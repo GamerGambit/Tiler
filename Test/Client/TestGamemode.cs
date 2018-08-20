@@ -65,8 +65,7 @@ namespace Client
 			if (acceleration.X == 0 && acceleration.Y == 0)
 				return;
 
-			var norm = Vector2.Normalize(acceleration) * rateOfAcceleration;
-			mv.Acceleration = new Vector2f(norm.X, norm.Y);
+			mv.Acceleration = Vector2.Normalize(acceleration) * rateOfAcceleration;
 		}
 	}
 }
