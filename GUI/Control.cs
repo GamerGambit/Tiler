@@ -129,8 +129,7 @@ namespace Tiler.GUI
 			// TODO: Add smarter bring-to-front functionality. Right now, clicking on ANY child will bring it to the front which will cause lists of Controls to be reordered.
 			//BringToFront();
 
-			HasFocus = true;
-			State.FocusedControl = this;
+			Focus();
 
 			if (!RegisterEventTypes.HasFlag(EventType.MousePress))
 				return false;
@@ -349,6 +348,12 @@ namespace Tiler.GUI
 		public Vector2i ScreenToLocal(Vector2i vec)
 		{
 			return vec - GlobalPosition;
+		}
+
+		public void Focus()
+		{
+			State.FocusedControl = this;
+			HasFocus = true;
 		}
 
 		public void Remove()
