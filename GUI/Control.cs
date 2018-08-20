@@ -196,7 +196,7 @@ namespace Tiler.GUI
 			if (!RegisterEventTypes.HasFlag(EventType.KeyPress) || !HasFocus)
 				return false;
 
-			OnKeyPressed(e.Key, e.Modifiers);
+			OnKeyPressed(e.Key, e.ScanCode, e.Modifiers);
 			KeyPressed?.Invoke(this, e);
 			return true;
 		}
@@ -217,7 +217,7 @@ namespace Tiler.GUI
 			if (!RegisterEventTypes.HasFlag(EventType.KeyRelease) || !HasFocus)
 				return handled;
 
-			OnKeyReleased(e.Key, e.Modifiers);
+			OnKeyReleased(e.Key, e.ScanCode, e.Modifiers);
 			KeyReleased?.Invoke(this, e);
 			return true;
 		}
@@ -521,12 +521,12 @@ namespace Tiler.GUI
 			// NOP
 		}
 
-		public virtual void OnKeyPressed(Glfw.KeyCode key, Glfw.KeyMods modifiers)
+		public virtual void OnKeyPressed(Glfw.KeyCode key, int scancode, Glfw.KeyMods modifiers)
 		{
 			// NOP
 		}
 
-		public virtual void OnKeyReleased(Glfw.KeyCode key, Glfw.KeyMods modifiers)
+		public virtual void OnKeyReleased(Glfw.KeyCode key, int scancode, Glfw.KeyMods modifiers)
 		{
 			// NOP
 		}

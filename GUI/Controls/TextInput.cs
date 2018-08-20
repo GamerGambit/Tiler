@@ -127,7 +127,7 @@ namespace Tiler.GUI.Controls
 			CaretPos = lastPos;
 		}
 
-		public override void OnKeyPressed(Glfw.KeyCode key, Glfw.KeyMods modifiers)
+		public override void OnKeyPressed(Glfw.KeyCode key, int scancode, Glfw.KeyMods modifiers)
 		{
 			if (key == Glfw.KeyCode.Backspace)
 			{
