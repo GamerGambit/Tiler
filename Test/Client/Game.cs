@@ -28,9 +28,20 @@ namespace Client
 				Size = new Vector2i(300, 300)
 			};
 
+			var keybinder = new Tiler.GUI.Controls.KeyBinder()
+			{
+				Parent = window,
+				Size = new Vector2i(250, 0),
+				Font = font,
+				CharacterSize = 14
+			};
+			keybinder.KeyPressed += (s, e) => keybinder.SizeToContents();
+			keybinder.SizeToContents();
+
 			var textinput = new Tiler.GUI.Controls.TextInput()
 			{
 				Parent = window,
+				Position = new Vector2f(0, 30),
 				Font = font,
 				CharacterSize = 21,
 				//MaxCharacters = 10

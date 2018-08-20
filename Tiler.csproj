@@ -71,6 +71,7 @@
     <Compile Include="GUI\Control.cs" />
     <Compile Include="GUI\Controls\Button.cs" />
     <Compile Include="GUI\Controls\ControlList.cs" />
+    <Compile Include="GUI\Controls\KeyBinder.cs" />
     <Compile Include="GUI\Controls\Label.cs" />
     <Compile Include="GUI\Controls\Panel.cs" />
     <Compile Include="GUI\Controls\TextInput.cs" />
