@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Numerics;
 
 using SFML.Graphics;
 using SFML.System;
-using SFML.Window;
 
 using Tiler;
 
@@ -10,6 +10,8 @@ namespace Client
 {
 	class TestGamemode : Gamemode
 	{
+		private const float rateOfAcceleration = 500.0f;
+
 		public override bool IsTeamBased { get; protected set; } = true;
 
 		public int TestTeamID;
@@ -46,27 +48,25 @@ namespace Client
 		{
 			mv.Origin = ply.Position;
 
-			var velocity = new Vector2f();
+			var acceleration = new Vector2();
 
 			if (ucmd.Keys.HasFlag(InKeys.MoveForward))
-				velocity.Y -= 1;
+				acceleration.Y -= 1;
 
 			if (ucmd.Keys.HasFlag(InKeys.MoveBackward))
-				velocity.Y += 1;
+				acceleration.Y += 1;
 
 			if (ucmd.Keys.HasFlag(InKeys.MoveLeft))
-				velocity.X -= 1;
+				acceleration.X -= 1;
 
 			if (ucmd.Keys.HasFlag(InKeys.MoveRight))
-				velocity.X += 1;
+				acceleration.X += 1;
 
-			//velocity += new Vector2f(Tiler.Input.Manager.MouseWheelDeltas.X * -5.0f, Tiler.Input.Manager.MouseWheelDeltas.Y * -5.0f);
+			if (acceleration.X == 0 && acceleration.Y == 0)
+				return;
 
-			// TODO: this is the movement speed (100.0f), so make it legit at some point
-			velocity.X *= 50.0f;
-			velocity.Y *= 50.0f;
-
-			mv.Velocity = velocity;
+			var norm = Vector2.Normalize(acceleration) * rateOfAcceleration;
+			mv.Acceleration = new Vector2f(norm.X, norm.Y);
 		}
 	}
 }

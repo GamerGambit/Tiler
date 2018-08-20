@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using SFML.System;
@@ -124,8 +124,6 @@ namespace Client
 
 			Player.Position = spawnPoint.Position;
 			Gamemode.PlayerSpawn(Player);
-
-			GameView.Center = Player.Position;
 		}
 
 		public override void OnDraw()
@@ -142,14 +140,9 @@ namespace Client
 
 			Gamemode.CreateUserCommand(ucmd);
 			Gamemode.SetupMove(Player, ucmd, mv);
-			Gamemode.Move(Player, mv);
+			Gamemode.Move(Player, mv, deltaTime);
 
-			Player.Velocity += mv.Velocity * (float)deltaTime.TotalSeconds;
-			Player.Position += Player.Velocity;
-
-			GameView.Move(Player.Velocity);
-
-			Player.Velocity -= Player.Velocity * 0.1f;
+			GameView.Center = Player.Position;
 		}
 	}
 }
