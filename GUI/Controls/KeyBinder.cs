@@ -82,9 +82,9 @@ namespace Tiler.GUI.Controls
 
 		public override void OnKeyPressed(Glfw.KeyCode key, int scancode, Glfw.KeyMods modifiers)
 		{
-			var name = Glfw.GetKeyName(key, scancode);
+			var name = key.ToString();
 
-			if (string.IsNullOrEmpty(name))
+			if (string.IsNullOrEmpty(name) || key == Glfw.KeyCode.Unknown)
 			{
 				KeyCode = Glfw.KeyCode.Unknown;
 				Text = "Press a Key";
