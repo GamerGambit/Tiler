@@ -146,11 +146,8 @@ namespace Client
 
 		public override void OnUpdate(TimeSpan deltaTime)
 		{
-			var ucmd = new UserCommand();
 			var mv = new MoveData();
-
-			Gamemode.CreateUserCommand(ucmd);
-			Gamemode.SetupMove(Player, ucmd, mv);
+			Gamemode.SetupMove(Player, mv);
 			Gamemode.Move(Player, mv, deltaTime);
 
 			GameView.Center = new Vector2f(Player.Position.X, Player.Position.Y);

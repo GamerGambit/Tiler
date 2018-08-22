@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
 
+using Glfw3;
+
 using SFML.Graphics;
-using SFML.System;
 
 using Tiler;
 
@@ -26,41 +27,49 @@ namespace Client
 			ply.TeamID = TestTeamID;
 		}
 
-		public override void CreateUserCommand(UserCommand ucmd)
+		public override void SetupMove(Player ply, MoveData mv)
 		{
-			if (Tiler.Input.Manager.GetState(Glfw3.Glfw.KeyCode.W).IsDown)
-				ucmd.Keys |= InKeys.MoveForward;
+			if (Tiler.Input.Manager.GetState(Glfw.KeyCode.W).IsDown)
+			{
+				mv.Keys |= MoveData.InKeys.MoveForward;
+			}
 
-			if (Tiler.Input.Manager.GetState(Glfw3.Glfw.KeyCode.A).IsDown)
-				ucmd.Keys |= InKeys.MoveLeft;
+			if (Tiler.Input.Manager.GetState(Glfw.KeyCode.A).IsDown)
+			{
+				mv.Keys |= MoveData.InKeys.MoveLeft;
+			}
 
-			if (Tiler.Input.Manager.GetState(Glfw3.Glfw.KeyCode.S).IsDown)
-				ucmd.Keys |= InKeys.MoveBackward;
+			if (Tiler.Input.Manager.GetState(Glfw.KeyCode.S).IsDown)
+			{
+				mv.Keys |= MoveData.InKeys.MoveBackward;
+			}
 
-			if (Tiler.Input.Manager.GetState(Glfw3.Glfw.KeyCode.D).IsDown)
-				ucmd.Keys |= InKeys.MoveRight;
-
-			if (Tiler.Input.Manager.GetState(Glfw3.Glfw.KeyCode.Space).IsDown)
-				ucmd.Keys |= InKeys.Jump;
-		}
-
-		public override void SetupMove(Player ply, UserCommand ucmd, MoveData mv)
-		{
-			mv.Origin = ply.Position;
+			if (Tiler.Input.Manager.GetState(Glfw.KeyCode.D).IsDown)
+			{
+				mv.Keys |= MoveData.InKeys.MoveRight;
+			}
 
 			var acceleration = new Vector2();
 
-			if (ucmd.Keys.HasFlag(InKeys.MoveForward))
+			if (mv.Keys.HasFlag(MoveData.InKeys.MoveForward))
+			{
 				acceleration.Y -= 1;
+			}
 
-			if (ucmd.Keys.HasFlag(InKeys.MoveBackward))
+			if (mv.Keys.HasFlag(MoveData.InKeys.MoveBackward))
+			{
 				acceleration.Y += 1;
+			}
 
-			if (ucmd.Keys.HasFlag(InKeys.MoveLeft))
+			if (mv.Keys.HasFlag(MoveData.InKeys.MoveLeft))
+			{
 				acceleration.X -= 1;
+			}
 
-			if (ucmd.Keys.HasFlag(InKeys.MoveRight))
+			if (mv.Keys.HasFlag(MoveData.InKeys.MoveRight))
+			{
 				acceleration.X += 1;
+			}
 
 			if (acceleration.X == 0 && acceleration.Y == 0)
 				return;
