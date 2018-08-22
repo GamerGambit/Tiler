@@ -24,7 +24,7 @@ namespace Client
 			var window = new Tiler.GUI.Controls.Window()
 			{
 				Font = font,
-				Position = new Vector2f(100, 100),
+				Position = new Vector2i(100, 100),
 				Size = new Vector2i(300, 300)
 			};
 
@@ -41,7 +41,7 @@ namespace Client
 			var textinput = new Tiler.GUI.Controls.TextInput()
 			{
 				Parent = window,
-				Position = new Vector2f(0, 30),
+				Position = new Vector2i(0, 30),
 				Font = font,
 				CharacterSize = 21,
 				//MaxCharacters = 10
@@ -56,7 +56,7 @@ namespace Client
 			};
 			window.InvalidateLayout(true);
 			controlList.SizeToParent();
-			controlList.Position = new Vector2f(0, textinput.Size.Y + 2);
+			controlList.Position = new Vector2i(0, textinput.Size.Y + 2);
 			controlList.Size = new Vector2i(controlList.Size.X, controlList.Size.Y - (int)controlList.Position.Y);
 			textinput.Submit += (s, e) =>
 			{

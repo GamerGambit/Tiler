@@ -277,6 +277,7 @@ namespace Tiler.GUI
 			}
 		}
 		public Vector2i Size { get => size; set { size = value; InvalidateLayout(); } }
+		public new Vector2i Position { get => new Vector2i((int)base.Position.X, (int)base.Position.Y); set => base.Position = new Vector2f(value.X, value.Y); }
 		public Vector2i GlobalPosition {
 			get
 			{
@@ -285,7 +286,7 @@ namespace Tiler.GUI
 
 				while(!(ctrl is null))
 				{
-					gpos += new Vector2i((int)ctrl.Position.X, (int)ctrl.Position.Y);
+					gpos += ctrl.Position;
 					ctrl = ctrl.Parent;
 				}
 

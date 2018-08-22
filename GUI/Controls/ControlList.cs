@@ -16,7 +16,7 @@ namespace Tiler.GUI.Controls
 
 			foreach (var child in canvas.GetChildren())
 			{
-				child.Position = new Vector2f(0, yoffset);
+				child.Position = new Vector2i(0, yoffset);
 				child.Size = new Vector2i(Math.Min(child.Size.X, Size.X - (vscrollbar.Enabled ? 13 : 0)), child.Size.Y);
 
 				newY = Math.Max(newY, (int)child.Position.Y + child.Size.Y);
@@ -49,10 +49,10 @@ namespace Tiler.GUI.Controls
 			var canvasHeight = GetCanvasChildrenSizeY();
 
 			vscrollbar.Size = new Vector2i(13, Size.Y);
-			vscrollbar.Position = new Vector2f(Size.X - vscrollbar.Size.X, 0);
+			vscrollbar.Position = new Vector2i(Size.X - vscrollbar.Size.X, 0);
 			vscrollbar.Setup(Size.Y, canvasHeight);
 
-			canvas.Position = new Vector2f(0, -vscrollbar.Scroll);
+			canvas.Position = new Vector2i(0, -vscrollbar.Scroll);
 			canvas.Size = new Vector2i(Size.X - (vscrollbar.Enabled ? 13 : 0), canvasHeight);
 		}
 

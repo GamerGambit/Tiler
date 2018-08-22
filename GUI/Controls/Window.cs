@@ -50,7 +50,7 @@ namespace Tiler.GUI.Controls
 				Parent = this,
 				Text = "Window",
 				CharacterSize = 12,
-				Position = new Vector2f(2, 2)
+				Position = new Vector2i(2, 2)
 			};
 
 			CloseButton = new Button()
@@ -72,13 +72,13 @@ namespace Tiler.GUI.Controls
 			{
 				Parent = this,
 				Color = new Color(200, 200, 200),
-				Position = new Vector2f(0, 20)
+				Position = new Vector2i(0, 20)
 			};
 
 			ClientArea = new Panel()
 			{
 				Parent = this,
-				Position = new Vector2f(2, 22),
+				Position = new Vector2i(2, 22),
 				Color = Color.Transparent
 			};
 		}
@@ -101,7 +101,7 @@ namespace Tiler.GUI.Controls
 			{
 				var mousePos = ScreenToLocal(new Vector2i((int)Input.Manager.MousePosition.X, (int)Input.Manager.MousePosition.Y));
 				var diff = mousePos - mouseClickPos;
-				Position += new Vector2f(diff.X, diff.Y);
+				Position += diff;
 			}
 		}
 
@@ -109,9 +109,9 @@ namespace Tiler.GUI.Controls
 		{
 			TitlePanel.Size = new Vector2i(Size.X, 20);
 			TitleLabel.SizeToContents();
-			TitleLabel.Position = new Vector2f(2, 2);
+			TitleLabel.Position = new Vector2i(2, 2);
 			CloseButton.SizeToContents();
-			CloseButton.Position = new Vector2f(Size.X - CloseButton.Size.X - 2, 2);
+			CloseButton.Position = new Vector2i(Size.X - CloseButton.Size.X - 2, 2);
 			Body.Size = new Vector2i(Size.X, Size.Y - 20);
 			ClientArea.Size = new Vector2i(Size.X - 4, Size.Y - 20 - 4);
 		}

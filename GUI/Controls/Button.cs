@@ -29,7 +29,7 @@ namespace Tiler.GUI.Controls
 
 			label = new Label()
 			{
-				Position = new Vector2f(2, 2),
+				Position = new Vector2i(2, 2),
 				Text = "Button"
 			};
 			AddChild(label);

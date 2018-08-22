@@ -14,12 +14,12 @@ namespace Tiler.GUI.Controls
 
 		private int barHeight = 0;
 		private int canvasHeight = 0;
-		private float scroll = 0;
+		private int scroll = 0;
 
 		private bool dragging = false;
 		private Vector2i mouseClickPos = new Vector2i(0, 0);
 
-		public float Scroll { get => scroll; private set { scroll = Utils.Clamp(value, 0, canvasHeight); Parent?.InvalidateLayout(); } }
+		public int Scroll { get => scroll; private set { scroll = Utils.Clamp(value, 0, canvasHeight); Parent?.InvalidateLayout(); } }
 		public new bool Enabled { get => base.Enabled; private set { base.Enabled = value; Visible = value; } }
 		public float BarScale {
 			get
@@ -62,7 +62,7 @@ namespace Tiler.GUI.Controls
 			{
 				var mousePos = ScreenToLocal(new Vector2i((int)Input.Manager.MousePosition.X, (int)Input.Manager.MousePosition.Y));
 				var diff = mousePos - mouseClickPos;
-				Scroll += diff.Y / BarScale;
+				Scroll += (int)(diff.Y / BarScale);
 				mouseClickPos = mousePos;
 			}
 		}
@@ -100,7 +100,7 @@ namespace Tiler.GUI.Controls
 			if (!Enabled)
 				return;
 
-			Scroll += Input.Manager.MouseWheelDeltas.Y * -50;
+			Scroll += (int)Input.Manager.MouseWheelDeltas.Y * -50;
 		}
 
 		protected override void Layout()
