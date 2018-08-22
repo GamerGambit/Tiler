@@ -7,10 +7,17 @@ namespace Tiler
 {
 	public class Map : Drawable
 	{
+		public enum TileType
+		{
+			Space,
+			Floor,
+			Wall
+		}
+
 		public readonly Vector2i TileSize = new Vector2i(32, 32);
 
 		public Vector2i Size;
-		public List<int> TileIDs = new List<int>();
+		public List<TileType> TileIDs = new List<TileType>();
 
 		private Texture TextureAtlas;
 		private VertexArray VertexArray = new VertexArray(PrimitiveType.Quads);
@@ -27,7 +34,8 @@ namespace Tiler
 		{
 			for (var index = 0; index < TileIDs.Count; ++index)
 			{
-				var tileID = TileIDs[index];
+				var tileID = (int)TileIDs[index];
+				;
 				var worldPosition = new Vector2f((index % Size.X) * TileSize.X, index / Size.X * TileSize.Y);
 
 				VertexArray.Append(new Vertex()

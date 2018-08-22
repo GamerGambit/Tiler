@@ -106,18 +106,18 @@ namespace Client
 			World.Map = new Map
 			{
 				Size = new Vector2i(10, 10),
-				TileIDs = new List<int>()
+				TileIDs = new List<Map.TileType>()
 				{
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 2, 2, 2, 2, 2, 2, 2, 2, 0,
-					0, 2, 1, 1, 1, 1, 1, 1, 2, 0,
-					0, 2, 1, 1, 1, 1, 1, 1, 2, 0,
-					0, 2, 1, 1, 1, 1, 1, 1, 2, 0,
-					0, 2, 1, 1, 1, 1, 1, 1, 2, 0,
-					0, 2, 1, 1, 1, 1, 1, 1, 2, 0,
-					0, 2, 1, 1, 1, 1, 1, 1, 2, 0,
-					0, 2, 2, 2, 2, 2, 2, 2, 2, 0,
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space,
+					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Space,
+					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Wall , Map.TileType.Space,
+					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Wall , Map.TileType.Space,
+					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Wall , Map.TileType.Space,
+					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Wall , Map.TileType.Space,
+					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Wall , Map.TileType.Space,
+					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Wall , Map.TileType.Space,
+					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Space,
+					Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space
 				}
 			};
 			World.Entities.Add(new PlayerSpawn(192, 192));
