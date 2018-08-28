@@ -52,7 +52,8 @@ namespace Tiler
 
 			foreach (var entity in Entities)
 			{
-				target.Draw(entity);
+				//target.Draw(entity);
+				entity.Draw(target.RenderWindow, RenderStates.Default);
 			}
 		}
 	}

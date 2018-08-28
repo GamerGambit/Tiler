@@ -130,12 +130,18 @@ namespace Client
 
 			Gamemode.CreateTeams();
 			Gamemode.PlayerInitialSpawn(Player);
-			var spawnPoint = Gamemode.PlayerSelectSpawn(Player);
+			PlayerSpawn spawnPoint = Gamemode.PlayerSelectSpawn(Player);
 
 			if (spawnPoint is null)
 				throw new Exception("No spawnpoint");
+			
+			// Original
+			//Player.Position = spawnPoint.Position;
 
-			Player.Position = spawnPoint.Position;
+			var Body = Player.GetComponent<Tiler.Physics.Body>(EntityComponents.PhysicsBody);
+			Body.Position = spawnPoint.SpawnPosition;
+			Player.SetComponent(EntityComponents.PhysicsBody, Body);
+
 			Gamemode.PlayerSpawn(Player);
 		}
 
@@ -143,7 +149,8 @@ namespace Client
 		{
 			Window.RenderWindow.SetView(GameView);
 			World.Draw(Window);
-			Window.Draw(Player);
+
+			Player.Draw(Window.RenderWindow, RenderStates.Default);
 		}
 
 		public override void OnUpdate(TimeSpan deltaTime)
@@ -152,7 +159,8 @@ namespace Client
 			Gamemode.SetupMove(Player, ref mv);
 			Gamemode.Move(Player, mv, deltaTime);
 
-			GameView.Center = new Vector2f(Player.Position.X, Player.Position.Y);
+			var Pos = Player.GetComponent<Tiler.Physics.Body>(EntityComponents.PhysicsBody).Position;
+			GameView.Center = new Vector2f(Pos.X, Pos.Y);
 		}
 	}
 }

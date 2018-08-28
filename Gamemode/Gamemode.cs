@@ -60,7 +60,14 @@ namespace Tiler
 			// NOP
 		}
 
-		public virtual void Move(Player ply, MoveData mv, TimeSpan deltaTime)
+		public virtual void Move(Player ply, MoveData mv, TimeSpan deltaTime) {
+			float Dt = (float)deltaTime.TotalSeconds;
+			Physics.Body Body = ply.GetComponent<Physics.Body>(EntityComponents.PhysicsBody);
+
+			
+		}
+
+		/*public virtual void Move(Player ply, MoveData mv, TimeSpan deltaTime)
 		{
 			var velocity = ply.PhysicsBody.Velocity + mv.Acceleration * (float)deltaTime.TotalSeconds;
 
@@ -103,6 +110,6 @@ namespace Tiler
 			#endregion
 
 			ply.Position += velocity * (float)deltaTime.TotalSeconds;
-		}
+		}*/
 	}
 }

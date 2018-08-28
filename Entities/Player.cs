@@ -1,26 +1,16 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 
-namespace Tiler
-{
-	public class Player : Entity
-	{
-		private Shape shape;
-
+namespace Tiler {
+	public class Player : Entity {
 		public int TeamID = -1;
 
-		public Player()
-		{
-			shape = new RectangleShape(new Vector2f(32, 32))
-			{
-				FillColor = Color.Blue
-			};
-		}
+		public Player() {
+			SetComponent(EntityComponents.PhysicsBody, Physics.Body.Create());
 
-		public override void Draw(RenderTarget target, RenderStates states)
-		{
-			states.Transform *= Transform;
-			target.Draw(shape, states);
+			SetComponent(EntityComponents.GraphicsBody, new RectangleShape(new Vector2f(32, 32)) {
+				FillColor = Color.Blue
+			});
 		}
 	}
 }

@@ -3,30 +3,36 @@
 using SFML.Graphics;
 using SFML.System;
 
-namespace Tiler
-{
+namespace Tiler {
 	[Spawnable]
-	public class PlayerSpawn : Entity
-	{
-		[MapEditable]
-		private string MapTest;
+	public class PlayerSpawn : Entity {
+		Vector2 spawnPosition;
 
-		private RectangleShape shape = new RectangleShape(new Vector2f(32, 32));
+		public Vector2 SpawnPosition {
+			get {
+				return spawnPosition;
+			}
 
-		public PlayerSpawn()
-		{
-			shape.FillColor = new Color(255, 160, 0, 128);
+			set {
+				spawnPosition = value;
+
+				Physics.Body Body = GetComponent<Physics.Body>(EntityComponents.PhysicsBody);
+				Body.Position = value;
+				SetComponent(EntityComponents.PhysicsBody, Body);
+			}
 		}
 
-		public PlayerSpawn(float X, float Y) : this()
-		{
-			Position = new Vector2(X, Y);
+		public PlayerSpawn() {
+			SetComponent(EntityComponents.GraphicsBody, new RectangleShape(new Vector2f(32, 32)) {
+				FillColor = new Color(255, 160, 0, 128)
+			});
+
+			SetComponent(EntityComponents.PhysicsBody, Physics.Body.Create());
+			SpawnPosition = Vector2.Zero;
 		}
 
-		public override void Draw(RenderTarget target, RenderStates states)
-		{
-			states.Transform *= Transform;
-			target.Draw(shape, states);
+		public PlayerSpawn(float X, float Y) : this() {
+			SpawnPosition = new Vector2(X, Y);
 		}
 	}
 }

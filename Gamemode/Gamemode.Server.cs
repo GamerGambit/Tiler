@@ -85,13 +85,13 @@ namespace Tiler
 			return true;
 		}
 
-		public virtual Entity PlayerSelectSpawn(Player ply)
+		public virtual PlayerSpawn PlayerSelectSpawn(Player ply)
 		{
 			if (IsTeamBased)
 			{
 				var ent = PlayerSelectTeamSpawn(ply);
-				if (!(ent is null))
-					return ent;
+				if (ent is PlayerSpawn ps)
+					return ps;
 			}
 
 			// TODO: i guess figure out a list of default spawn points and try to choose one
@@ -99,7 +99,7 @@ namespace Tiler
 			return null;
 		}
 
-		public virtual Entity PlayerSelectTeamSpawn(Player ply)
+		public virtual PlayerSpawn PlayerSelectTeamSpawn(Player ply)
 		{
 			var team = TeamManager.GetTeamByID(ply.TeamID);
 
@@ -119,7 +119,7 @@ namespace Tiler
 			{
 				var ent = entList[index];
 				if (IsSpawnPointSuitable(ply, ent, index == entList.Count))
-					return ent;
+					return ent as PlayerSpawn;
 			}
 
 			return null;
