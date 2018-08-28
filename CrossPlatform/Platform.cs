@@ -17,8 +17,12 @@ namespace Tiler.CrossPlatform {
 		static extern bool SetDllDirectory(string Dir);
 
 		public static bool SetLibraryDir(string Dir) {
-			string NewPath = Environment.GetEnvironmentVariable("path") + ";" + Dir;
-			Environment.SetEnvironmentVariable("path", NewPath);
+			string Path = Environment.GetEnvironmentVariable("path");
+
+			if (!Path.Contains(Dir))
+				Path = Path + ";" + Dir;
+			
+			Environment.SetEnvironmentVariable("path", Path);
 
 			if (CurrentPlatform == PlatformID.Win32NT)
 				return SetDllDirectory(Dir);

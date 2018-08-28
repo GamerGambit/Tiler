@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CrossPlatform\Platform.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Gamemode\Gamemode.Client.cs" />
     <Compile Include="Gamemode\Gamemode.cs" />
