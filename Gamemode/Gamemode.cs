@@ -64,7 +64,9 @@ namespace Tiler
 			float Dt = (float)deltaTime.TotalSeconds;
 			Physics.Body Body = ply.GetComponent<Physics.Body>(EntityComponents.PhysicsBody);
 
-			
+			Body.Position += mv.Acceleration * Dt;
+
+			ply.SetComponent(EntityComponents.PhysicsBody, Body);
 		}
 
 		/*public virtual void Move(Player ply, MoveData mv, TimeSpan deltaTime)
