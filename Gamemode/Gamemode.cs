@@ -5,8 +5,6 @@ namespace Tiler
 {
 	public abstract partial class Gamemode
 	{
-		private const float MaxPlayerVelocity = 120.0f;
-
 		public virtual bool IsTeamBased { get; protected set; } = false;
 		public virtual float AirResistance { get; set; } = 0.01f;
 
@@ -61,10 +59,15 @@ namespace Tiler
 		}
 
 		public virtual void Move(Player ply, MoveData mv, TimeSpan deltaTime) {
+			const float PlayerAcceleration = 16;
+
 			float Dt = (float)deltaTime.TotalSeconds;
 			Physics.Body Body = ply.GetComponent<Physics.Body>(EntityComponents.PhysicsBody);
+			Body.MaxVelocity = 32 * 4; // Player can run up to 3 tiles per second
 
-			Body.Position += mv.Acceleration * Dt;
+			Body.Acceleration = (mv.Acceleration * PlayerAcceleration);
+			Body = Body.Step(Dt, 1);
+			//Console.WriteLine(Body.Velocity);
 
 			ply.SetComponent(EntityComponents.PhysicsBody, Body);
 		}
