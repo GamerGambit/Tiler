@@ -27,7 +27,7 @@ namespace Client
 			ply.TeamID = TestTeamID;
 		}
 
-		public override void SetupMove(Player ply, MoveData mv)
+		public override void SetupMove(Player ply, ref MoveData mv)
 		{
 			if (Tiler.Input.Manager.GetState(Glfw.KeyCode.W).IsDown)
 			{

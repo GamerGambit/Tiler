@@ -55,7 +55,7 @@ namespace Tiler
 			// NOP
 		}
 
-		public virtual void SetupMove(Player ply, MoveData mv)
+		public virtual void SetupMove(Player ply, ref MoveData mv)
 		{
 			// NOP
 		}

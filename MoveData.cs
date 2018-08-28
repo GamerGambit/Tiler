@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace Tiler
 {
-	public class MoveData
+	public struct MoveData
 	{
 		[Flags]
 		public enum InKeys

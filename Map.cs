@@ -18,7 +18,8 @@ namespace Tiler
 		public readonly Vector2i TileSize = new Vector2i(32, 32);
 
 		public Vector2i Size;
-		public List<TileType> TileIDs = new List<TileType>();
+		//public List<TileType> TileIDs = new List<TileType>();
+		public TileType[] TileIDs;
 
 		private Texture TextureAtlas;
 		private VertexArray VertexArray = new VertexArray(PrimitiveType.Quads);
@@ -33,11 +34,11 @@ namespace Tiler
 
 		public void Rebuild()
 		{
-			for (var index = 0; index < TileIDs.Count; ++index)
+			for (var index = 0; index < TileIDs.Length; ++index)
 			{
 				var tileID = (int)TileIDs[index];
-				;
-				var worldPosition = new Vector2f((index % Size.X) * TileSize.X, index / Size.X * TileSize.Y);
+
+				var worldPosition = new Vector2f((index % Size.X) * TileSize.X, (index / Size.X) * TileSize.Y);
 
 				VertexArray.Append(new Vertex()
 				{
@@ -71,9 +72,20 @@ namespace Tiler
 
 		public TileType GetTileTypeAtWorldPosition(Vector2 worldpos)
 		{
-			var localPos = new Vector2(worldpos.X / TileSize.X, worldpos.Y / TileSize.Y);
-			var index = (int)(Size.X * localPos.Y + localPos.X);
-			return TileIDs[index];
+			// TODO
+
+			int TileX = (int)(worldpos.X / TileSize.X);
+			int TileY = (int)(worldpos.Y / TileSize.Y);
+			int Idx = TileY * Size.X + TileX;
+
+			if (Idx >= 0 && Idx < TileIDs.Length)
+				return TileIDs[Idx];
+
+			return TileType.Space;
+
+			//var localPos = new Vector2(worldpos.X / TileSize.X, worldpos.Y / TileSize.Y);
+			//var index = (int)(Size.X * localPos.Y + localPos.X);
+			//return TileIDs[index];
 		}
 
 		public void Draw(RenderTarget target, RenderStates states)

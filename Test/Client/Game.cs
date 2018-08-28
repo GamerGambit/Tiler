@@ -108,7 +108,7 @@ namespace Client
 			World.Map = new Map
 			{
 				Size = new Vector2i(10, 10),
-				TileIDs = new List<Map.TileType>()
+				TileIDs = new Map.TileType[]
 				{
 					Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space,
 					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Space,
@@ -148,8 +148,8 @@ namespace Client
 
 		public override void OnUpdate(TimeSpan deltaTime)
 		{
-			var mv = new MoveData();
-			Gamemode.SetupMove(Player, mv);
+			MoveData mv = new MoveData();
+			Gamemode.SetupMove(Player, ref mv);
 			Gamemode.Move(Player, mv, deltaTime);
 
 			GameView.Center = new Vector2f(Player.Position.X, Player.Position.Y);
