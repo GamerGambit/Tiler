@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Numerics;
 
 using SFML.Graphics;
 using SFML.System;
@@ -66,6 +67,13 @@ namespace Tiler
 					Color = Color.White
 				});
 			}
+		}
+
+		public TileType GetTileTypeAtWorldPosition(Vector2 worldpos)
+		{
+			var localPos = new Vector2(worldpos.X / TileSize.X, worldpos.Y / TileSize.Y);
+			var index = (int)(Size.X * localPos.Y + localPos.X);
+			return TileIDs[index];
 		}
 
 		public void Draw(RenderTarget target, RenderStates states)

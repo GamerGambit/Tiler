@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Numerics;
 
-using SFML.System;
-
 namespace Tiler
 {
 	public abstract partial class Gamemode
@@ -69,11 +67,8 @@ namespace Tiler
 			#region air resistance
 			if (mv.Acceleration.X == 0 && mv.Acceleration.Y == 0)
 			{
-				/*
 				var airVelocity = -velocity * Utils.Clamp(AirResistance, 0, 1);
 				velocity += airVelocity;
-				*/
-				velocity *= 0.9f;
 			}
 			#endregion
 
@@ -88,6 +83,24 @@ namespace Tiler
 			pb.Acceleration = mv.Acceleration;
 			pb.Velocity = velocity;
 			ply.PhysicsBody = pb;
+
+			#region collision detection
+			var step = Vector2.Zero;
+			var velocityNormal = (velocity.Length() == 0) ? Vector2.Zero : Vector2.Normalize(velocity);
+			do
+			{
+				var tileType = World.Map.GetTileTypeAtWorldPosition(ply.Position + step);
+				if (tileType == Map.TileType.Wall)
+				{
+					// TODO: react to collsion
+					//velocity = Vector2.Zero;
+					break;
+				}
+
+				step += velocityNormal;
+			}
+			while (ply.Position + step != ply.Position + velocity);
+			#endregion
 
 			ply.Position += velocity * (float)deltaTime.TotalSeconds;
 		}

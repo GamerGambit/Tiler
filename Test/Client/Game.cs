@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+using SFML.Graphics;
 using SFML.System;
 
 using Tiler;
@@ -12,14 +13,15 @@ namespace Client
 		public Gamemode Gamemode;
 		public Player Player;
 
-		public SFML.Graphics.View GameView;
+		public View GameView;
 
 		public Game() : base()
 		{
 			Window.Title = "Habitat Game Thingo";
-			GameView = new SFML.Graphics.View(Window.RenderWindow.GetView());
+			GameView = new View(Window.RenderWindow.GetView());
 
-			var font = new SFML.Graphics.Font("data/saxmono.ttf");
+			/*
+			var font = new Font("data/saxmono.ttf");
 
 			var window = new Tiler.GUI.Controls.Window()
 			{
@@ -78,7 +80,7 @@ namespace Client
 					Font = font,
 					CharacterSize = 12,
 					Text = textinput.Text,
-					FillColor = new SFML.Graphics.Color(Utils.RandomByte(), Utils.RandomByte(), Utils.RandomByte()),
+					FillColor = new Color(Utils.RandomByte(), Utils.RandomByte(), Utils.RandomByte()),
 					WrapType = Tiler.GUI.Controls.Label.WrapTypes.Normal,
 					Size = new Vector2i(controlList.Size.X, 0)
 				};
