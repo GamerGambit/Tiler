@@ -18,7 +18,9 @@ namespace Tiler
 
 		static Program()
 		{
-			Glfw.ConfigureNativesDirectory(Path.GetFullPath(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)) + "\\thirdparty\\Glfw3");
+			//Glfw.ConfigureNativesDirectory(Path.GetFullPath(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)) + "\\thirdparty\\Glfw3");
+			CrossPlatform.Platform.SetLibraryDir(IntPtr.Size == sizeof(long) ? CrossPlatform.Platform.GetX64() : CrossPlatform.Platform.GetX86());
+
 			if (!Glfw.Init())
 			{
 				Environment.Exit(1);
