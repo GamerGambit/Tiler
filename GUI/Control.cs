@@ -278,13 +278,14 @@ namespace Tiler.GUI
 		}
 		public Vector2i Size { get => size; set { size = value; InvalidateLayout(); } }
 		public new Vector2i Position { get => new Vector2i((int)base.Position.X, (int)base.Position.Y); set => base.Position = new Vector2f(value.X, value.Y); }
-		public Vector2i GlobalPosition {
+		public Vector2i GlobalPosition
+		{
 			get
 			{
 				var gpos = new Vector2i(0, 0);
 				var ctrl = this;
 
-				while(!(ctrl is null))
+				while (!(ctrl is null))
 				{
 					gpos += ctrl.Position;
 					ctrl = ctrl.Parent;
@@ -294,7 +295,8 @@ namespace Tiler.GUI
 			}
 		}
 		public IntRect AABB { get => new IntRect(GlobalPosition, Size); }
-		public bool Visible {
+		public bool Visible
+		{
 			get => visible;
 			set
 			{

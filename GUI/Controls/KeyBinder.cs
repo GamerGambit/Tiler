@@ -10,7 +10,8 @@ namespace Tiler.GUI.Controls
 		private Text text = new Text();
 		private RectangleShape shape = new RectangleShape();
 
-		private string Text {
+		private string Text
+		{
 			get => text.DisplayedString;
 			set
 			{

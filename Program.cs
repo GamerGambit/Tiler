@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 
 using Glfw3;
 
@@ -43,7 +42,7 @@ namespace Tiler
 			Window.UnicodeInput += (s, e) => GUI.State.HandleTextInput(e);
 			Window.MousePressed += (s, e) => GUI.State.HandleMousePressed(e);
 			Window.MouseReleased += (s, e) => GUI.State.HandleMouseReleased(e);
-			Window.MouseScrolled += (s, e) => 
+			Window.MouseScrolled += (s, e) =>
 			{
 				Input.Manager.MouseWheelDeltas = new System.Numerics.Vector2((float)e.X, (float)e.Y);
 				GUI.State.HandleMouseScroll();

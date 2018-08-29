@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using SFML.System;
 
 namespace Tiler.GUI.Controls
@@ -19,7 +20,7 @@ namespace Tiler.GUI.Controls
 				child.Position = new Vector2i(0, yoffset);
 				child.Size = new Vector2i(Math.Min(child.Size.X, Size.X - (vscrollbar.Enabled ? 13 : 0)), child.Size.Y);
 
-				newY = Math.Max(newY, (int)child.Position.Y + child.Size.Y);
+				newY = Math.Max(newY, child.Position.Y + child.Size.Y);
 				yoffset += child.Size.Y + YPadding;
 			}
 

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+
 using SFML.Graphics;
 
 namespace Tiler
@@ -54,12 +54,12 @@ namespace Tiler
 			return 1866874249 + TeamID.GetHashCode();
 		}
 
-		public static bool operator==(Team team1, Team team2)
+		public static bool operator ==(Team team1, Team team2)
 		{
 			return team1.TeamID == team2.TeamID;
 		}
 
-		public static bool operator!=(Team team1, Team team2)
+		public static bool operator !=(Team team1, Team team2)
 		{
 			return team1.TeamID != team2.TeamID;
 		}

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 
 using SFML.Graphics;
@@ -7,14 +6,17 @@ using SFML.System;
 
 using Tiler;
 
-namespace Client {
-	public class Game : Tiler.Program {
+namespace Client
+{
+	public class Game : Tiler.Program
+	{
 		public Gamemode Gamemode;
 		public Player Player;
 
 		public View GameView;
 
-		public Game() : base() {
+		public Game() : base()
+		{
 			Window.Title = "Habitat Game Thingo";
 			GameView = new View(Window.RenderWindow.GetView());
 
@@ -103,11 +105,13 @@ namespace Client {
 			}
 			*/
 
-			using (Bitmap MapBmp = new Bitmap("data/map.png")) {
+			using (Bitmap MapBmp = new Bitmap("data/map.png"))
+			{
 				World.Map = new Map(MapBmp.Width, MapBmp.Height);
 
 				for (int Y = 0; Y < MapBmp.Height; Y++)
-					for (int X = 0; X < MapBmp.Width; X++) {
+					for (int X = 0; X < MapBmp.Width; X++)
+					{
 						var MapPx = MapBmp.GetPixel(X, Y);
 						Map.TileType Tile = Map.TileType.Space;
 
@@ -144,14 +148,16 @@ namespace Client {
 			Gamemode.PlayerSpawn(Player);
 		}
 
-		public override void OnDraw() {
+		public override void OnDraw()
+		{
 			Window.RenderWindow.SetView(GameView);
 			World.Draw(Window);
 
 			Player.Draw(Window.RenderWindow, RenderStates.Default);
 		}
 
-		public override void OnUpdate(TimeSpan deltaTime) {
+		public override void OnUpdate(TimeSpan deltaTime)
+		{
 			MoveData mv = new MoveData();
 			Gamemode.SetupMove(Player, ref mv);
 			Gamemode.Move(Player, mv, deltaTime);

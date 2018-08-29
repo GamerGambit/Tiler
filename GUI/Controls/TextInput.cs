@@ -14,7 +14,8 @@ namespace Tiler.GUI.Controls
 		private Text label;
 		private int caretPos = 0;
 
-		private int CaretPos {
+		private int CaretPos
+		{
 			get => caretPos;
 			set
 			{
@@ -65,7 +66,7 @@ namespace Tiler.GUI.Controls
 			CaretPos--;
 		}
 
-		public string Text { get => label.DisplayedString; set { SetText(""); CaretPos = 0;} }
+		public string Text { get => label.DisplayedString; set { SetText(""); CaretPos = 0; } }
 		public Font Font { get => label.Font; set { label.Font = value; InvalidateLayout(); } }
 		public uint CharacterSize { get => label.CharacterSize; set { label.CharacterSize = value; InvalidateLayout(); } }
 		public uint MaxCharacters { get; set; } = 0;

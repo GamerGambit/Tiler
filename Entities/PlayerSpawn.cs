@@ -3,21 +3,28 @@
 using SFML.Graphics;
 using SFML.System;
 
-namespace Tiler {
+namespace Tiler
+{
 	[Spawnable]
-	public class PlayerSpawn : Entity {
-		public Vector2 SpawnPosition {
-			get {
+	public class PlayerSpawn : Entity
+	{
+		public Vector2 SpawnPosition
+		{
+			get
+			{
 				return GetComponent<Physics.Body>(EntityComponents.PhysicsBody).Position;
 			}
 
-			set {
+			set
+			{
 				GetComponent<Physics.Body>(EntityComponents.PhysicsBody).Position = value;
 			}
 		}
 
-		public PlayerSpawn() {
-			SetComponent(EntityComponents.GraphicsBody, new RectangleShape(new Vector2f(32, 32)) {
+		public PlayerSpawn()
+		{
+			SetComponent(EntityComponents.GraphicsBody, new RectangleShape(new Vector2f(32, 32))
+			{
 				FillColor = new Color(255, 160, 0, 128)
 			});
 
@@ -25,7 +32,8 @@ namespace Tiler {
 			SpawnPosition = Vector2.Zero;
 		}
 
-		public PlayerSpawn(float X, float Y) : this() {
+		public PlayerSpawn(float X, float Y) : this()
+		{
 			SpawnPosition = new Vector2(X, Y);
 		}
 	}
