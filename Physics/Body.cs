@@ -2,7 +2,7 @@
 using System;
 
 namespace Tiler.Physics {
-	public struct Body {
+	public class Body {
 		//public AABB AABB;
 		public int Mass;
 
@@ -13,25 +13,47 @@ namespace Tiler.Physics {
 		//public Vector2 Momentum { get => Mass * Velocity; }
 
 		public float MaxVelocity;
+		public float DefaultFriction;
 
-		public Body Step(float Dt, float Friction) {
-			Velocity += Acceleration * Dt;
+		public AABB AABB => new AABB(Position, Size);
+
+		public Body(float Size = 32, int Mass = 1, float MaxVelocity = float.MaxValue, float DefaultFriction = 1.0f) {
+			this.MaxVelocity = MaxVelocity;
+			this.Mass = Mass;
+			this.Size = new Vector2(Size);
+			this.DefaultFriction = DefaultFriction;
+		}
+
+		public void Step(float Dt, float Friction) {
+			CalculateStep(Dt, Friction, ref Acceleration, ref Position, ref Velocity);
+		}
+
+		public void CalculateStep(float Dt, float Friction, ref Vector2 Acceleration, ref Vector2 Position, ref Vector2 Velocity) {
+			// Increase velocity based on acceleration
+			Velocity = Velocity + (Acceleration * Dt);
 
 			// Clamp velocity
 			if (Velocity.LengthSquared() >= (MaxVelocity * MaxVelocity))
 				Velocity = Vector2.Normalize(Velocity) * MaxVelocity;
 
-			if (!(Velocity.X == 0 && Velocity.Y == 0))
+			// If velocity != 0
+			if (!(Velocity.X == 0 && Velocity.Y == 0)) {
+				// Apply frictions
+				Velocity *= DefaultFriction * Friction;
+
+				// Update position
 				Position += Velocity * Dt;
-			return this;
+			}
 		}
 
-		public static Body Create(float Size = 32, int Mass = 1) {
-			Body B = new Body();
-			B.MaxVelocity = float.MaxValue;
-			B.Mass = Mass;
-			B.Size = new Vector2(Size);
-			return B;
+		public Vector2 CalculateStepPosition(float Dt, float Friction) {
+			Vector2 Accel = Acceleration;
+			Vector2 Pos = Position;
+			Vector2 Vel = Velocity;
+
+			CalculateStep(Dt, Friction, ref Accel, ref Pos, ref Vel);
+
+			return Pos;
 		}
 	}
 }

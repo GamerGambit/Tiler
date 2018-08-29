@@ -59,17 +59,32 @@ namespace Tiler
 		}
 
 		public virtual void Move(Player ply, MoveData mv, TimeSpan deltaTime) {
-			const float PlayerAcceleration = 16;
-
 			float Dt = (float)deltaTime.TotalSeconds;
+			float PlayerAcceleration = 8; // How fast the player starts moving
+			float Friction = 0.8f;
+
 			Physics.Body Body = ply.GetComponent<Physics.Body>(EntityComponents.PhysicsBody);
-			Body.MaxVelocity = 32 * 4; // Player can run up to 3 tiles per second
 
+			// Movement depends on the current tile the player is standing on
+			Map.TileType CurrentTile = World.Map.GetTileTypeAtWorldPosition(Body.Position);
+			if (CurrentTile == Map.TileType.Space) {
+				Friction = 0.999f;
+				PlayerAcceleration = 0.2f;
+			} 
+
+			// Predict movement this frame
 			Body.Acceleration = (mv.Acceleration * PlayerAcceleration);
-			Body = Body.Step(Dt, 1);
-			//Console.WriteLine(Body.Velocity);
+			Vector2 PredictedPos = Body.CalculateStepPosition(Dt, Friction);
+			Physics.AABB PredictedAABB = new Physics.AABB(PredictedPos, Body.Size);
 
-			ply.SetComponent(EntityComponents.PhysicsBody, Body);
+			// If any of the corners collide, stop
+			foreach (var T in World.Map.GetTileTypeAtWorldPosition(PredictedAABB.GetVertices()))
+				if (T == Map.TileType.Wall) {
+					Body.Acceleration = Vector2.Zero;
+					Body.Velocity = Vector2.Zero;
+				}
+
+			Body.Step(Dt, Friction);
 		}
 
 		/*public virtual void Move(Player ply, MoveData mv, TimeSpan deltaTime)

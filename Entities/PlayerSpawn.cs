@@ -6,19 +6,13 @@ using SFML.System;
 namespace Tiler {
 	[Spawnable]
 	public class PlayerSpawn : Entity {
-		Vector2 spawnPosition;
-
 		public Vector2 SpawnPosition {
 			get {
-				return spawnPosition;
+				return GetComponent<Physics.Body>(EntityComponents.PhysicsBody).Position;
 			}
 
 			set {
-				spawnPosition = value;
-
-				Physics.Body Body = GetComponent<Physics.Body>(EntityComponents.PhysicsBody);
-				Body.Position = value;
-				SetComponent(EntityComponents.PhysicsBody, Body);
+				GetComponent<Physics.Body>(EntityComponents.PhysicsBody).Position = value;
 			}
 		}
 
@@ -27,7 +21,7 @@ namespace Tiler {
 				FillColor = new Color(255, 160, 0, 128)
 			});
 
-			SetComponent(EntityComponents.PhysicsBody, Physics.Body.Create());
+			SetComponent(EntityComponents.PhysicsBody, new Physics.Body());
 			SpawnPosition = Vector2.Zero;
 		}
 

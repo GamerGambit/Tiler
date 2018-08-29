@@ -118,7 +118,7 @@ namespace Client
 					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Wall , Map.TileType.Space,
 					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Wall , Map.TileType.Space,
 					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Wall , Map.TileType.Space,
-					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Space,
+					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Floor , Map.TileType.Floor , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Space,
 					Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space
 				}
 			};
