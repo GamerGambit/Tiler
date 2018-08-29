@@ -14,7 +14,8 @@ namespace Tiler {
 		public enum TileType : int {
 			Space,
 			Floor,
-			Wall
+			Wall,
+			Slime,
 		}
 
 		public readonly Vector2i TileSize = new Vector2i(32, 32);
@@ -34,6 +35,7 @@ namespace Tiler {
 			SetTileTexture(new Image("space.png"), TileType.Space);
 			SetTileTexture(new Image("floor.png"), TileType.Floor);
 			SetTileTexture(new Image("wall.png"), TileType.Wall);
+			SetTileTexture(new Image("slime.png"), TileType.Slime);
 		}
 
 		public Map(int Width, int Height) : this() {

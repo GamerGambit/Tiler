@@ -115,6 +115,8 @@ namespace Client {
 							Tile = Map.TileType.Floor;
 						else if (MapPx.R == 0 && MapPx.G == 0 && MapPx.B == 0 && MapPx.A == 255)
 							Tile = Map.TileType.Wall;
+						else if (MapPx.R == 0 && MapPx.G == 255 && MapPx.B == 0 && MapPx.A == 255)
+							Tile = Map.TileType.Slime;
 
 						World.Map.SetTile(X, Y, Tile);
 					}
