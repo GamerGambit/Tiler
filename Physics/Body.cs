@@ -17,6 +17,8 @@ namespace Tiler.Physics {
 
 		public AABB AABB => new AABB(Position, Size);
 
+		public Vector2 Center => Position + (Size / 2);
+
 		public Body(float Size = 32, int Mass = 1, float MaxVelocity = float.MaxValue, float DefaultFriction = 1.0f) {
 			this.MaxVelocity = MaxVelocity;
 			this.Mass = Mass;
@@ -25,18 +27,18 @@ namespace Tiler.Physics {
 		}
 
 		public void Step(float Dt, float Friction) {
-			CalculateStep(Dt, Friction, ref Acceleration, ref Position, ref Velocity);
+			PredictStep(Dt, Friction, ref Acceleration, ref Position, ref Velocity);
 		}
-
-		public void CalculateStep(float Dt, float Friction, ref Vector2 Acceleration, ref Vector2 Position, ref Vector2 Velocity) {
-			// Increase velocity based on acceleration
+		
+		public void PredictStep(float Dt, float Friction, ref Vector2 Acceleration, ref Vector2 Position, ref Vector2 Velocity) {
+			// Accelerate
 			Velocity = Velocity + (Acceleration * Dt);
 
-			// Clamp velocity
+			// Clamp velocity to max speed
 			if (Velocity.LengthSquared() >= (MaxVelocity * MaxVelocity))
 				Velocity = Vector2.Normalize(Velocity) * MaxVelocity;
 
-			// If velocity != 0
+			// If there is any velocity
 			if (!(Velocity.X == 0 && Velocity.Y == 0)) {
 				// Apply frictions
 				Velocity *= DefaultFriction * Friction;
@@ -46,12 +48,12 @@ namespace Tiler.Physics {
 			}
 		}
 
-		public Vector2 CalculateStepPosition(float Dt, float Friction) {
+		public Vector2 PredictStepPosition(float Dt, float Friction) {
 			Vector2 Accel = Acceleration;
 			Vector2 Pos = Position;
 			Vector2 Vel = Velocity;
 
-			CalculateStep(Dt, Friction, ref Accel, ref Pos, ref Vel);
+			PredictStep(Dt, Friction, ref Accel, ref Pos, ref Vel);
 
 			return Pos;
 		}

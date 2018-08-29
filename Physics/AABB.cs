@@ -11,18 +11,20 @@ namespace Tiler.Physics {
 		public Vector2 C => Position + Size;
 		public Vector2 D => Position + new Vector2(Size.X, 0);
 
+		public IEnumerable<Vector2> Vertices {
+			get {
+				yield return A;
+				yield return B;
+				yield return C;
+				yield return D;
+			}
+		}
+
 		public AABB(Vector2 Position, Vector2 Size) {
 			this.Position = Position;
 			this.Size = Size;
 		}
-
-		public IEnumerable<Vector2> GetVertices() {
-			yield return A;
-			yield return B;
-			yield return C;
-			yield return D;
-		}
-
+		
 		public bool Collides(AABB Other) {
 			return IsInside(Other.A) || IsInside(Other.B) || IsInside(Other.C) || IsInside(Other.D);
 		}

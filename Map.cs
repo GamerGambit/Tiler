@@ -5,6 +5,11 @@ using SFML.Graphics;
 using SFML.System;
 
 namespace Tiler {
+	public struct TilePhysics {
+		public float PlayerAcceleration;
+		public float Friction;
+	}
+
 	public class Map : Drawable {
 		public enum TileType {
 			Space,
@@ -61,20 +66,14 @@ namespace Tiler {
 		}
 
 		public TileType GetTileTypeAtWorldPosition(Vector2 worldpos) {
-			// TODO
-
 			int TileX = (int)(worldpos.X / TileSize.X);
 			int TileY = (int)(worldpos.Y / TileSize.Y);
+
+			if (TileX < 0 || TileX >= Size.X || TileY < 0 || TileY >= Size.Y)
+				return TileType.Space;
+
 			int Idx = TileY * Size.X + TileX;
-
-			if (Idx >= 0 && Idx < TileIDs.Length)
-				return TileIDs[Idx];
-
-			return TileType.Space;
-
-			//var localPos = new Vector2(worldpos.X / TileSize.X, worldpos.Y / TileSize.Y);
-			//var index = (int)(Size.X * localPos.Y + localPos.X);
-			//return TileIDs[index];
+			return TileIDs[Idx];
 		}
 
 		public IEnumerable<TileType> GetTileTypeAtWorldPosition(IEnumerable<Vector2> Positions) {

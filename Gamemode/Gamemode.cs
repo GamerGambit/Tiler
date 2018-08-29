@@ -1,135 +1,129 @@
 ﻿using System;
 using System.Numerics;
 
-namespace Tiler
-{
-	public abstract partial class Gamemode
-	{
+namespace Tiler {
+	public abstract partial class Gamemode {
 		public virtual bool IsTeamBased { get; protected set; } = false;
-		public virtual float AirResistance { get; set; } = 0.01f;
 
-		public virtual void Initialize()
-		{
+		public virtual void Initialize() {
 			// NOP
 		}
 
-		public virtual void OnMapLoaded()
-		{
+		public virtual void OnMapLoaded() {
 			// NOP
 		}
 
-		public virtual bool PlayerShouldTakeDamage(Player ply, Entity attacker)
-		{
+		public virtual bool PlayerShouldTakeDamage(Player ply, Entity attacker) {
 			return true;
 		}
 
-		public virtual void Think()
-		{
+		public virtual void Think() {
 			// NOP
 		}
 
-		public virtual void Tick()
-		{
+		public virtual void Tick() {
 			// NOP
 		}
 
-		public virtual void OnEntityCreated(Entity ent)
-		{
+		public virtual void OnEntityCreated(Entity ent) {
 			// NOP
 		}
 
-		public virtual void CreateTeams()
-		{
+		public virtual void CreateTeams() {
 			// NOP
 		}
 
-		public virtual bool ShouldCollide(Entity ent1, Entity ent2)
-		{
+		public virtual bool ShouldCollide(Entity ent1, Entity ent2) {
 			return true;
 		}
 
-		public virtual void OnShutdown()
-		{
+		public virtual void OnShutdown() {
 			// NOP
 		}
 
-		public virtual void SetupMove(Player ply, ref MoveData mv)
-		{
+		public virtual void SetupMove(Player ply, ref MoveData mv) {
 			// NOP
 		}
 
+		public virtual bool IsSolid(Map.TileType TileType) {
+			if (TileType == Map.TileType.Wall)
+				return true;
+
+			return false;
+		}
+		
+		public virtual void GetWorldProperties(Vector2 WorldPosition, out WorldProps WorldProperties) {
+			Map.TileType WorldTile = World.Map.GetTileTypeAtWorldPosition(WorldPosition);
+			WorldProperties = new WorldProps();
+
+			// Check if tile solid
+			// TODO: Check if any other static physics objects in the way
+			WorldProperties.IsSolid = IsSolid(WorldTile);
+
+			// Get atmosphere friction
+			WorldProperties.AtmosFriction = 0.987f;
+
+			if (WorldTile == Map.TileType.Space)
+				WorldProperties.AtmosFriction = 1;
+		}
+
+		public virtual void GetTileProperties(Map.TileType Tile, ref TilePhysics Phys) {
+			// Defaults
+			Phys.PlayerAcceleration = 8.0f;
+			Phys.Friction = 0.82f;
+
+			// No grip in space
+			if (Tile == Map.TileType.Space) {
+				Phys.Friction = 1;
+				Phys.PlayerAcceleration = 0.2f;
+			}
+		}
+		
 		public virtual void Move(Player ply, MoveData mv, TimeSpan deltaTime) {
 			float Dt = (float)deltaTime.TotalSeconds;
-			float PlayerAcceleration = 8; // How fast the player starts moving
-			float Friction = 0.8f;
-
+			TilePhysics Phys = new TilePhysics();
 			Physics.Body Body = ply.GetComponent<Physics.Body>(EntityComponents.PhysicsBody);
 
-			// Movement depends on the current tile the player is standing on
-			Map.TileType CurrentTile = World.Map.GetTileTypeAtWorldPosition(Body.Position);
-			if (CurrentTile == Map.TileType.Space) {
-				Friction = 0.999f;
-				PlayerAcceleration = 0.2f;
-			} 
+			// Movement properties depend on the current tile the player is standing on
+			GetTileProperties(World.Map.GetTileTypeAtWorldPosition(Body.Center), ref Phys);
+
+			// Apply other forces, like air friction
+			GetWorldProperties(Body.Center, out WorldProps Props);
+			Phys.Friction *= Props.AtmosFriction;
 
 			// Predict movement this frame
-			Body.Acceleration = (mv.Acceleration * PlayerAcceleration);
-			Vector2 PredictedPos = Body.CalculateStepPosition(Dt, Friction);
-			Physics.AABB PredictedAABB = new Physics.AABB(PredictedPos, Body.Size);
+			Body.Acceleration = (mv.Acceleration * Phys.PlayerAcceleration);
+			Vector2 PredictedPos = Body.PredictStepPosition(Dt, Phys.Friction);
 
-			// If any of the corners collide, stop
-			foreach (var T in World.Map.GetTileTypeAtWorldPosition(PredictedAABB.GetVertices()))
-				if (T == Map.TileType.Wall) {
-					Body.Acceleration = Vector2.Zero;
-					Body.Velocity = Vector2.Zero;
-				}
+			//> If predicted movement collides with any world geometry
+			// then cancel any acceleration and velocity.
+			//> There are two separate checks for horizontal and vertical movement
+			// so sliding across walls still works
+			IfCollidesMultiply(Body, new Vector2(PredictedPos.X, Body.Position.Y), new Vector2(0, 1));
+			IfCollidesMultiply(Body, new Vector2(Body.Position.X, PredictedPos.Y), new Vector2(1, 0));
 
-			Body.Step(Dt, Friction);
+			// Perform the actual step
+			Body.Step(Dt, Phys.Friction);
+
+			// EVENTUALLY:
+			// If the player gets stuck in geometry somehow, any collision checks should
+			// return TRUE here, which means we should rewind the player position until it's not stuck in the geometry
+			// anymore. Ray casting from current stuck position to previous position.
+			// Do not do this until the hypothetical bug actually shows up
 		}
 
-		/*public virtual void Move(Player ply, MoveData mv, TimeSpan deltaTime)
-		{
-			var velocity = ply.PhysicsBody.Velocity + mv.Acceleration * (float)deltaTime.TotalSeconds;
+		bool IfCollidesMultiply(Physics.Body B, Vector2 PredictedPos, Vector2 Mul) {
+			foreach (var Vert in new Physics.AABB(PredictedPos, B.Size).Vertices) {
+				GetWorldProperties(Vert, out WorldProps Props);
 
-			#region air resistance
-			if (mv.Acceleration.X == 0 && mv.Acceleration.Y == 0)
-			{
-				var airVelocity = -velocity * Utils.Clamp(AirResistance, 0, 1);
-				velocity += airVelocity;
-			}
-			#endregion
-
-			#region velocity clamping
-			if (velocity.Length() > MaxPlayerVelocity)
-			{
-				velocity = Vector2.Normalize(velocity) * MaxPlayerVelocity;
-			}
-			#endregion
-
-			var pb = ply.PhysicsBody;
-			pb.Acceleration = mv.Acceleration;
-			pb.Velocity = velocity;
-			ply.PhysicsBody = pb;
-
-			#region collision detection
-			var step = Vector2.Zero;
-			var velocityNormal = (velocity.Length() == 0) ? Vector2.Zero : Vector2.Normalize(velocity);
-			do
-			{
-				var tileType = World.Map.GetTileTypeAtWorldPosition(ply.Position + step);
-				if (tileType == Map.TileType.Wall)
-				{
-					// TODO: react to collsion
-					//velocity = Vector2.Zero;
-					break;
+				if (Props.IsSolid) {
+					B.Acceleration *= Mul;
+					B.Velocity *= Mul;
+					return true;
 				}
-
-				step += velocityNormal;
 			}
-			while (ply.Position + step != ply.Position + velocity);
-			#endregion
 
-			ply.Position += velocity * (float)deltaTime.TotalSeconds;
-		}*/
+			return false;
+		}
 	}
 }
