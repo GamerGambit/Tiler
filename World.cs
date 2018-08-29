@@ -9,13 +9,7 @@ namespace Tiler {
 		public float AtmosFriction;
 		public bool IsSolid;
 	}
-
-	public static class TileIDs {
-		public const int SPACE = 0;
-		public const int FLOOR = 1;
-		public const int WALL = 2;
-	}
-
+	
 	public static class World {
 		internal static readonly Dictionary<string, Type> ValidSpawnableEntityTypes = new Dictionary<string, Type>();
 

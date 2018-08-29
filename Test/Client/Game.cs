@@ -1,22 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 using SFML.Graphics;
 using SFML.System;
 
 using Tiler;
 
-namespace Client
-{
-	public class Game : Tiler.Program
-	{
+namespace Client {
+	public class Game : Tiler.Program {
 		public Gamemode Gamemode;
 		public Player Player;
 
 		public View GameView;
 
-		public Game() : base()
-		{
+		public Game() : base() {
 			Window.Title = "Habitat Game Thingo";
 			GameView = new View(Window.RenderWindow.GetView());
 
@@ -105,23 +103,23 @@ namespace Client
 			}
 			*/
 
-			World.Map = new Map
-			{
-				Size = new Vector2i(10, 10),
-				TileIDs = new Map.TileType[]
-				{
-					Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space,
-					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Space,
-					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Wall , Map.TileType.Space,
-					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Wall , Map.TileType.Space,
-					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Wall , Map.TileType.Space,
-					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Wall , Map.TileType.Space,
-					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Wall , Map.TileType.Space,
-					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Floor, Map.TileType.Wall , Map.TileType.Space,
-					Map.TileType.Space, Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Floor , Map.TileType.Floor , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Wall , Map.TileType.Space,
-					Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space, Map.TileType.Space
-				}
-			};
+			using (Bitmap MapBmp = new Bitmap("map.png")) {
+				World.Map = new Map(MapBmp.Width, MapBmp.Height);
+
+				for (int Y = 0; Y < MapBmp.Height; Y++)
+					for (int X = 0; X < MapBmp.Width; X++) {
+						var MapPx = MapBmp.GetPixel(X, Y);
+						Map.TileType Tile = Map.TileType.Space;
+
+						if (MapPx.R == 255 && MapPx.G == 255 && MapPx.B == 255 && MapPx.A == 255)
+							Tile = Map.TileType.Floor;
+						else if (MapPx.R == 0 && MapPx.G == 0 && MapPx.B == 0 && MapPx.A == 255)
+							Tile = Map.TileType.Wall;
+
+						World.Map.SetTile(X, Y, Tile);
+					}
+			}
+
 			World.Entities.Add(new PlayerSpawn(192, 192));
 			World.Map.Rebuild();
 
@@ -134,7 +132,7 @@ namespace Client
 
 			if (spawnPoint is null)
 				throw new Exception("No spawnpoint");
-			
+
 			// Original
 			//Player.Position = spawnPoint.Position;
 
@@ -145,16 +143,14 @@ namespace Client
 			Gamemode.PlayerSpawn(Player);
 		}
 
-		public override void OnDraw()
-		{
+		public override void OnDraw() {
 			Window.RenderWindow.SetView(GameView);
 			World.Draw(Window);
 
 			Player.Draw(Window.RenderWindow, RenderStates.Default);
 		}
 
-		public override void OnUpdate(TimeSpan deltaTime)
-		{
+		public override void OnUpdate(TimeSpan deltaTime) {
 			MoveData mv = new MoveData();
 			Gamemode.SetupMove(Player, ref mv);
 			Gamemode.Move(Player, mv, deltaTime);

@@ -11,7 +11,7 @@ namespace Tiler {
 	}
 
 	public class Map : Drawable {
-		public enum TileType {
+		public enum TileType : int {
 			Space,
 			Floor,
 			Wall
@@ -23,43 +23,81 @@ namespace Tiler {
 		//public List<TileType> TileIDs = new List<TileType>();
 		public TileType[] TileIDs;
 
-		private Texture TextureAtlas;
-		private VertexArray VertexArray = new VertexArray(PrimitiveType.Quads);
+		Vector2i TextureAtlasSize;
+		Texture TextureAtlas;
+		VertexArray VertexArray = new VertexArray(PrimitiveType.Quads);
 
 		public Map() {
-			TextureAtlas = new Texture((uint)TileSize.X * 3, (uint)TileSize.Y);
-			TextureAtlas.Update(new Image("space.png"), 0, 0);
-			TextureAtlas.Update(new Image("floor.png"), (uint)TileSize.X, 0);
-			TextureAtlas.Update(new Image("wall.png"), (uint)TileSize.X * 2, 0);
+			TextureAtlasSize = TileSize * 32;
+			TextureAtlas = new Texture((uint)TextureAtlasSize.X, (uint)TextureAtlasSize.Y);
+
+			SetTileTexture(new Image("space.png"), TileType.Space);
+			SetTileTexture(new Image("floor.png"), TileType.Floor);
+			SetTileTexture(new Image("wall.png"), TileType.Wall);
+		}
+
+		public Map(int Width, int Height) : this() {
+			SetMapSize(Width, Height);
+		}
+
+		public void SetTileTexture(Image Img, int X, int Y) {
+			TextureAtlas.Update(Img, (uint)(X * TileSize.X), (uint)(Y * TileSize.Y));
+		}
+
+		public void SetTileTexture(Image Img, int TileIdx) {
+			SetTileTexture(Img, TileIdx % TextureAtlasSize.X, TileIdx / TextureAtlasSize.Y);
+		}
+
+		public void SetTileTexture(Image Img, TileType TT) {
+			SetTileTexture(Img, (int)TT);
+		}
+
+		public Vector2f GetTileUV(int TileIdx) {
+			int X = TileIdx % TextureAtlasSize.X;
+			int Y = TileIdx / TextureAtlasSize.Y;
+			return new Vector2f(X * TileSize.X, Y * TileSize.Y);
+		}
+
+		public Vector2f GetTileUV(TileType TT) {
+			return GetTileUV((int)TT);
+		}
+
+		public void SetMapSize(int Width, int Height) {
+			Size = new Vector2i(Width, Height);
+			TileIDs = new TileType[Width * Height];
+		}
+
+		public void SetTile(int X, int Y, TileType TT) {
+			TileIDs[Y * Size.X + X] = TT;
 		}
 
 		public void Rebuild() {
 			for (var index = 0; index < TileIDs.Length; ++index) {
-				var tileID = (int)TileIDs[index];
+				Vector2f TileUV = GetTileUV(TileIDs[index]);
 
 				var worldPosition = new Vector2f((index % Size.X) * TileSize.X, (index / Size.X) * TileSize.Y);
 
 				VertexArray.Append(new Vertex() {
 					Position = worldPosition,
-					TexCoords = new Vector2f(TileSize.X * tileID, 0),
+					TexCoords = new Vector2f(TileUV.X, 0),
 					Color = Color.White
 				});
 
 				VertexArray.Append(new Vertex() {
 					Position = worldPosition + new Vector2f(TileSize.X, 0),
-					TexCoords = new Vector2f(TileSize.X * tileID + TileSize.X, 0),
+					TexCoords = new Vector2f(TileUV.X + TileSize.X, TileUV.Y),
 					Color = Color.White
 				});
 
 				VertexArray.Append(new Vertex() {
 					Position = worldPosition + new Vector2f(TileSize.X, TileSize.Y),
-					TexCoords = new Vector2f(TileSize.X * tileID + TileSize.X, TileSize.Y),
+					TexCoords = new Vector2f(TileUV.X + TileSize.X, TileUV.Y + TileSize.Y),
 					Color = Color.White
 				});
 
 				VertexArray.Append(new Vertex() {
 					Position = worldPosition + new Vector2f(0, TileSize.Y),
-					TexCoords = new Vector2f(TileSize.X * tileID, TileSize.Y),
+					TexCoords = new Vector2f(TileUV.X, TileUV.Y + TileSize.Y),
 					Color = Color.White
 				});
 			}
