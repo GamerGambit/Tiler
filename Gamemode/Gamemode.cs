@@ -93,7 +93,7 @@ namespace Tiler
 			if (Tile == Map.TileType.Space)
 			{
 				Phys.Friction = 1;
-				Phys.PlayerAcceleration = 0.2f;
+				Phys.PlayerAcceleration = 0;
 			}
 			else if (Tile == Map.TileType.Slime)
 			{
