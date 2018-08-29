@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
+using System.IO;
+using System;
 
 using SFML.Graphics;
 using SFML.System;
@@ -24,6 +26,7 @@ namespace Tiler {
 		//public List<TileType> TileIDs = new List<TileType>();
 		public TileType[] TileIDs;
 
+		bool IsDirty;
 		Vector2i TextureAtlasSize;
 		Texture TextureAtlas;
 		VertexArray VertexArray = new VertexArray(PrimitiveType.Quads);
@@ -32,10 +35,12 @@ namespace Tiler {
 			TextureAtlasSize = TileSize * 32;
 			TextureAtlas = new Texture((uint)TextureAtlasSize.X, (uint)TextureAtlasSize.Y);
 
-			SetTileTexture(new Image("space.png"), TileType.Space);
-			SetTileTexture(new Image("floor.png"), TileType.Floor);
-			SetTileTexture(new Image("wall.png"), TileType.Wall);
-			SetTileTexture(new Image("slime.png"), TileType.Slime);
+			foreach (TileType TT in Enum.GetValues(typeof(TileType))) {
+				string FileName = Path.Combine("data", "tiles", TT.ToString().ToLower() + ".png");
+
+				if (File.Exists(FileName))
+					SetTileTexture(new Image(FileName), TT);
+			}
 		}
 
 		public Map(int Width, int Height) : this() {
@@ -67,13 +72,16 @@ namespace Tiler {
 		public void SetMapSize(int Width, int Height) {
 			Size = new Vector2i(Width, Height);
 			TileIDs = new TileType[Width * Height];
+			IsDirty = true;
 		}
 
-		public void SetTile(int X, int Y, TileType TT) {
-			TileIDs[Y * Size.X + X] = TT;
-		}
+		void Rebuild() {
+			if (!IsDirty)
+				return;
+			IsDirty = false;
 
-		public void Rebuild() {
+			VertexArray.Clear();
+
 			for (var index = 0; index < TileIDs.Length; ++index) {
 				Vector2f TileUV = GetTileUV(TileIDs[index]);
 
@@ -105,7 +113,19 @@ namespace Tiler {
 			}
 		}
 
-		public TileType GetTileTypeAtWorldPosition(Vector2 worldpos) {
+		public void SetTile(int X, int Y, TileType TT) {
+			if (X < 0 || Y < 0 || X >= Size.X || Y >= Size.Y)
+				return;
+
+			TileIDs[Y * Size.X + X] = TT;
+			IsDirty = true;
+		}
+
+		public void SetTileAtWorldPosition(Vector2 WorldPos, TileType TT) {
+			SetTile((int)(WorldPos.X / TileSize.X), (int)(WorldPos.Y / TileSize.Y), TT);
+		}
+
+		public TileType GetTileAtWorldPosition(Vector2 worldpos) {
 			int TileX = (int)(worldpos.X / TileSize.X);
 			int TileY = (int)(worldpos.Y / TileSize.Y);
 
@@ -116,16 +136,18 @@ namespace Tiler {
 			return TileIDs[Idx];
 		}
 
-		public IEnumerable<TileType> GetTileTypeAtWorldPosition(IEnumerable<Vector2> Positions) {
+		public IEnumerable<TileType> GetTileAtWorldPosition(IEnumerable<Vector2> Positions) {
 			foreach (var Pos in Positions)
-				yield return GetTileTypeAtWorldPosition(Pos);
+				yield return GetTileAtWorldPosition(Pos);
 		}
 
-		public IEnumerable<TileType> GetTileTypeAtWorldPosition(params Vector2[] Positions) {
-			return GetTileTypeAtWorldPosition(Positions);
+		public IEnumerable<TileType> GetTileAtWorldPosition(params Vector2[] Positions) {
+			return GetTileAtWorldPosition(Positions);
 		}
 
 		public void Draw(RenderTarget target, RenderStates states) {
+			Rebuild();
+
 			states.Texture = TextureAtlas;
 			target.Draw(VertexArray, states);
 		}

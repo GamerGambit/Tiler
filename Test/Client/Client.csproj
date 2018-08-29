@@ -82,19 +82,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="floor.png">
+    <Content Include="data\tiles\floor.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="map.png">
+    <Content Include="data\map.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="slime.png">
+    <Content Include="data\tiles\slime.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="space.png">
+    <Content Include="data\tiles\space.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="wall.png">
+    <Content Include="data\tiles\wall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

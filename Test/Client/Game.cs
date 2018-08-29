@@ -103,7 +103,7 @@ namespace Client {
 			}
 			*/
 
-			using (Bitmap MapBmp = new Bitmap("map.png")) {
+			using (Bitmap MapBmp = new Bitmap("data/map.png")) {
 				World.Map = new Map(MapBmp.Width, MapBmp.Height);
 
 				for (int Y = 0; Y < MapBmp.Height; Y++)
@@ -123,7 +123,6 @@ namespace Client {
 			}
 
 			World.Entities.Add(new PlayerSpawn(192, 192));
-			World.Map.Rebuild();
 
 			Gamemode = new TestGamemode();
 			Player = new Player();

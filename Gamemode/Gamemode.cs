@@ -53,7 +53,7 @@ namespace Tiler {
 		}
 		
 		public virtual void GetWorldProperties(Vector2 WorldPosition, out WorldProps WorldProperties) {
-			Map.TileType WorldTile = World.Map.GetTileTypeAtWorldPosition(WorldPosition);
+			Map.TileType WorldTile = World.Map.GetTileAtWorldPosition(WorldPosition);
 			WorldProperties = new WorldProps();
 
 			// Check if tile solid
@@ -88,7 +88,7 @@ namespace Tiler {
 			Physics.Body Body = ply.GetComponent<Physics.Body>(EntityComponents.PhysicsBody);
 
 			// Movement properties depend on the current tile the player is standing on
-			GetTileProperties(World.Map.GetTileTypeAtWorldPosition(Body.Center), ref Phys);
+			GetTileProperties(World.Map.GetTileAtWorldPosition(Body.Center), ref Phys);
 
 			// Apply other forces, like air friction
 			GetWorldProperties(Body.Center, out WorldProps Props);
