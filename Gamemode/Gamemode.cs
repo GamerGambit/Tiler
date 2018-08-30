@@ -57,59 +57,47 @@ namespace Tiler
 			// NOP
 		}
 
-		public virtual bool IsSolid(Map.TileType TileType)
+		public virtual void RegisterTileTypes()
 		{
-			if (TileType == Map.TileType.Wall)
-				return true;
+			// NOP
+		}
 
-			return false;
+		public virtual bool IsSolid(TileProperties tileProperties)
+		{
+			return tileProperties.IsSolid;
 		}
 
 		public virtual void GetWorldProperties(Vector2 WorldPosition, out WorldProps WorldProperties)
 		{
-			Map.TileType WorldTile = World.Map.GetTileAtWorldPosition(WorldPosition);
+			var tilePropertiesIndex = World.Map.GetTileAtWorldPosition(WorldPosition);
+			var tileProperties = TileProperties.GetByIndex(tilePropertiesIndex);
+
 			WorldProperties = new WorldProps
 			{
 
 				// Check if tile solid
 				// TODO: Check if any other static physics objects in the way
-				IsSolid = IsSolid(WorldTile),
+				IsSolid = IsSolid(tileProperties),
 
 				// Get atmosphere friction
 				AtmosFriction = 0.987f
 			};
 
-			if (WorldTile == Map.TileType.Space)
+			// space is at index 0
+			if (tilePropertiesIndex == 0)
+			{
 				WorldProperties.AtmosFriction = 1;
-		}
-
-		public virtual void GetTileProperties(Map.TileType Tile, ref TileProperties Phys)
-		{
-			// Defaults
-			Phys.PlayerAcceleration = 8.0f;
-			Phys.Friction = 0.82f;
-
-			// No grip in space
-			if (Tile == Map.TileType.Space)
-			{
-				Phys.Friction = 1;
-				Phys.PlayerAcceleration = 0;
 			}
-			else if (Tile == Map.TileType.Slime)
-			{
-				Phys.Friction = 1.0f;
-				Phys.PlayerAcceleration = 1.0f;
-			}
+
 		}
 
 		public virtual void Move(Player ply, MoveData mv, TimeSpan deltaTime)
 		{
 			float Dt = (float)deltaTime.TotalSeconds;
-			TileProperties Phys = new TileProperties();
 			Physics.Body Body = ply.GetComponent<Physics.Body>(EntityComponents.PhysicsBody);
 
 			// Movement properties depend on the current tile the player is standing on
-			GetTileProperties(World.Map.GetTileAtWorldPosition(Body.Center), ref Phys);
+			var Phys = TileProperties.GetByIndex(World.Map.GetTileAtWorldPosition(Body.Center));
 
 			// Apply other forces, like air friction
 			GetWorldProperties(Body.Center, out WorldProps Props);

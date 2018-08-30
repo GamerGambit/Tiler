@@ -105,6 +105,9 @@ namespace Client
 			}
 			*/
 
+			Gamemode = new TestGamemode();
+			Gamemode.RegisterTileTypes();
+
 			using (Bitmap MapBmp = new Bitmap("data/map.png"))
 			{
 				World.Map = new Map(MapBmp.Width, MapBmp.Height);
@@ -113,14 +116,14 @@ namespace Client
 					for (int X = 0; X < MapBmp.Width; X++)
 					{
 						var MapPx = MapBmp.GetPixel(X, Y);
-						Map.TileType Tile = Map.TileType.Space;
+						var Tile = 0;
 
 						if (MapPx.R == 255 && MapPx.G == 255 && MapPx.B == 255 && MapPx.A == 255)
-							Tile = Map.TileType.Floor;
+							Tile = 1;
 						else if (MapPx.R == 0 && MapPx.G == 0 && MapPx.B == 0 && MapPx.A == 255)
-							Tile = Map.TileType.Wall;
+							Tile = 2;
 						else if (MapPx.R == 0 && MapPx.G == 255 && MapPx.B == 0 && MapPx.A == 255)
-							Tile = Map.TileType.Slime;
+							Tile = 3;
 
 						World.Map.SetTile(X, Y, Tile);
 					}
@@ -128,7 +131,6 @@ namespace Client
 
 			World.Entities.Add(new PlayerSpawn(192, 192));
 
-			Gamemode = new TestGamemode();
 			Player = new Player();
 
 			Gamemode.CreateTeams();

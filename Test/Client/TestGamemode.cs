@@ -27,15 +27,45 @@ namespace Client
 			ply.TeamID = TestTeamID;
 		}
 
+		public override void RegisterTileTypes()
+		{
+			// Index 1
+			TileProperties.Register(new TileProperties()
+			{
+				Filename = "floor.png",
+				Name = "Floor",
+				PlayerAcceleration = 8.0f,
+				Friction = 0.82f,
+				IsSolid = false
+			});
+
+			// Index 2
+			TileProperties.Register(new TileProperties()
+			{
+				Filename = "wall.png",
+				Name = "Wall",
+				IsSolid = true
+			});
+
+			// Index 3
+			TileProperties.Register(new TileProperties()
+			{
+				Filename = "slime.png",
+				Name = "Slime",
+				PlayerAcceleration = 1.0f,
+				Friction = 1.0f
+			});
+		}
+
 		public override void SetupMove(Player ply, ref MoveData mv)
 		{
 			if (Tiler.Input.Manager.GetState(Glfw.KeyCode.F1).WasPressed)
 			{
-				World.Map.SetTileAtWorldPosition(ply.CenterPosition, Map.TileType.Floor);
+				World.Map.SetTileAtWorldPosition(ply.CenterPosition, 1);
 			}
 			else if (Tiler.Input.Manager.GetState(Glfw.KeyCode.F2).WasPressed)
 			{
-				World.Map.SetTileAtWorldPosition(ply.CenterPosition, Map.TileType.Space);
+				World.Map.SetTileAtWorldPosition(ply.CenterPosition, 0);
 			}
 
 			if (Tiler.Input.Manager.GetState(Glfw.KeyCode.W).IsDown)
