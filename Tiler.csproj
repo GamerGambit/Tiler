@@ -102,6 +102,7 @@
     <Compile Include="thirdparty\Glfw3\Glfw.Enum.cs" />
     <Compile Include="thirdparty\Glfw3\Glfw.Func.cs" />
     <Compile Include="thirdparty\Glfw3\Glfw.Struct.cs" />
+    <Compile Include="TileProperties.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Vehicle.cs" />
     <Compile Include="Weapon.cs" />

@@ -8,12 +8,6 @@ using SFML.System;
 
 namespace Tiler
 {
-	public struct TilePhysics
-	{
-		public float PlayerAcceleration;
-		public float Friction;
-	}
-
 	public class Map : Drawable
 	{
 		public enum TileType : int

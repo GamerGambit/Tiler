@@ -83,7 +83,7 @@ namespace Tiler
 				WorldProperties.AtmosFriction = 1;
 		}
 
-		public virtual void GetTileProperties(Map.TileType Tile, ref TilePhysics Phys)
+		public virtual void GetTileProperties(Map.TileType Tile, ref TileProperties Phys)
 		{
 			// Defaults
 			Phys.PlayerAcceleration = 8.0f;
@@ -105,7 +105,7 @@ namespace Tiler
 		public virtual void Move(Player ply, MoveData mv, TimeSpan deltaTime)
 		{
 			float Dt = (float)deltaTime.TotalSeconds;
-			TilePhysics Phys = new TilePhysics();
+			TileProperties Phys = new TileProperties();
 			Physics.Body Body = ply.GetComponent<Physics.Body>(EntityComponents.PhysicsBody);
 
 			// Movement properties depend on the current tile the player is standing on
