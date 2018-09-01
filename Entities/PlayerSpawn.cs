@@ -10,25 +10,18 @@ namespace Tiler
 	{
 		public Vector2 SpawnPosition
 		{
-			get
-			{
-				return GetComponent<Physics.Body>(EntityComponents.PhysicsBody).Position;
-			}
-
-			set
-			{
-				GetComponent<Physics.Body>(EntityComponents.PhysicsBody).Position = value;
-			}
+			get => GetComponent<ECS.Components.PhysicsBody>().Value.Position;
+			set => GetComponent<ECS.Components.PhysicsBody>().Value.Position = value;
 		}
 
 		public PlayerSpawn()
 		{
-			SetComponent(EntityComponents.GraphicsBody, new RectangleShape(new Vector2f(32, 32))
+			var graphicsBody = AddComponent<ECS.Components.GraphicsBody>(new RectangleShape(new Vector2f(32, 32))
 			{
 				FillColor = new Color(255, 160, 0, 128)
 			});
 
-			SetComponent(EntityComponents.PhysicsBody, new Physics.Body());
+			AddComponent<ECS.Components.PhysicsBody>();
 			SpawnPosition = Vector2.Zero;
 		}
 

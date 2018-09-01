@@ -14,15 +14,16 @@ namespace Tiler
 		{
 			get
 			{
-				return GetComponent<Physics.Body>(EntityComponents.PhysicsBody).Center;
+				return GetComponent<ECS.Components.PhysicsBody>().Value.Center;
 			}
 		}
 
 		public Player()
 		{
-			SetComponent(EntityComponents.PhysicsBody, new Physics.Body(Size: PlayerSize));
+			var physicsBody = AddComponent<ECS.Components.PhysicsBody>();
+			physicsBody.Value = new Physics.Body(Size: PlayerSize);
 
-			SetComponent(EntityComponents.GraphicsBody, new RectangleShape(new Vector2f(PlayerSize, PlayerSize))
+			var graphicsBody = AddComponent<ECS.Components.GraphicsBody>(new RectangleShape(new Vector2f(PlayerSize, PlayerSize))
 			{
 				FillColor = Color.Blue
 			});

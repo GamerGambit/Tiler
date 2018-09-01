@@ -143,9 +143,9 @@ namespace Client
 			// Original
 			//Player.Position = spawnPoint.Position;
 
-			var Body = Player.GetComponent<Tiler.Physics.Body>(EntityComponents.PhysicsBody);
+			var Body = Player.GetComponent<Tiler.ECS.Components.PhysicsBody>().Value;
 			Body.Position = spawnPoint.SpawnPosition;
-			Player.SetComponent(EntityComponents.PhysicsBody, Body);
+			Player.GetComponent<Tiler.ECS.Components.PhysicsBody>().Value = Body;
 
 			Gamemode.PlayerSpawn(Player);
 		}
@@ -164,7 +164,7 @@ namespace Client
 			Gamemode.SetupMove(Player, ref mv);
 			Gamemode.Move(Player, mv, deltaTime);
 
-			var Pos = Player.GetComponent<Tiler.Physics.Body>(EntityComponents.PhysicsBody).Position;
+			var Pos = Player.GetComponent<Tiler.ECS.Components.PhysicsBody>().Value.Position;
 			GameView.Center = new Vector2f(Pos.X, Pos.Y);
 		}
 	}

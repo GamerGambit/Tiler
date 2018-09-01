@@ -94,7 +94,7 @@ namespace Tiler
 		public virtual void Move(Player ply, MoveData mv, TimeSpan deltaTime)
 		{
 			float Dt = (float)deltaTime.TotalSeconds;
-			Physics.Body Body = ply.GetComponent<Physics.Body>(EntityComponents.PhysicsBody);
+			var Body = ply.GetComponent<ECS.Components.PhysicsBody>().Value;
 
 			// Movement properties depend on the current tile the player is standing on
 			var Phys = TileProperties.GetByIndex(World.Map.GetTileAtWorldPosition(Body.Center));
