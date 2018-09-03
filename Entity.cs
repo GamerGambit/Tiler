@@ -12,6 +12,18 @@ namespace Tiler
 
 	public abstract class Entity : ECS.Entity
 	{
+		public void Remove()
+		{
+			components.Clear();
+
+			foreach (var system in systems.ToArray())
+			{
+				system.UnregisterEntity(this);
+			}
+
+			World.Entities.Remove(this);
+		}
+
 		public virtual void Draw(RenderTarget target, RenderStates states)
 		{
 			if (!HasComponentEnabled<ECS.Components.GraphicsBody>())
