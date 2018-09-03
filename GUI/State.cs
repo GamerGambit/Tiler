@@ -78,7 +78,7 @@ namespace Tiler.GUI
 				Roots[index].Update(deltaTime);
 			}
 
-			if (!(FocusedControl is null) && !FocusedControl.HasFocus)
+			if (!(FocusedControl is null) && !FocusedControl.HasFocus || Roots.Count == 0)
 			{
 				FocusedControl = null;
 			}
