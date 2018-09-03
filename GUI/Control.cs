@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using Glfw3;
@@ -319,6 +319,7 @@ namespace Tiler.GUI
 					HasFocus = false;
 					MouseDirectlyOver = false;
 				}
+				EnabledChanged();
 			}
 		}
 		public EventType RegisterEventTypes { get; set; } = EventType.None;
@@ -573,6 +574,11 @@ namespace Tiler.GUI
 		protected virtual Vector2i GetInternalSize()
 		{
 			return Size;
+		}
+
+		protected virtual void EnabledChanged()
+		{
+			// NOP
 		}
 	}
 }

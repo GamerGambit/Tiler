@@ -20,7 +20,6 @@ namespace Tiler.GUI.Controls
 		private Vector2i mouseClickPos = new Vector2i(0, 0);
 
 		public int Scroll { get => scroll; private set { scroll = Utils.Clamp(value, 0, canvasHeight); Parent?.InvalidateLayout(); } }
-		public new bool Enabled { get => base.Enabled; private set { base.Enabled = value; Visible = value; } }
 		public float BarScale {
 			get
 			{
@@ -113,6 +112,11 @@ namespace Tiler.GUI.Controls
 
 			grip.Position = new Vector2f(1, 1 + scroll);
 			grip.Size = new Vector2f(Size.X - 2, gripHeight);
+		}
+
+		protected override void EnabledChanged()
+		{
+			Visible = Enabled;
 		}
 	}
 }
