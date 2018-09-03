@@ -1,6 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using Glfw3;
 
 using SFML.Graphics;
@@ -30,6 +30,7 @@ namespace Tiler.GUI
 
 		private Control parent = null;
 		private List<Control> children = new List<Control>();
+		private List<Animation> animations = new List<Animation>();
 		private bool visible = true;
 		private Vector2i size = new Vector2i(0, 0);
 
@@ -324,6 +325,7 @@ namespace Tiler.GUI
 		}
 		public EventType RegisterEventTypes { get; set; } = EventType.None;
 		public bool HasFocus { get; private set; } = false;
+		public bool Animating { get => animations.Any(a => a.state == Animation.State.Started); }
 
 		public Control()
 		{
@@ -438,6 +440,13 @@ namespace Tiler.GUI
 			}
 		}
 
+		public T NewAnimation<T>() where T : Animation
+		{
+			var instance = (T)Activator.CreateInstance(typeof(T), new object[] { this });
+			animations.Add(instance);
+			return instance;
+		}
+
 		public void SizeToParent()
 		{
 			if (parent is null)
@@ -457,6 +466,12 @@ namespace Tiler.GUI
 			{
 				DoLayout();
 			}
+
+			foreach (var animation in animations)
+			{
+				animation.Update(deltaTime);
+			}
+			animations.RemoveAll(a => a.state == Animation.State.Ended);
 
 			OnUpdate(deltaTime);
 

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Runtime.InteropServices;
 
 using SFML.Graphics;
+using SFML.System;
 
 namespace Tiler
 {
@@ -48,6 +50,27 @@ namespace Tiler
 				return max;
 
 			return value;
+		}
+
+		public static float Lerp(float start, float end, float fraction)
+		{
+			return start * (1.0f - fraction) + end * fraction;
+		}
+
+		public static Vector2 LerpVector(Vector2 start, Vector2 end, float fraction)
+		{
+			return new Vector2(
+				Lerp(start.X, end.X, fraction),
+				Lerp(start.Y, end.Y, fraction)
+			);
+		}
+
+		public static Vector2i LerpVector(Vector2i start, Vector2i end, float fraction)
+		{
+			return new Vector2i(
+				(int)Lerp(start.X, end.X, fraction),
+				(int)Lerp(start.Y, end.Y, fraction)
+			);
 		}
 	}
 
