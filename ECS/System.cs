@@ -48,7 +48,7 @@ namespace Tiler.ECS
 			return true;
 		}
 
-		void RegisterEntity(Entity entity)
+		public void RegisterEntity(Entity entity)
 		{
 			// Since `AppliesToEntity` can be expensive for large `requiredTypes` and/or entities with lots of components,
 			// check if the hashset contains the entity first
@@ -62,7 +62,7 @@ namespace Tiler.ECS
 			entity.systems.Add(this);
 		}
 
-		void UnregisterEntity(Entity entity)
+		public void UnregisterEntity(Entity entity)
 		{
 			entities.Remove(entity);
 			entity.systems.Remove(this);
