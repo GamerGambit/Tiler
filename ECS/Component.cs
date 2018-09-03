@@ -1,6 +1,6 @@
 namespace Tiler.ECS
 {
-	public class Component
+	public abstract class Component
 	{
 		private readonly Entity owningEntity = null;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Tiler.ECS
 {
-	public class Entity
+	public abstract class Entity
 	{
 		internal Dictionary<string, Component> components = new Dictionary<string, Component>();
 		internal List<WeakReference<System>> systems = new List<WeakReference<System>>();

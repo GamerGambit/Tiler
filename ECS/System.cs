@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Tiler.ECS
 {
-	public class System : IUpdatable
+	public abstract class System : IUpdatable
 	{
 		public bool Enabled { get; set; } = true;
 
