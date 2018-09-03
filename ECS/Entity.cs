@@ -6,7 +6,7 @@ namespace Tiler.ECS
 	public abstract class Entity
 	{
 		internal Dictionary<string, Component> components = new Dictionary<string, Component>();
-		internal List<WeakReference<System>> systems = new List<WeakReference<System>>();
+		internal List<System> systems = new List<System>();
 
 		public T AddComponent<T>(T component) where T : Component
 		{
@@ -61,17 +61,9 @@ namespace Tiler.ECS
 			components.Remove(name);
 
 			// Since this can change `systems`, cache the list into an array
-			foreach (var systemref in systems.ToArray())
+			foreach (var system in systems.ToArray())
 			{
-				if (systemref.TryGetTarget(out var system))
-				{
-					system.EntityRemovedComponent(this, component);
-				}
-				else
-				{
-					// dead ref?
-					systems.Remove(systemref);
-				}
+				system.EntityRemovedComponent(this, component);
 			}
 
 			return (T)component;

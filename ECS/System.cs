@@ -7,7 +7,7 @@ namespace Tiler.ECS
 	{
 		public bool Enabled { get; set; } = true;
 
-		private HashSet<WeakReference<Entity>> entities = new HashSet<WeakReference<Entity>>();
+		private HashSet<Entity> entities = new HashSet<Entity>();
 
 		protected readonly Type[] requiredTypes;
 
@@ -50,24 +50,22 @@ namespace Tiler.ECS
 
 		void RegisterEntity(Entity entity)
 		{
-			var weakref = new WeakReference<Entity>(entity);
-
 			// Since `AppliesToEntity` can be expensive for large `requiredTypes` and/or entities with lots of components,
-			// check if the hashset contains the reference first
-			if (entities.Contains(weakref))
+			// check if the hashset contains the entity first
+			if (entities.Contains(entity))
 				return;
 
 			if (!AppliesToEntity(entity))
 				return;
 
-			entities.Add(weakref);
-			entity.systems.Add(new WeakReference<System>(this));
+			entities.Add(entity);
+			entity.systems.Add(this);
 		}
 
 		void UnregisterEntity(Entity entity)
 		{
-			entities.Remove(new WeakReference<Entity>(entity));
-			entity.systems.Remove(new WeakReference<System>(this));
+			entities.Remove(entity);
+			entity.systems.Remove(this);
 		}
 
 		public void Update(TimeSpan deltaTime)
@@ -75,15 +73,9 @@ namespace Tiler.ECS
 			if (!Enabled)
 				return;
 
-			// remove dead references
-			entities.RemoveWhere(r => r.TryGetTarget(out var e) == false);
-
-			foreach (var entityref in entities)
+			foreach (var entity in entities)
 			{
-				if (entityref.TryGetTarget(out var entity))
-				{
-					UpdateEntity(entity, deltaTime);
-				}
+				UpdateEntity(entity, deltaTime);
 			}
 		}
 

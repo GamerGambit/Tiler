@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using SFML.Graphics;
+﻿using SFML.Graphics;
 using SFML.System;
 
 namespace Tiler
