@@ -1,10 +1,10 @@
-﻿namespace Tiler.ECS
+namespace Tiler.ECS
 {
 	public class Component
 	{
 		private readonly Entity owningEntity = null;
 
-		public bool IsEnabled = true;
+		public bool Enabled { get; set; } = true;
 
 		public Component(Entity owningEntity)
 		{

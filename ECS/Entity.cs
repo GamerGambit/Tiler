@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Tiler.ECS
@@ -9,8 +9,7 @@ namespace Tiler.ECS
 
 		public T AddComponent<T>(T component) where T : Component
 		{
-			components.Add(typeof(T).ToString(), component);
-			return component;
+			return AddComponent(component, typeof(T).ToString());
 		}
 
 		public T AddComponent<T>(T component, string name) where T : Component
@@ -49,15 +48,7 @@ namespace Tiler.ECS
 
 		public T RemoveComponent<T>() where T : Component
 		{
-			var key = typeof(T).ToString();
-
-			if (!components.ContainsKey(key))
-				return null;
-
-			var component = components[key];
-			components.Remove(key);
-
-			return (T)component;
+			return RemoveComponent<T>(typeof(T).ToString());
 		}
 
 		public T RemoveComponent<T>(string name) where T : Component
@@ -83,12 +74,7 @@ namespace Tiler.ECS
 
 		public T GetComponent<T>() where T : Component
 		{
-			var key = typeof(T).ToString();
-
-			if (!HasComponent(key))
-				throw new Exception($"Entity does not contain component \"{key}\"");
-
-			return (T)components[key];
+			return GetComponent<T>(typeof(T).ToString());
 		}
 
 		public T GetComponent<T>(string name) where T : Component
@@ -101,12 +87,12 @@ namespace Tiler.ECS
 
 		public bool HasComponentEnabled<T>() where T : Component
 		{
-			return HasComponent(typeof(T).ToString()) && GetComponent<T>().IsEnabled;
+			return HasComponentEnabled(typeof(T).ToString());
 		}
 
 		public bool HasComponentEnabled(string name)
 		{
-			return HasComponent(name) && components[name].IsEnabled;
+			return HasComponent(name) && components[name].Enabled;
 		}
 	}
 }
