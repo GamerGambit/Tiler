@@ -70,6 +70,7 @@
     <Compile Include="ECS\Components\GraphicsBody.cs" />
     <Compile Include="ECS\Components\PhysicsBody.cs" />
     <Compile Include="ECS\Entity.cs" />
+    <Compile Include="ECS\System.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Gamemode\Gamemode.Client.cs" />
     <Compile Include="Gamemode\Gamemode.cs" />
