@@ -76,6 +76,8 @@
     <Compile Include="Gamemode\Gamemode.cs" />
     <Compile Include="Gamemode\Gamemode.Server.cs" />
     <Compile Include="Glfw.Extensions.cs" />
+    <Compile Include="GSM\GameState.cs" />
+    <Compile Include="GSM\GameStateStack.cs" />
     <Compile Include="GUI\Animation.cs" />
     <Compile Include="GUI\Animations\Move.cs" />
     <Compile Include="GUI\Control.cs" />

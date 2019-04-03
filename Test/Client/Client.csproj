@@ -64,8 +64,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game.cs" />
+    <Compile Include="GameStateContext.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="states\MainGame.cs" />
+    <Compile Include="states\MainMenu.cs" />
     <Compile Include="TestGamemode.cs" />
   </ItemGroup>
   <ItemGroup>
